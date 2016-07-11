@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="xhxw">
+	<typeAlias alias="xhxw" type="com.bcqsoft.xhlm.dao.xhxw.dataobject.Xhxw" />
+
+	<!-- 插入一条信息至类别分类表 -->
+	<insert id="insertIntoXhxw" parameterClass="xhxw">
+		INSERT INTO XHLM_TB_XHXW(
+		CREATE_DATE,
+		UPDATE_DATE,
+		TITLE,
+		SORT_ID,
+		CC,
+		RELEASE_DATE,
+		CONTENT,
+		LOGIN_ID,
+		ENABLED
+		)VALUES(
+		now(),
+		now(),
+		#title#,
+		#sortId#,
+		#cc#,
+		#releaseDate#,
+		#content#,
+		#loginId#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的类别分类(页面分页使用) -->
+	<select id="findXhxwInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_XHXW x
+		WHERE x.ENABLED = 'Y'
+		AND x.LOGIN_ID=#loginId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别分类 -->
+	<select id="findXhxwInfoList" resultClass="xhxw">
+		SELECT
+		x.ID,
+		x.CREATE_DATE createDate,
+		x.UPDATE_DATE updateDate,
+		x.TITLE title,
+		x.LOGIN_ID loginId,
+		x.SORT_ID sortId,
+		(SELECT NAME FROM XHLM_TB_SORT_DETAIL sd WHERE x.SORT_ID=sd.ID) sortName,
+		x.CC cc,
+		x.RELEASE_DATE releaseDate,
+		x.CONTENT content,
+		x.ENABLED enabled
+		FROM XHLM_TB_XHXW x
+		WHERE x.ENABLED = 'Y'
+		AND x.LOGIN_ID=#loginId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		ORDER BY x.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条类别分类 -->
+	<select id="getXhxwInfo" resultClass="xhxw">
+		SELECT
+		x.ID,
+		x.CREATE_DATE createDate,
+		x.UPDATE_DATE updateDate,
+		x.TITLE title,
+		x.LOGIN_ID loginId,
+		x.SORT_ID sortId,
+		x.CC cc,
+		x.RELEASE_DATE releaseDate,
+		x.CONTENT content,
+		x.ENABLED enabled
+		FROM XHLM_TB_XHXW x
+		WHERE x.ID = #id#
+		AND x.ENABLED = 'Y'
+	</select>
+
+	<!-- 根据ID更新某条类别分类信息 -->
+	<update id="updateXhxwInfoById" parameterClass="xhxw">
+		UPDATE
+		XHLM_TB_XHXW x
+		SET x.UPDATE_DATE = now(),
+		x.TITLE = #title#,
+		x.SORT_ID = #sortId#,
+		x.CC = #cc#,
+		x.RELEASE_DATE = #releaseDate#,
+		x.CONTENT = #content#
+		WHERE x.ID = #id#
+		AND x.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据ID删除某条类别分类信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="deleteXhxwInfoById" parameterClass="long">
+		UPDATE
+		XHLM_TB_XHXW x
+		SET x.UPDATE_DATE = now(),
+		x.ENABLED = 'N'
+		WHERE x.ID = #id#
+		AND x.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据查询条件查询符合条件的类别分类(页面分页使用) -->
+	<select id="findXhxwInfoCountByHome" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_XHXW x
+		WHERE x.ENABLED = 'Y'
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别分类 -->
+	<select id="findXhxwInfoListByHome" resultClass="xhxw">
+		SELECT
+		x.ID,
+		x.CREATE_DATE createDate,
+		x.UPDATE_DATE updateDate,
+		x.TITLE title,
+		x.LOGIN_ID loginId,
+		x.SORT_ID sortId,
+		(SELECT NAME FROM XHLM_TB_SORT_DETAIL sd WHERE x.SORT_ID=sd.ID) sortName,
+		x.CC cc,
+		x.RELEASE_DATE releaseDate,
+		x.CONTENT content,
+		x.ENABLED enabled
+		FROM XHLM_TB_XHXW x
+		WHERE x.ENABLED = 'Y'
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		ORDER BY x.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别分类 -->
+	<select id="getXhxwInfoListByLoginId" resultClass="xhxw">
+		SELECT
+		x.ID,
+		x.CREATE_DATE createDate,
+		x.UPDATE_DATE updateDate,
+		x.TITLE title,
+		x.LOGIN_ID loginId,
+		x.SORT_ID sortId,
+		(SELECT NAME FROM XHLM_TB_SORT_DETAIL sd WHERE x.SORT_ID=sd.ID) sortName,
+		x.CC cc,
+		x.RELEASE_DATE releaseDate,
+		x.CONTENT content,
+		x.ENABLED enabled
+		FROM XHLM_TB_XHXW x
+		WHERE x.ENABLED = 'Y'
+		AND x.LOGIN_ID = #loginId#
+		LIMIT 5
+	</select>
+</sqlMap>

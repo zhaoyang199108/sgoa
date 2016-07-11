@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE sqlMapConfig    
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"         
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<!-- ORMapping Configuration -->
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" maxRequests="32" maxSessions="10"
+		maxTransactions="5" useStatementNamespaces="true" />
+
+
+	<sqlMap resource="com/bcqsoft/xhlm/dao/user/mapping/user.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/role/mapping/role.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/userrole/mapping/user_role.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/userzzt/mapping/user_zzt.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/userdetail/mapping/user_detail.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/userxh/mapping/user_xh.xml" />
+
+	<sqlMap resource="com/bcqsoft/xhlm/dao/xhtm/mapping/xhtm.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/qytm/mapping/qytm.xml" />
+
+	<sqlMap resource="com/bcqsoft/xhlm/dao/sort/mapping/sort.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/sortdetail/mapping/sortdetail.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/notice/mapping/notice.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/xhfw/mapping/xhfw.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/xhfwdetail/mapping/xhfwdetail.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/xhhd/mapping/xhhd.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/xhhddetail/mapping/xhhddetail.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/xwk/mapping/xwk.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/xhxw/mapping/xhxw.xml" />
+
+	<sqlMap resource="com/bcqsoft/xhlm/dao/ptfw/mapping/ptfw.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/ptfwdetail/mapping/ptfwdetail.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/pthd/mapping/pthd.xml" />
+	<sqlMap resource="com/bcqsoft/xhlm/dao/pthddetail/mapping/pthddetail.xml" />
+</sqlMapConfig>

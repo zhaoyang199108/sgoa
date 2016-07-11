@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sort">
+	<typeAlias alias="sort" type="com.bcqsoft.xhlm.dao.sort.dataobject.Sort" />
+
+	<!-- 插入一条信息至类别分类表 -->
+	<insert id="insertIntoSort" parameterClass="sort">
+		INSERT INTO XHLM_TB_SORT(
+		CREATE_DATE,
+		UPDATE_DATE,
+		NAME,
+		LOGIN_ID,
+		ENABLED
+		)
+		VALUES(
+		now(),
+		now(),
+		#name#,
+		#loginId#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的类别分类(页面分页使用) -->
+	<select id="findSortInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_SORT s
+		WHERE s.ENABLED = 'Y'
+		<isNotEmpty property="name" prepend="AND">
+			s.NAME LIKE CONCAT('%',#name#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别分类 -->
+	<select id="findSortInfoList" resultClass="sort">
+		SELECT
+		s.ID,
+		s.CREATE_DATE createDate,
+		s.UPDATE_DATE updateDate,
+		s.LOGIN_ID loginId,
+		s.NAME name,
+		s.ENABLED enabled
+		FROM XHLM_TB_SORT s
+		WHERE s.ENABLED = 'Y'
+		<isNotEmpty property="name" prepend="AND">
+			s.NAME LIKE CONCAT('%',#name#,'%')
+		</isNotEmpty>
+		ORDER BY s.UPDATE_DATE
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条类别分类 -->
+	<select id="getSortInfo" resultClass="sort">
+		SELECT
+		s.ID,
+		s.CREATE_DATE createDate,
+		s.UPDATE_DATE updateDate,
+		s.LOGIN_ID loginId,
+		s.NAME name,
+		s.ENABLED enabled
+		FROM XHLM_TB_SORT s
+		WHERE s.ID = #id#
+		AND s.ENABLED = 'Y'
+	</select>
+
+	<!-- 根据ID更新某条类别分类信息 -->
+	<update id="updateSortInfoById" parameterClass="sort">
+		UPDATE
+		XHLM_TB_SORT s
+		SET s.UPDATE_DATE = now(),
+		s.NAME = #name#
+		WHERE s.ID = #id#
+		AND s.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据ID删除某条类别分类信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="deleteSortInfoById" parameterClass="long">
+		UPDATE
+		XHLM_TB_SORT s
+		SET s.UPDATE_DATE = now(),
+		s.ENABLED = 'N'
+		WHERE s.ID = #id#
+		AND s.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据查询条件查询符合条件的类别分类 -->
+	<select id="getAllSortForList" resultClass="sort">
+		SELECT
+		s.ID,
+		s.CREATE_DATE createDate,
+		s.UPDATE_DATE updateDate,
+		s.LOGIN_ID loginId,
+		s.NAME name,
+		s.ENABLED enabled
+		FROM XHLM_TB_SORT s
+		WHERE s.ENABLED = 'Y'
+	</select>
+</sqlMap>

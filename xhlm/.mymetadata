@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="xhlm Maven Webapp"
+  id="myeclipse.1465963550894"
+  context-root="/xhlm"
+  j2ee-spec="6.0"
+  archive="xhlm Maven Webapp.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+

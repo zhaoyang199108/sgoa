@@ -1,0 +1,171 @@
+.sele {
+	width: 260px;
+	margin: 0 auto;
+	text-align: center;
+	border: 1px solid #B0C8B5;
+	background: #F5FAF8;
+	color: #000000;
+	overflow: hidden;
+}
+
+.sele h4 {
+	height: 33px;
+	background: #498454;
+	line-height: 33px;
+	color: #FFFFFF;
+	font-size: 16px;
+	margin: 0px;
+	padding: 0px;
+	font-weight: bold;
+}
+
+.se_left {
+	width: 240px;
+}
+
+div.content_wrap div.left {
+	float: left;
+	width: 240px;
+}
+
+div.zTreeDemoBackground {
+	width: 240px;
+	height: 330px;
+	text-align: left;
+}
+
+ul.ztree {
+	margin-top: 10px;
+	border: 1px solid #E3ECEC;
+	background: #fff;
+	height: 330px;
+	overflow-y: scroll;
+	overflow-x: auto;
+}
+
+ul.log {
+	border: 1px solid #617775;
+	background: #f0f6e4;
+	width: 200px;
+	height: 170px;
+	overflow: hidden;
+}
+
+ul.log.small {
+	height: 45px;
+}
+
+ul.log li {
+	color: #666666;
+	list-style: none;
+	padding-left: 10px;
+}
+
+ul.log li.dark {
+	background-color: #E3E3E3;
+}
+
+.an {
+	width: 260px;
+	margin-top: 25px;
+	float: left;
+	background: #FFFFFF;
+	border-top: 1px solid #B0C8B5;
+	height: 35px;
+	padding-top: 15px;
+}
+
+.sele_sub {
+	background: url(../images/ad_but.jpg) no-repeat;
+	width: 55px;
+	border: 0px;
+	line-height: 22px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF;
+	margin-right: 35px;
+	display: inline;
+}
+
+.wrap {
+	margin: 12px;
+}
+
+.wrap-div {
+	float: left;
+}
+
+/** ����������Աѡ��ҳ�� **/
+ul.dept-list {
+	float: left;
+	width: 120px;
+	border: 2px solid blue;
+}
+
+ul.dept-list li {
+	margin-bottom: 3px;
+}
+
+ul.dept-list li.current {
+	background-color: #CACACA;
+}
+
+ul.user-list {
+	float: left;
+	width: 180px;
+	margin-left: 8px;
+	text-align: left;
+}
+
+ul.user-list li {
+	margin: 3px 0;
+}
+
+ul.user-list li.act {
+	border-bottom: 2px solid red;
+	padding-bottom: 3px;
+}
+
+ul li span {
+	margin-left: 10px;
+	display: inline-block;
+}
+
+ul li span.urole {
+	width: 75px;
+}
+
+ul li span.uname {
+	width: 130px;
+}
+
+ul li a.opt {
+	margin-left: 5px;
+}
+
+#allBtn, oppBtn {
+	margin-right: 2px;
+}
+
+#oppBtn {
+	margin-left: 8px;
+}
+
+ul.select-list {
+	clear: both;
+	padding-top: 24px;
+}
+
+.ki {
+	height: 300px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.ku {
+	height: 300px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	background: #ECF5FF;
+	border: 1px solid #C9E4FE;
+}

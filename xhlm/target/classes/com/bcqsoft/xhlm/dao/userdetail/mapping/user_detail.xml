@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 用户详细表SQL映射文件, TABLE: XHLM_TB_USER_DETAIL -->
+<sqlMap namespace="userdetail">
+
+	<typeAlias alias="userdetail"
+		type="com.bcqsoft.xhlm.dao.userdetail.dataobject.Userdetail" />
+
+
+	<!-- 根据查询条件查询符合条件的用户详细列表信息 -->
+	<select id="getUserdetailList" resultClass="userdetail">
+		SELECT
+		stu.ID,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.USER_ID userId,
+		stu.TM_ID tmId,
+		(SELECT x.TMNAME FROM XHLM_TB_XHTM x WHERE x.ID = stu.TM_ID) tmname,
+		(SELECT q.TMNAME FROM XHLM_TB_QYTM q WHERE q.ID = stu.TM_ID) tmnameq,
+		stu.CONTENT content,
+		stu.TYPE type
+		FROM XHLM_TB_USER_DETAIL stu
+		WHERE stu.USER_ID = #userId#
+	</select>
+
+	<!-- 插入一条信息至用户详细表 -->
+	<insert id="insertIntoUserDetail" parameterClass="userdetail">
+		INSERT INTO
+		XHLM_TB_USER_DETAIL
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		USER_ID,
+		TM_ID,
+		CONTENT,
+		TYPE
+		)
+		VALUES(
+		now(),
+		now(),
+		#userId#,
+		#tmId#,
+		#content#,
+		#type#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据条目ID删除用户详细信息 -->
+	<delete id="deleteUserDetailById" parameterClass="long">
+		DELETE FROM
+		XHLM_TB_USER_DETAIL
+		WHERE TM_ID = #id#
+	</delete>
+
+</sqlMap>

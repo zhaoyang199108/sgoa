@@ -1,0 +1,152 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code,
+	form, fieldset, legend, input, button, textarea, p, blockquote, th, td a
+	{
+	margin: 0;
+	padding: 0;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+img {
+	border: 0;
+}
+
+li {
+	list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+}
+
+body {
+	font: 12px/22px "����";
+	color: #333333;
+	text-align: center;
+	background: #F8F8F8;
+}
+
+a {
+	color: #333333;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #333333;
+	text-decoration: none;
+}
+/*����ҳҳ��ʽ*/
+table.ftb {
+	width: 85%;
+	margin: 20px auto;
+	background: #FBFDFF;
+}
+
+table.ftb th {
+	background: #66A2E3;
+	padding: 2px 6px;
+	border: 1px solid #2F91C6;
+	width: 13%;
+	color: #FFF;
+}
+
+table.ftb th h3.dzb {
+	font-size: 16px;
+	font-weight: bold;
+	color: #000000;
+	line-height: 26px;
+}
+
+table.ftb td {
+	border: 1px solid #3A77C0;
+	padding: 4px 6px;
+	text-align: left;
+}
+
+table.ftb td.cc {
+	height: 360px;
+	float: left;
+	padding-right: 18px;
+}
+
+table.ftb td input.title {
+	width: 91%;
+	height: 22px;
+	line-height: 22px;
+}
+
+table.ftb td input {
+	width: 78%;
+	_width: 78%;
+	padding-left: 3px;
+}
+
+table.ftb td select {
+	width: 79%;
+}
+
+table.ftb td input.btn {
+	margin-right: 80px;
+	margin-top: 16px;
+	background: url(../images/an.png);
+	width: 49px;
+	height: 22px;
+	border: 0px;
+	color: #FFF;
+}
+
+table.ftb td input.txt title {
+	padding-left: 3px;
+}
+
+table.ftb tr.act td {
+	text-align: right;
+	padding-right: 80px;
+}
+
+.woe {
+	margin: 0px;
+	padding: 5px;
+	width: 90%;
+	height: 230px;
+}
+
+.sow {
+	background: #F6FAFF;
+	overflow: hidden;
+	text-align: center;
+}
+
+.sow h4 {
+	font-size: 14px;
+	color: #000000;
+	text-align: center;
+	font-weight: bold;
+	line-height: 22px;
+	margin-top: 15px;
+}
+
+table.lisk {
+	width: 100%;
+	border: 1px solid #CBDEED
+}
+
+table.lisk th {
+	background: #F5F8FA;
+	color: #0066CC;
+	height: 18px;
+	border: 1px solid #CBDEED;
+	width: auto;
+}
+
+table.lisk td {
+	border: 1px solid #CBDEED;
+	line-height: 26px;
+}
+
+.sees {
+	width: 153px;
+}

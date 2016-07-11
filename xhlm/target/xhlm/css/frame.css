@@ -1,0 +1,395 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code,
+	form, fieldset, legend, input, button, textarea, p, blockquote, th, td a
+	{
+	margin: 0;
+	padding: 0;
+}
+
+fieldset, img {
+	border: 0;
+}
+
+li {
+	list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-size: 100%;
+	font-weight: normal;
+}
+
+body {
+	font: 12px/1.5 tahoma, arial, simsun, sans-serif;
+	color: #333333;
+}
+
+html, body {
+	height: 100%;
+}
+
+table {
+	font-size: inherit;
+}
+
+a {
+	color: #000000;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #00a800;
+	text-decoration: none;
+}
+
+body {
+	text-align: center;
+	background: #EEF7FD;
+}
+
+/** 框架头部 Start */
+#header {
+	background: #3A77C0;
+	width: 100%;
+	height: 62px;
+}
+
+.logg {
+	background: url(../images/logo.gif) no-repeat;
+	float: left;
+	width: 238px;
+	height: 61px;
+}
+
+.logg p {
+	padding: 12px 0 0 95px;
+	color: #A0AFBC;
+	float: left;
+}
+
+#header .top-btn {
+	float: left;
+	margin: 20px 0 0 16px;
+	background: url(../images/btn-top.png) no-repeat;
+	width: 380px;
+}
+
+#header .top-btn a {
+	display: block;
+	float: left;
+	width: 48px;
+	height: 24px;
+}
+
+#header .top-btn a.home-ico {
+	width: 50px;
+}
+
+#header .top-btn a.info-ico {
+	width: 114px;
+}
+
+#header .top-btn a.logout-ico {
+	width: 58px;
+}
+
+#header span.top-time {
+	float: right;
+	padding: 21px 30px;
+	background-position: 0 4px;
+	background: url(../images/tpic.png) no-repeat 0 -76px;
+	padding-left: 35px;
+}
+
+.top-datestyle {
+	float: right;
+	background-color: #5087CB;
+	color: #FFF;
+	height: 62px;
+	padding-left: 15px;
+}
+
+.top-datestyle p {
+	float: left;
+	font-family: "Microsoft YaHei UI";
+	font-size: 14px;
+	background: url(../images/tpic.png) no-repeat 0 0;
+	padding-left: 43px;
+	line-height: 60px;
+	padding-right: 40px;
+}
+
+/** 框架头部 End */
+.desc_txt {
+	background: url(../images/icons.png) no-repeat;
+	padding-left: 22px;
+	color: #fff;
+}
+
+/** 框架底部 Start */
+#footer {
+	background: #F2F2F2;
+	width: 100%;
+	height: 23px;
+	padding-top: 1px;
+}
+
+#footer .copyright {
+	float: left;
+	margin-left: 15px;
+	background-position: 0 -39px;
+	line-height: 30px;
+	color: #AEAEAE;
+}
+
+#footer .contact {
+	float: right;
+	margin-right: 15px;
+	background-position: 0 -107px;
+	line-height: 30px;
+	color: #AEAEAE;
+}
+
+/** 框架底部 End */
+/** 框架左侧菜单 Start */
+#left {
+	width: 176px;
+	height: 100%;
+	margin-left: 2px;
+	border-right: 1px solid #4AA5DF;
+	border-left: 1px solid #4AA5DF;
+	background: #051E3F;
+}
+
+ul.quick-btn {
+	background: url(../images/bg-menu.png) no-repeat;
+	height: 108px;
+}
+
+ul.quick-btn li {
+	float: left;
+	width: 48px;
+	height: 65px;
+	margin: 34px 4px 0 4px;
+}
+
+ul.quick-btn li a {
+	background: url(../images/bg-menu.png) no-repeat -131px -118px;
+	display: block;
+	padding-top: 45px;
+	color: #333333;
+}
+
+ul.quick-btn li a.quick-btn2 {
+	background-position: 4px -118px;
+}
+
+ul.quick-btn li a.quick-btn3 {
+	background-position: -64px -118px;
+}
+
+ul.quick-btn li a:hover {
+	background-position: -132px -190px;
+}
+
+ul.quick-btn li a.quick-btn2:hover {
+	background-position: 4px -190px;
+}
+
+ul.quick-btn li a.quick-btn3:hover {
+	background-position: -64px -190px;
+}
+
+#navigation {
+	width: 176px;
+	background-color: #051E3F;
+}
+
+#navigation a.head {
+	height: 23px;
+	background:;
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	line-height: 20px;
+	color: #FFF;
+	border-bottom: 1px solid #4E5F77;
+	border-top: 1px solid #4E5F77;
+}
+
+#navigation a.head:hover {
+	background-position: 0px -286px;
+	color: #fff;
+}
+
+#navigation li ul li a {
+	display: block;
+	padding: 3px;
+	height: 20px;
+	line-height: 20px;
+	background: #3a77c0;
+	color: #fff;
+	border-bottom: 1px solid #C1D2D6;
+}
+
+#navigation li ul li a:hover {
+	background: #F5861F;
+	color: #fff;
+	padding: 2px 0 4px 0;
+}
+
+#main {
+	height: 98%;
+	background: url(../images/bg-x.png) #F3FFE3 repeat-x 0 -261px;
+	margin: 3px 4px 10px 3px;
+	border: 1px solid #9AD452;
+}
+
+#content {
+	margin: 8px 14px;
+}
+
+/** 框架左侧菜单 End */
+.accordion, .accordion ul, .accordion li, .accordion a, .accordion span
+	{
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+}
+
+.accordion {
+	width: 176px;
+	float: left;
+}
+
+.accordion li {
+	list-style: none;
+}
+
+/* Layout & Style */
+.accordion li a {
+	display: block;
+	position: relative;
+	height: 23px;
+	text-align: center;
+	font: 14px/23px;
+	font-weight: bold;
+	line-height: 23px;
+	color: #043253;
+}
+
+.accordion li a:target {
+	background: url(../images/bg-menu.png) no-repeat 0px -30px;
+}
+
+.accordion li a.active {
+	background: url(../images/bg-menu.png) no-repeat 0px -30px;
+	color: #FFFFFF;
+}
+
+/* Images */
+
+/* Sub Menu */
+.sub-menu li a {
+	color: #333;
+	background: #F8FBFE;
+	font-weight: normal;
+	line-height: 28px;
+	font-size: 12px;
+	border-bottom: 1px dashed #95B8E7;
+}
+
+.sub-menu li a:hover {
+	
+}
+
+.sub-menu li:last-child a {
+	
+}
+
+/* Functionality */
+.accordion li .sub-menu {
+	display: none;
+}
+
+.accordion li:target .sub-menu {
+	display: block;
+}
+
+.wiwy {
+	background: url(../images/dhcd.jpg);
+	width: 176px;
+	height: 33px;
+}
+
+.cbcy {
+	background: url(../images/top-bg.jpg) repeat;
+	width: 100%;
+	height: 75px;
+}
+
+.cbcu {
+	background: url(../images/top-logo.png);
+	width: 483px;
+	height: 60px;
+	float: left;
+	margin-left: 45px;
+	margin-top: 10px;
+}
+
+.cbcw {
+	background: url(../images/top-rig.jpg);
+	width: 971px;
+	height: 66px;
+	float: right;
+}
+
+.accordion01 li {
+	background: url(../images/ii.png) repeat-x;
+	height: 28px;
+	text-align: left;
+}
+
+.accordion01 li a.lwy {
+	background: url(../images/dw.png) no-repeat 0px 0px;
+	padding-left: 30px;
+	color: #FFF;
+	font-weight: bold;
+	line-height: 28px;
+}
+
+.sub-menu01 {
+	
+}
+
+.sub-menu01 li {
+	background: #F4F9FE;
+	padding-left: 35px;
+}
+
+.sub-menu01 li:hover {
+	background: #F6F5ED;
+	border-top: 1px solid #F5E6BE;
+}
+
+.sub-menu01 li:hover {
+	background: #F6F5ED;
+	border-bottom: 1px solid #F5E6BE;
+}
+
+.sub-menu01 li a {
+	background: url(../images/dw.png) no-repeat -36px -28px;
+	padding-left: 20px;
+}
+
+.hyy {
+	background: url(../images/xsy.jpg) no-repeat right;
+	width: 100%;
+	height: 98%;
+}
+
+.main-bg {
+	background: url(../images/xsy.jpg) no-repeat;
+	width: 100%;
+	height: 100%;
+}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 资质图表SQL映射文件, TABLE: XHLM_TB_USER_ZZT -->
+<sqlMap namespace="userXh">
+
+	<typeAlias alias="userXh"
+		type="com.bcqsoft.xhlm.dao.userxh.dataobject.UserXh" />
+
+
+	<!-- 根据查询条件查询符合条件的资质图列表信息 -->
+	<select id="getUserXhInfo" resultClass="userXh">
+		SELECT
+		stu.ID,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.USER_ID userId,
+		stu.P_ID pId,
+		stu.STATUS status
+		FROM XHLM_TB_USER_XH stu
+		WHERE stu.USER_ID = #userId#
+		AND stu.P_ID = #pId#
+		<isNotEmpty property="status" prepend="AND">
+			stu.STATUS = #status#
+		</isNotEmpty>
+		LIMIT 1
+	</select>
+
+	<!-- 根据用户ID删除资质图详细信息 -->
+	<delete id="deleteUserXhInfoById">
+		DELETE FROM
+		XHLM_TB_USER_XH
+		WHERE USER_ID = #userId#
+		AND P_ID = #pId#
+	</delete>
+
+	<!-- 插入一条信息至类别分类表 -->
+	<insert id="insertIntoUserXh" parameterClass="userXh">
+		INSERT INTO XHLM_TB_USER_XH(
+		CREATE_DATE,
+		UPDATE_DATE,
+		USER_ID,
+		P_ID,
+		STATUS
+		)VALUES(
+		now(),
+		now(),
+		#userId#,
+		#pId#,
+		#status#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据ID更新某条类别分类信息 -->
+	<update id="updateUserXhInfo" parameterClass="userXh">
+		UPDATE
+		XHLM_TB_USER_XH stu
+		SET stu.UPDATE_DATE = now(),
+		stu.STATUS = #status#
+		WHERE stu.USER_ID = #userId#
+		AND stu.P_ID = #pId#
+	</update>
+</sqlMap>

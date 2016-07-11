@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 资质图表SQL映射文件, TABLE: XHLM_TB_USER_ZZT -->
+<sqlMap namespace="userzzt">
+
+	<typeAlias alias="userzzt"
+		type="com.bcqsoft.xhlm.dao.userzzt.dataobject.Userzzt" />
+
+
+	<!-- 根据查询条件查询符合条件的资质图列表信息 -->
+	<select id="getUserzztList" resultClass="userzzt">
+		SELECT
+		stu.ID,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.USER_ID userId,
+		stu.APTITUDE aptitude
+		FROM XHLM_TB_USER_ZZT stu
+		WHERE stu.USER_ID = #userId#
+	</select>
+
+	<!-- 根据用户ID删除资质图详细信息 -->
+	<delete id="deleteUserZztInfoById" parameterClass="long">
+		DELETE FROM
+		XHLM_TB_USER_ZZT
+		WHERE USER_ID = #userId#
+	</delete>
+
+	<!-- 插入一条信息至类别分类表 -->
+	<insert id="insertIntoUserZzt" parameterClass="userzzt">
+		INSERT INTO XHLM_TB_USER_ZZT(
+		CREATE_DATE,
+		UPDATE_DATE,
+		USER_ID,
+		APTITUDE
+		)VALUES(
+		now(),
+		now(),
+		#userId#,
+		#aptitude#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+</sqlMap>

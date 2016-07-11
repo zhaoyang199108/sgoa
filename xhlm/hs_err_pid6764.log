@@ -1,0 +1,147 @@
+#
+# An unexpected error has been detected by Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x6d9f01d3, pid=6764, tid=7744
+#
+# Java VM: Java HotSpot(TM) Client VM (11.0-b15 mixed mode windows-x86)
+# Problematic frame:
+# V  [jvm.dll+0x1401d3]
+#
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0eb35400):  VMThread [stack: 0x0ebc0000,0x0ec10000] [id=7744]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x1c000114
+
+Registers:
+EAX=0x1c000100, EBX=0x00000000, ECX=0x078b1fa0, EDX=0x1c000100
+ESP=0x0ec0f644, EBP=0x0ec0f748, ESI=0x078b1fa0, EDI=0x078b0e38
+EIP=0x6d9f01d3, EFLAGS=0x00010206
+
+Top of Stack: (sp=0x0ec0f644)
+0x0ec0f644:   6d8cef69 078b0dfa 078b0e38 0ec0f670
+0x0ec0f654:   6d95c4e6 078b0e38 00000000 0eb35400
+0x0ec0f664:   0ec0f750 6d95cc63 0ec0f748 1044d78c
+0x0ec0f674:   00000000 00000000 00000021 00000014
+0x0ec0f684:   6d95f209 6d95f274 1044d78c 00843d50
+0x0ec0f694:   00000000 0e010000 0ec0f758 00000000
+0x0ec0f6a4:   00000000 0ec0f6b8 00000000 7c930000
+0x0ec0f6b4:   107b1a18 0ec0f784 00843ec0 00010100 
+
+Instructions: (pc=0x6d9f01d3)
+0x6d9f01c3:   5e c3 33 c0 3b fe 0f 95 c0 5f 5e c3 cc 8b 41 0c
+0x6d9f01d3:   8b 50 14 8b 82 08 01 00 00 85 c0 56 57 74 27 8b 
+
+
+Stack: [0x0ebc0000,0x0ec10000],  sp=0x0ec0f644,  free space=317k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x1401d3]
+
+VM_Operation (0x0f27d7f0): GenCollectForAllocation, mode: safepoint, requested by thread 0x0f6a7800
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x0f1d4c00 JavaThread "Unknown thread" [_thread_blocked, id=4664, stack(0x0f3c0000,0x0f410000)]
+  0x0f747c00 JavaThread "ԁ쀌 ������ፐڞ嵐ڞрڞ������������������������笐ڟ嵐ڞаڞ����˰ڞБ����耀������������������������埘ڽ����������盰ڟ￿翿������������������������������������������������������������������������������������������������������������������������������������������������������������尨ڞ囀ڞ埠ڞ坘ڞ墘ڞ������ɘڞ䙛������Ǡڞ뵘涪؂쀌 ������ፐڞ嵐ڞ֐ڞ������������������������筰ڟ嵐ڞրڞ����рڞБ����耀��������������������������������������異ڟ￺翿������������������������������������������������������������������������������������������������������������������������������������������������������������尨ڞ囀ڞ埠ڞ坘ڞ墘ڞ������ɘڞ䑛������Ǡڞ뵘涪܃쀐 ������ፐڞ嵐ڞ۠ڞ������������������������篐ڟ嵐ڞېڞ����֐ڞБ����耀��������������������������������������痐ڟ￼㿿������������������������������������������������������������������������������������������������������������������������������������������������������������尨ڞ囀ڞ埠ڞ坘ڞ墘ڞ������ɘڞ䉛������Ǡڞ뵘涪ࠀ쀌 ������ፐڞ嵐ڞ࠰ڞ������������������������簰ڟ嵐ڞࠠڞ����۠ڞБ����耀������������������������軈۲����������瘰ڟ￿翿������������������������������������������������������������������������������������������������������������������������������������������������������������尨ڞ囀ڞ埠ڞ坘ڞ墘ڞ������ɘڞ卛������Ǡڞ뵘涪ँ쀌 ������ፐڞ嵐ڞঀڞ������������������������粐ڟ嵐ڞ॰ڞ����࠰ڞБ����耀������������������������駸ۦ����������瞰ڟ￿翿������������������������������������������������������������������������������������������������������������������������������������������������������������尨ڞ囀ڞ埠ڞ坘ڞ墘ڞ������ɘڞ䥛������Ǡڞ뵘涪ਂ쀌 ������ፐڞ嵐ڞૐڞ������������������������糰ڟ嵐ڞીڞ����ঀڞБ����耀������������������������瑘۲����������甐ڟ￺翿������������������������������������������������������������������������������������������������������������� [_thread_blocked, id=8016, stack(0x0f320000,0x0f370000)]
+  0x0f1ff400 
+[error occurred during error reporting (printing all threads), id 0xc0000005]
+
+VM state:at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x00846e58] UNKNOWN - owner thread: 0x0eb35400
+[0x008472b8] UNKNOWN - owner thread: 0x0f6a7800
+
+Heap
+ def new generation   total 1024K, used 64K [0x029e0000, 0x02af0000, 0x02ec0000)
+  eden space 960K,   0% used [0x029e0000, 0x029e0000, 0x02ad0000)
+  from space 64K, 100% used [0x02ad0000, 0x02ae0000, 0x02ae0000)
+  to   space 64K,   0% used [0x02ae0000, 0x02ae0000, 0x02af0000)
+ tenured generation   total 12456K, used 12451K [0x02ec0000, 0x03aea000, 0x069e0000)
+   the space 12456K,  99% used [0x02ec0000, 0x03ae8d78, 0x036d8800, 0x03aea000)
+ compacting perm gen  total 26112K, used 25970K [0x069e0000, 0x08360000, 0x0e9e0000)
+   the space 26112K,  99% used [0x069e0000, 0x0833c878, 0x082fe600, 0x08360000)
+No shared spaces configured.
+
+Dynamic libraries:
+0x00400000 - 0x00424000 	D:\Program Files\Java\jdk1.6.0_10\bin\javaw.exe
+0x7c920000 - 0x7c9b3000 	C:\WINDOWS\system32\ntdll.dll
+0x7c800000 - 0x7c91e000 	C:\WINDOWS\system32\kernel32.dll
+0x77da0000 - 0x77e49000 	C:\WINDOWS\system32\ADVAPI32.dll
+0x77e50000 - 0x77ee3000 	C:\WINDOWS\system32\RPCRT4.dll
+0x77fc0000 - 0x77fd1000 	C:\WINDOWS\system32\Secur32.dll
+0x77d10000 - 0x77da0000 	C:\WINDOWS\system32\USER32.dll
+0x77ef0000 - 0x77f39000 	C:\WINDOWS\system32\GDI32.dll
+0x76300000 - 0x7631d000 	C:\WINDOWS\system32\IMM32.DLL
+0x62c20000 - 0x62c29000 	C:\WINDOWS\system32\LPK.DLL
+0x73fa0000 - 0x7400b000 	C:\WINDOWS\system32\USP10.dll
+0x7c340000 - 0x7c396000 	D:\Program Files\Java\jdk1.6.0_10\jre\bin\msvcr71.dll
+0x6d8b0000 - 0x6db06000 	D:\Program Files\Java\jdk1.6.0_10\jre\bin\client\jvm.dll
+0x76b10000 - 0x76b3a000 	C:\WINDOWS\system32\WINMM.dll
+0x6d330000 - 0x6d338000 	D:\Program Files\Java\jdk1.6.0_10\jre\bin\hpi.dll
+0x76bc0000 - 0x76bcb000 	C:\WINDOWS\system32\PSAPI.DLL
+0x6d420000 - 0x6d449000 	D:\Program Files\Java\jdk1.6.0_10\jre\bin\jdwp.dll
+0x6d750000 - 0x6d756000 	D:\Program Files\Java\jdk1.6.0_10\jre\bin\npt.dll
+0x6d860000 - 0x6d86c000 	D:\Program Files\Java\jdk1.6.0_10\jre\bin\verify.dll
+0x6d3d0000 - 0x6d3ef000 	D:\Program Files\Java\jdk1.6.0_10\jre\bin\java.dll
+0x6d8a0000 - 0x6d8af000 	D:\Program Files\Java\jdk1.6.0_10\jre\bin\zip.dll
+0x6d2a0000 - 0x6d2a7000 	D:\Program Files\Java\jdk1.6.0_10\jre\bin\dt_socket.dll
+0x71a20000 - 0x71a37000 	C:\WINDOWS\system32\WS2_32.dll
+0x77be0000 - 0x77c38000 	C:\WINDOWS\system32\msvcrt.dll
+0x71a10000 - 0x71a18000 	C:\WINDOWS\system32\WS2HELP.dll
+0x719c0000 - 0x719fe000 	C:\WINDOWS\System32\mswsock.dll
+0x76ef0000 - 0x76f17000 	C:\WINDOWS\system32\DNSAPI.dll
+0x76f80000 - 0x76f88000 	C:\WINDOWS\System32\winrnr.dll
+0x76f30000 - 0x76f5c000 	C:\WINDOWS\system32\WLDAP32.dll
+0x64000000 - 0x64021000 	C:\Program Files\Bonjour\mdnsNSP.dll
+0x76d30000 - 0x76d48000 	C:\WINDOWS\system32\Iphlpapi.dll
+0x76f90000 - 0x76f96000 	C:\WINDOWS\system32\rasadhlp.dll
+0x10000000 - 0x10017000 	C:\Program Files\Common Files\Thunder Network\NetMon\net_monitor2.0.2.9.dll
+0x7d590000 - 0x7dd84000 	C:\WINDOWS\system32\SHELL32.dll
+0x77f40000 - 0x77fb6000 	C:\WINDOWS\system32\SHLWAPI.dll
+0x76990000 - 0x76ace000 	C:\WINDOWS\system32\ole32.dll
+0x7c3c0000 - 0x7c43c000 	C:\WINDOWS\system32\MSVCP71.dll
+0x77bd0000 - 0x77bd8000 	C:\WINDOWS\system32\VERSION.dll
+0x77180000 - 0x77283000 	C:\WINDOWS\WinSxS\x86_Microsoft.Windows.Common-Controls_6595b64144ccf1df_6.0.2600.6028_x-ww_61e65202\comctl32.dll
+0x5d170000 - 0x5d20a000 	C:\WINDOWS\system32\comctl32.dll
+0x60fd0000 - 0x61025000 	C:\WINDOWS\system32\hnetcfg.dll
+0x71a00000 - 0x71a08000 	C:\WINDOWS\System32\wshtcpip.dll
+0x6d6c0000 - 0x6d6d3000 	D:\Program Files\Java\jdk1.6.0_10\jre\bin\net.dll
+0x68000000 - 0x68036000 	C:\WINDOWS\system32\rsaenh.dll
+0x759d0000 - 0x75a7f000 	C:\WINDOWS\system32\USERENV.dll
+0x5fdd0000 - 0x5fe25000 	C:\WINDOWS\system32\netapi32.dll
+0x6d6e0000 - 0x6d6e9000 	D:\Program Files\Java\jdk1.6.0_10\jre\bin\nio.dll
+
+VM Arguments:
+jvm_args: -agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:3301 -Drjrcontext= -Drjrwebapp=D:\Dev\Workspace\xhlm\src\main\webapp -Drjrport=8080 -Drjrsslport=8443 -Drjrkeystore=C:\Documents and Settings\Administrator\.keystore -Drjrkeypassword=changeit -Drjrpassword=changeit -Drjrscanintervalseconds=5 -Drjrenablescanner=true -DrjrscanWEBINF=false -Drjrenablessl=false -Drjrneedclientauth=false -Drjrparentloaderpriority=true -DrjrenbaleJNDI=false -XX:MaxPermSize=128m -Drjrclasspath=file://D:\Dev\Workspace\.metadata\.plugins\runjettyrun\dzzf.classpath -DrjrResourceMapping= -DrjrEclipseListener=59311 -Dfile.encoding=UTF-8 
+java_command: runjettyrun.Bootstrap
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.6.0_10
+PATH=D:\Program Files\Java\jdk1.6.0_10\jre\bin;C:/Program Files/Java/jre7/bin/client;C:/Program Files/Java/jre7/bin;C:/Program Files/Java/jre7/lib/i386;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;C:\Program Files\Java\jdk1.6.0_10\bin;C:\Program Files\TortoiseSVN\bin;D:\Dev\J2EE\apache-maven-2.2.1\bin;C:\Program Files\MySQL\MySQL Server 5.5\bin;F:\�칫\WPS Office\9.1.0.4715\office6;D:\���õ�\tools\eclipse;
+USERNAME=Administrator
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=x86 Family 6 Model 23 Stepping 10, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows XP Build 2600 Service Pack 3
+
+CPU:total 2 (2 cores per cpu, 1 threads per core) family 6 model 7 stepping 10, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3
+
+Memory: 4k page, physical 2096300k(1006308k free), swap 4034652k(2514004k free)
+
+vm_info: Java HotSpot(TM) Client VM (11.0-b15) for windows-x86 JRE (1.6.0_10-rc2-b32), built on Sep 12 2008 00:52:11 by "java_re" with MS VC++ 7.1
+
+time: Thu Aug 21 14:20:49 2014
+elapsed time: 117 seconds
+

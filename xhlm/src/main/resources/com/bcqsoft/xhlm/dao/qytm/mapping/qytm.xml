@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="qytm">
+	<typeAlias alias="qytm" type="com.bcqsoft.xhlm.dao.qytm.dataobject.Qytm" />
+
+	<!-- 插入一条信息至企业条目表 -->
+	<insert id="insertIntoQytm" parameterClass="qytm">
+		INSERT INTO
+		XHLM_TB_QYTM
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		TMNAME,
+		LX,
+		LOGIN_ID,
+		ENABLED
+		)
+		VALUES(
+		now(),
+		now(),
+		#tmname#,
+		#lx#,
+		#loginId#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的企业条目(页面分页使用) -->
+	<select id="findQytmInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_QYTM m
+		WHERE m.ENABLED = 'Y'
+		AND m.LOGIN_ID= #loginId#
+		<isNotEmpty property="tmname" prepend="AND">
+			m.TMNAME LIKE CONCAT('%',#tmname#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的企业条目 -->
+	<select id="findQytmInfoList" resultClass="qytm">
+		SELECT
+		m.ID id,
+		m.CREATE_DATE createDate,
+		m.UPDATE_DATE updateDate,
+		m.LOGIN_ID loginId,
+		(SELECT stu.USER_NAME FROM XHLM_TB_USER stu WHERE stu.LOGIN_ID = m.LOGIN_ID)
+		userName,
+		m.TMNAME tmname,
+		m.LX lx,
+		m.ENABLED enabled
+		FROM XHLM_TB_QYTM m
+		WHERE m.ENABLED = 'Y'
+		AND m.LOGIN_ID= #loginId#
+		<isNotEmpty property="tmname" prepend="AND">
+			m.TMNAME LIKE CONCAT('%',#tmname#,'%')
+		</isNotEmpty>
+		ORDER BY m.ID ASC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条企业条目 -->
+	<select id="getQytmInfo" resultClass="qytm">
+		SELECT
+		m.ID id,
+		m.CREATE_DATE createDate,
+		m.UPDATE_DATE updateDate,
+		m.LOGIN_ID loginId,
+		(SELECT stu.USER_NAME FROM XHLM_TB_USER stu WHERE stu.LOGIN_ID = m.LOGIN_ID)
+		userName,
+		m.TMNAME tmname,
+		m.LX lx,
+		m.ENABLED enabled
+		FROM XHLM_TB_QYTM m
+		WHERE m.ID = #id#
+		AND m.ENABLED = 'Y'
+	</select>
+
+	<!-- 根据ID更新某条企业条目信息 -->
+	<update id="updateQytmInfoById" parameterClass="qytm">
+		UPDATE
+		XHLM_TB_QYTM m
+		SET m.UPDATE_DATE = now(),
+		m.TMNAME = #tmname#,
+		m.LX = #lx#
+		WHERE m.ID = #id#
+		AND m.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据ID删除某条企业条目信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="deleteQytmInfoById" parameterClass="long">
+		UPDATE
+		XHLM_TB_QYTM m
+		SET m.UPDATE_DATE = now(),
+		m.ENABLED = 'N'
+		WHERE m.ID = #id#
+		AND m.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据查询条件查询符合条件的级别 -->
+	<select id="getQytmList" resultClass="qytm">
+		SELECT
+		m.ID id,
+		m.CREATE_DATE createDate,
+		m.UPDATE_DATE updateDate,
+		m.TMNAME tmname
+		FROM XHLM_TB_QYTM m
+		WHERE m.ENABLED = 'Y'
+	</select>
+
+</sqlMap>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 角色表SQL映射文件, TABLE: XHLM_TB_ROLE -->
+<sqlMap namespace="role">
+
+	<typeAlias alias="role" type="com.bcqsoft.xhlm.dao.role.dataobject.Role" />
+
+	<!-- 查询所有的角色列表信息 -->
+	<select id="findRoleInfoList" resultClass="role">
+		SELECT
+		di.ID id,
+		di.ROLE_CODE roleCode,
+		di.ROLE_LEVEL roleLevel,
+		di.P_ID pId,
+		di.ROLE_NAME roleName
+		FROM XHLM_TB_ROLE di
+		WHERE di.ID != 99
+		ORDER BY di.ID ASC
+	</select>
+
+</sqlMap>

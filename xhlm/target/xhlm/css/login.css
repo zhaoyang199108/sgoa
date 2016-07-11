@@ -1,0 +1,161 @@
+@charset "utf-8";
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code,
+	form, fieldset, legend, input, button, textarea, p, blockquote, th, td a
+	{
+	margin: 0;
+	padding: 0;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+img {
+	border: 0;
+}
+
+li {
+	list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+}
+
+body {
+	font: 12px/24px "Microsoft YaHei UI";
+	*line-height: 24px;
+	color: #333333;
+	text-align: center;
+	overflow-x: hidden;
+	background: #EDEDED;
+}
+
+a {
+	color: #666666;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #333;
+	text-decoration: none;
+}
+
+html {
+	height: 100%;
+}
+
+.login_header {
+	background: url(../images/lg_tp.jpg) center;
+	height: 176px;
+	background-color: #0A2E69;
+}
+
+.login_contant {
+	position: relative;
+	width: 100%;
+}
+
+.lg_shaw {
+	background: url(../images/lg_ctbg.jpg) no-repeat;
+	width: 860px;
+	height: 479px;
+	position: absolute;
+	left: 50%;
+	top: 56px;
+	margin-left: -245px;
+}
+
+.lg_form {
+	width: 464px;
+	height: 355px;
+	background: #fff;
+	border: 1px solid #E0E0E0;
+}
+
+.login_bottom {
+	position: fixed;
+	bottom: 0px;
+	background: #0C1F32;
+	border-top: 4px solid #F08B48;
+	height: 40px;
+	width: 100%;
+}
+
+.login_bottom p {
+	color: #3E4A6A;
+	text-align: center;
+	line-height: 40px;
+}
+
+.lg_tite {
+	border-bottom: 1px solid #CCCCCC;
+	height: 65px;
+	padding-top: 8px;
+}
+
+.lg_dl {
+	margin: 40px auto;
+	width: 315px;
+	overflow: hidden;
+}
+
+.lg_dl li {
+	width: 312px;
+	border: 1px solid #53ACDB;
+	border-radius: 3px;
+	float: left;
+	margin: 15px 0px;
+	height: 40px;
+	line-height: 40px;
+}
+
+.lg_dl li span {
+	background: url(../images/lg_pc.png) no-repeat 4px 5px;
+	width: 30px;
+	height: 40px;
+	float: left;
+	margin-right: 10px;
+}
+
+.lg_dl li span.key {
+	background-position: 4px -60px;
+}
+
+.lg_dl li input {
+	border: 0px;
+	text-align: left;
+	width: 250px;
+	height: 38px;
+	line-height: 38px;
+	font-size: 14px;
+	color: #666;
+}
+
+.lg_dl li.btn {
+	border: 0px;
+}
+
+.lg_dl li.btn input {
+	width: 138px;
+	height: 35px;
+	float: left;
+	font-size: 18px;
+	color: #fff;
+	text-align: center;
+	font-family: "Microsoft YaHei UI";
+	line-height: 35px;
+}
+
+.lg_dl li.btn input.dl {
+	background-color: #5087CB;
+	border: 1px solid #356DB3;
+}
+
+.lg_dl li.btn input.cz {
+	background-color: #F5861F;
+	border: 1px solid #E07C1D;
+	float: right;
+}

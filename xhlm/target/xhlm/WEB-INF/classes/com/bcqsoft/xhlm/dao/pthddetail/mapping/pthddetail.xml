@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="pthddetail">
+	<typeAlias alias="pthddetail"
+		type="com.bcqsoft.xhlm.dao.pthddetail.dataobject.PthdDetail" />
+
+	<!-- 插入一条信息至类别协会服务详细表 -->
+	<insert id="insertIntoPthdDetail" parameterClass="pthddetail">
+		INSERT INTO XHLM_TB_PTHD_DETAIL(
+		CREATE_DATE,
+		UPDATE_DATE,
+		PTHD_ID,
+		LOGIN_ID,
+		ENABLED
+		)VALUES(
+		now(),
+		now(),
+		#pthdId#,
+		#loginId#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的类别协会服务详细(页面分页使用) -->
+	<select id="findPthdDetailInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_PTHD_DETAIL xd,XHLM_TB_PTHD x
+		WHERE xd.ENABLED = 'Y'
+		And
+		xd.PTHD_ID=x.id
+		AND x.LOGIN_ID=#loginId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别协会服务详细 -->
+	<select id="findPthdDetailInfoList" resultClass="pthddetail">
+		SELECT
+		xd.ID,
+		xd.CREATE_DATE createDate,
+		xd.UPDATE_DATE updateDate,
+		xd.PTHD_ID pthdId,
+		x.TITLE title,
+		x.LOGIN_ID xhId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.LOGIN_ID = x.LOGIN_ID LIMIT
+		1) xhName,
+		xd.LOGIN_ID loginId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.LOGIN_ID = xd.LOGIN_ID LIMIT
+		1) userName,
+		xd.ENABLED enabled
+		FROM XHLM_TB_PTHD_DETAIL xd,XHLM_TB_PTHD x
+		WHERE xd.ENABLED =
+		'Y'
+		And xd.PTHD_ID=x.id
+		AND x.LOGIN_ID=#loginId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		ORDER BY xd.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条类别协会服务详细 -->
+	<select id="getPthdDetailInfo" resultClass="pthddetail">
+		SELECT
+		xd.ID,
+		xd.CREATE_DATE createDate,
+		xd.UPDATE_DATE updateDate,
+		xd.PTHD_ID pthdId,
+		xd.LOGIN_ID loginId,
+		xd.ENABLED enabled
+		FROM XHLM_TB_PTHD_DETAIL xd
+		WHERE xd.ID = #id#
+		AND xd.ENABLED = 'Y'
+	</select>
+
+	<!-- 根据ID更新某条类别协会服务详细信息 -->
+	<update id="updatePthdDetailInfoById" parameterClass="pthddetail">
+		UPDATE
+		XHLM_TB_PTHD_DETAIL xd
+		SET xd.UPDATE_DATE = now(),
+		xd.PTHD_ID = #pthdId#
+		WHERE xd.ID = #id#
+		AND xd.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据ID删除某条类别协会服务详细信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="deletePthdDetailInfoById" parameterClass="long">
+		UPDATE
+		XHLM_TB_PTHD_DETAIL xd
+		SET xd.UPDATE_DATE = now(),
+		xd.ENABLED = 'N'
+		WHERE xd.ID = #id#
+		AND xd.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据查询条件查询符合条件的类别协会服务详细(页面分页使用) -->
+	<select id="findPthdDetailInfoCountByPthdId" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_PTHD_DETAIL xd,XHLM_TB_PTHD x
+		WHERE xd.ENABLED = 'Y'
+		And
+		xd.PTHD_ID=x.id
+		AND xd.PTHD_ID = #pthdId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别协会服务详细 -->
+	<select id="findPthdDetailInfoListByPthdId" resultClass="pthddetail">
+		SELECT
+		xd.ID,
+		xd.CREATE_DATE createDate,
+		xd.UPDATE_DATE updateDate,
+		xd.PTHD_ID pthdId,
+		x.TITLE title,
+		x.LOGIN_ID xhId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.LOGIN_ID = x.LOGIN_ID LIMIT
+		1) xhName,
+		xd.LOGIN_ID loginId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.LOGIN_ID = xd.LOGIN_ID LIMIT
+		1) userName,
+		xd.ENABLED enabled
+		FROM XHLM_TB_PTHD_DETAIL xd,XHLM_TB_PTHD x
+		WHERE xd.ENABLED =
+		'Y'
+		And xd.PTHD_ID=x.id
+		AND xd.PTHD_ID = #pthdId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		ORDER BY xd.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+
+</sqlMap>

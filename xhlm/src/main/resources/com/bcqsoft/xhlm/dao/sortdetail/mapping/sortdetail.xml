@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="sortdetail">
+	<typeAlias alias="sortdetail"
+		type="com.bcqsoft.xhlm.dao.sortdetail.dataobject.Sortdetail" />
+
+	<!-- 插入一条信息至类别分类表 -->
+	<insert id="insertIntoSortdetail" parameterClass="sortdetail">
+		INSERT INTO XHLM_TB_SORT_DETAIL(
+		CREATE_DATE,
+		UPDATE_DATE,
+		NAME,
+		LOGIN_ID,
+		SORT_ID,
+		ENABLED
+		)VALUES(
+		now(),
+		now(),
+		#name#,
+		#loginId#,
+		#sortId#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的类别分类(页面分页使用) -->
+	<select id="findSortdetailInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_SORT_DETAIL m
+		WHERE m.ENABLED = 'Y'
+		AND m.SORT_ID=#sortId#
+		<isNotEmpty property="name" prepend="AND">
+			m.NAME LIKE CONCAT('%',#name#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别分类 -->
+	<select id="findSortdetailInfoList" resultClass="sortdetail">
+		SELECT
+		m.ID,
+		m.CREATE_DATE createDate,
+		m.UPDATE_DATE updateDate,
+		m.LOGIN_ID loginId,
+		m.NAME name,
+		m.SORT_ID sortId,
+		m.ENABLED enabled
+		FROM XHLM_TB_SORT_DETAIL m
+		WHERE m.ENABLED = 'Y'
+		AND m.SORT_ID=#sortId#
+		<isNotEmpty property="name" prepend="AND">
+			m.NAME LIKE CONCAT('%',#name#,'%')
+		</isNotEmpty>
+		ORDER BY m.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别分类 -->
+	<select id="findDetailSortInfoList" resultClass="sortdetail">
+		SELECT
+		m.ID,
+		m.CREATE_DATE createDate,
+		m.UPDATE_DATE updateDate,
+		m.LOGIN_ID loginId,
+		m.NAME name
+		FROM XHLM_TB_SORT_DETAIL m
+		WHERE m.ENABLED = 'Y'
+		AND m.SORT_ID=#sortId#
+	</select>
+
+	<!-- 根据ID查询某一条类别分类 -->
+	<select id="getSortdetailInfo" resultClass="sortdetail">
+		SELECT
+		m.ID,
+		m.CREATE_DATE createDate,
+		m.UPDATE_DATE updateDate,
+		m.LOGIN_ID loginId,
+		m.NAME name,
+		m.SORT_ID sortId,
+		m.ENABLED enabled
+		FROM XHLM_TB_SORT_DETAIL m
+		WHERE m.ID = #id#
+		AND m.ENABLED = 'Y'
+	</select>
+
+	<!-- 根据ID更新某条类别分类信息 -->
+	<update id="updateSortdetailInfoById" parameterClass="sortdetail">
+		UPDATE
+		XHLM_TB_SORT_DETAIL m
+		SET m.UPDATE_DATE = now(),
+		m.NAME = #name#
+		WHERE m.ID = #id#
+		AND m.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据ID删除某条类别分类信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="deleteSortdetailInfoById" parameterClass="long">
+		UPDATE
+		XHLM_TB_SORT_DETAIL m
+		SET m.UPDATE_DATE = now(),
+		m.ENABLED = 'N'
+		WHERE m.ID = #id#
+		AND m.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据查询条件查询符合条件的类别分类 -->
+	<select id="getSortdetailListById" resultClass="sortdetail">
+		SELECT
+		m.ID,
+		m.CREATE_DATE createDate,
+		m.UPDATE_DATE updateDate,
+		m.LOGIN_ID loginId,
+		m.NAME name,
+		m.SORT_ID sortId,
+		m.ENABLED enabled
+		FROM XHLM_TB_SORT_DETAIL m
+		WHERE m.ENABLED = 'Y'
+		AND SORT_ID=#sortId#
+	</select>
+
+	<!-- 查询行业列表 -->
+	<select id="getSortdetailList" resultClass="sortdetail">
+		SELECT
+		m.ID,
+		m.CREATE_DATE createDate,
+		m.UPDATE_DATE updateDate,
+		m.LOGIN_ID loginId,
+		m.NAME name,
+		m.SORT_ID sortId,
+		m.ENABLED enabled
+		FROM XHLM_TB_SORT_DETAIL m
+		WHERE m.ENABLED = 'Y'
+		AND SORT_ID=#sortId#
+	</select>
+
+	<!-- 查找全部部门列表 -->
+	<select id="findAllSortdetailInfo" resultClass="sortdetail">
+		SELECT
+		m.ID,
+		m.CREATE_DATE createDate,
+		m.UPDATE_DATE updateDate,
+		m.LOGIN_ID loginId,
+		m.NAME name,
+		m.SORT_ID sortId,
+		m.ENABLED enabled
+		FROM XHLM_TB_SORT_DETAIL m
+		WHERE m.ENABLED = 'Y'
+	</select>
+
+</sqlMap>

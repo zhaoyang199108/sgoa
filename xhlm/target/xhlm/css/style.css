@@ -1,0 +1,469 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code,
+	form, fieldset, legend, input, button, textarea, p, blockquote, th, td a
+	{
+	margin: 0;
+	padding: 0;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+img {
+	border: 0;
+}
+
+li {
+	list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+}
+
+body {
+	font: 12px/22px "ËÎÌו";
+	color: #333333;
+	text-align: center;
+}
+
+a {
+	color: #333333;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #333333;
+	text-decoration: none;
+}
+
+.clearfloat {
+	clear: both;
+	height: 0;
+	font-size: 1px;
+	line-height: 0px;
+}
+
+#header {
+	width: 100%;
+	height: 136px;
+}
+
+#header02 {
+	width: 100%;
+	background: url(../images/hea.jpg) no-repeat right;
+	height: 86px;
+}
+
+.top-logo {
+	float: left;
+	background: url(../images/pico.png) -3px -375px;
+	height: 62px;
+	width: 427px;
+	margin-left: 20px;
+	display: inline;
+}
+
+.top-ban {
+	width: 200px;
+	text-align: right;
+	float: right;
+	margin-right: 25px;
+}
+
+.top-ban span {
+	width: 125px;
+	float: right;
+	margin-top: 2px;
+}
+
+.top-ban span a {
+	width: 41px;
+	background: url(../images/pico.png) no-repeat;
+	height: 28px;
+	float: left;
+	padding-top: 25px;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+.top-ban span a.ad-sy {
+	background-position: 8px 0;
+}
+
+.top-ban span a.ad-bz {
+	background-position: -36px 0;
+}
+
+.top-ban span a.ad-tc {
+	background-position: -80px 0;
+}
+
+.top-ban span a:hover {
+	color: #FFFFFF;
+}
+
+.top-ban p {
+	float: right;
+	color: #FFFFFF;
+	width: 180px;
+	background: url(../images/pico.png) no-repeat -110px 0;
+	height: 22px;
+	padding-top: 8px;
+}
+
+.top-ban p a {
+	color: #FFFFFF;
+}
+
+.top-ban p a:hover {
+	color: #FFFFFF;
+}
+
+#menu {
+	width: 100%;
+	margin-left: 30px;
+}
+
+#menu .menu_bg {
+	float: left;
+	background: url(../images/m_bg.jpg) no-repeat;
+	width: 1000px;
+	height: 40px;
+	padding-top: 9px;
+}
+
+.menu_nav {
+	width: 894px;
+	margin: 0 auto;
+}
+
+.menu_nav li {
+	float: left;
+	margin-left: 3px;
+	display: inline;
+}
+
+.menu_nav li a {
+	width: 96px;
+	height: 39px;
+	line-height: 39px;
+	display: block;
+	background: url(../images/pic_02.png) no-repeat;
+	color: #FFFFFF;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.menu_nav li a:hover {
+	background-position: -99px 0;
+	line-height: 39px;
+	color: #000000;
+}
+
+#alr {
+	width: 100%;
+	background: url(../images/ds.jpg) repeat-x;
+	height: 33px;
+	margin: 0 auto;
+}
+
+#alr h4 {
+	float: left;
+	width: 11%;
+	text-align: left;
+	padding-left: 45px;
+	line-height: 33px;
+	font-size: 12px;
+	font-weight: bold;
+	background: url(../images/pico.png) no-repeat 25px -47px;
+}
+
+#alr span {
+	background: url(../images/pico.png) no-repeat 5px -75px;
+	float: left;
+	line-height: 33px;
+	text-align: left;
+	padding-left: 35px;
+}
+
+#main {
+	width: 100%;
+	margin: 0 auto;
+}
+
+#left {
+	width: 12%;
+	float: left;
+	overflow: hidden;
+	background: #FFFFFF;
+	border: 1px solid #E3E3E3;
+	margin-left: 30px;
+	display: inline;
+}
+
+#left .md {
+	height: 38px;
+	background: url(../images/module_bg_02.jpg) repeat-x;
+}
+
+.md_01 {
+	height: 38px;
+	float: left;
+}
+
+.md_02 {
+	height: 38px;
+	float: left;
+}
+
+.md_02 p {
+	font-size: 14px;
+	font-weight: bold;
+	color: #FFFFFF;
+	line-height: 43px;
+	text-align: left;
+	padding-left: 15px;
+}
+
+.md_03 {
+	height: 38px;
+	float: right;
+}
+
+#left .men {
+	overflow: hidden;
+}
+
+.men .module {
+	background: #ECF3F9;
+	height: 26px;
+	padding-left: 16px;
+}
+
+.men .module h3 {
+	background: url(../images/sign_add.jpg) no-repeat;
+	text-align: left;
+	padding-left: 21px;
+	font: 12px/24px "ËÎÌו";
+	*line-height: 25px;
+}
+
+.men ul.sub-list {
+	
+}
+
+.men ul.sub-list li a {
+	display: block;
+	height: 25px;
+	text-align: left;
+	color: #185199;
+	padding-left: 38px;
+	line-height: 25px;
+	border-bottom: 1px solid #D1ECFB;
+}
+
+.men ul.sub-list li a:hover {
+	background: url(../images/li_hov.jpg) no-repeat;
+	color: #FFFFFF;
+}
+
+#content {
+	width: 85%;
+	float: right;
+	margin-right: 3px;
+	border: 1px solid #CCCCCC;
+	background: #FFFFFF;
+}
+
+#content .ct_top {
+	background: url(../images/kse.jpg) repeat-x #C5DAED;
+	overflow: auto;
+	line-height: 33px;
+	padding-top: 5px;
+	height: 38px;
+}
+
+.ct_top .btn {
+	float: left;
+}
+
+.ct_top .btn a {
+	width: 41px;
+	float: left;
+	margin-left: 6px;
+	padding-left: 20px;
+	display: block;
+	background: url(../images/pico.png) no-repeat 0 -173px;
+	line-height: 28px;
+	color: #000000;
+}
+
+.ct_top .btn a.btn_add {
+	background-position: -1px -173px;
+}
+
+.ct_top .btn a.btn_del {
+	background-position: -68px -173px;
+}
+
+.ct_top .btn a.btn_exp {
+	background-position: -135px -173px;
+}
+
+.ct_top .btn a.btn_add:hover {
+	background-position: -1px -302px;
+}
+
+.ct_top .btn a.btn_del:hover {
+	background-position: -68px -302px;
+}
+
+.ct_top .btn a.btn_exp:hover {
+	background-position: -135px -302px;
+}
+
+#content .search {
+	float: right;
+	width: 60%;
+}
+
+.search ul.sch {
+	overflow: hidden;
+	float: left;
+}
+
+.search ul.sch li {
+	float: left;
+	margin-right: 3px;
+	display: inline;
+}
+
+.search ul.sch li span {
+	width: 64px;
+}
+
+.search ul.sch input.sch-txt {
+	height: 18px;
+	width: 115px;
+	border: 1px solid #9D9EA2;
+}
+
+a.search_bn {
+	background: url(../images/pico.png) no-repeat 0px -208px;
+	float: left;
+	width: 63px;
+	line-height: 29px;
+}
+
+a.search_bn:hover {
+	background-position: 0px -331px;
+}
+
+.cent {
+	overflow: hidden;
+}
+
+.cent table.list {
+	width: 100%;
+	border-color: #A4C1DF;
+}
+
+.cent table.list th {
+	background: url(../images/fe.jpg);
+	height: 20px;
+	border-color: #A4C1DF;
+}
+
+.cent table.list td {
+	height: 24px;
+	*padding: 0;
+	border-color: #F3F3F3;
+}
+
+.cent table.list td.ts {
+	background: #F0F0F0;
+}
+
+.cent table.list td p {
+	padding-left: 35px;
+	text-align: center;
+}
+
+.cent table.list td a.cz {
+	background: url(../images/pico.png) no-repeat 0 -268px;
+	width: 38px;
+	height: 19px;
+	line-height: 19px;
+	float: left;
+	margin-right: 2px;
+}
+
+.cent table.list td a.cz:hover {
+	background-position: -41px -268px;
+}
+
+.woe {
+	width: 100%;
+	background: url(../images/fe.jpg) repeat-x;
+	font-weight: bold;
+}
+
+.pag {
+	background: url(../images/cd.jpg) repeat-x;
+	line-height: 31px;
+	height: 31px;
+}
+
+.pag span {
+	float: right;
+	margin-right: 30px;
+}
+
+.pag p {
+	width: 203px;
+	float: left;
+	display: inline;
+}
+
+.pag p input.go-txt {
+	width: 20px;
+	height: 15px;
+}
+
+.pag a {
+	background: url(../images/pico.png) no-repeat -2px -239px;
+	width: 67px;
+	height: 29px;
+	float: left;
+	margin-right: 8px;
+}
+
+.pag a.bn_s {
+	background-position: 0 -239px;
+	line-height: 29px;
+}
+
+.pag a:hover {
+	color: #DC3403;
+}
+
+.pag a.bn_sy {
+	background-position: -151px -239px;
+	text-align: center;
+	line-height: 29px;
+}
+
+#bottom {
+	width: 100%;
+	margin: 0 auto;
+	padding-top: 8px;
+}
+
+#bottom p {
+	background: #2878CF;
+	line-height: 25px;
+	color: #FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
+}

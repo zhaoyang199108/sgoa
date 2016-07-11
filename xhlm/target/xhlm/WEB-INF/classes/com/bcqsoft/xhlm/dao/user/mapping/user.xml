@@ -1,0 +1,675 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 人员表SQL映射文件, TABLE: XHLM_TB_USER -->
+<sqlMap namespace="user">
+
+	<typeAlias alias="user" type="com.bcqsoft.xhlm.dao.user.dataobject.User" />
+
+	<!-- 根据用户LoginID查找该用户的详细信息 -->
+	<select id="getUserInfoByLoginId" resultClass="user"
+		parameterClass="String">
+		SELECT
+		stu.ID,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.SORT_ID sortId,
+		(SELECT sd.NAME FROM XHLM_TB_SORT_DETAIL sd WHERE sd.ID =stu.SORT_ID) name,
+		stu.PRODUCT_ID productId,
+		(SELECT sd.NAME FROM XHLM_TB_SORT_DETAIL sd WHERE sd.ID =stu.PRODUCT_ID)
+		pname,
+		stu.S_PROVINCE s_province,
+		stu.S_CITY s_city,
+		stu.S_COUNTY s_county,
+		stu.JD jd,
+		stu.WD wd,
+		stu.ADDRESS address,
+		stu.INTRODUCE introduce,
+		stu.LOGO logo,
+		stu.BANNER banner,
+		stu.ZZT_ID zztId,
+		(SELECT GROUP_CONCAT(uu.APTITUDE) FROM XHLM_TB_USER_ZZT uu WHERE uu.USER_ID =
+		stu.ID) aptitude,
+		stu.PRODUCT product,
+		stu.TYPE type,
+		stu.STATUS status,
+		stu.DEPT_ID deptId,
+		stu.TJ tj
+		FROM XHLM_TB_USER stu
+		WHERE stu.LOGIN_ID = #loginId#
+		LIMIT 1
+	</select>
+
+	<!-- 修改用户密码 -->
+	<update id="updateUserPassword" parameterClass="map">
+		UPDATE
+		XHLM_TB_USER stu
+		SET
+		stu.UPDATE_DATE = now(),
+		stu.PASSWORD = #password#
+		WHERE stu.LOGIN_ID = #loginId#
+	</update>
+
+	<!-- 根据查询条件查询符合条件的用户总数量(页面分页使用) -->
+	<select id="findUserInfoCount" resultClass="int">
+		SELECT
+		COUNT(*)
+		FROM XHLM_TB_USER stu
+		left join XHLM_TB_SORT_DETAIL sd
+		on sd.ID= stu.SORT_ID
+		WHERE stu.LOGIN_ID != 'system'
+		<isNotEmpty property="loginId" prepend="AND">
+			stu.LOGIN_ID LIKE
+			CONCAT('%',#loginId#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="sortId" prepend="AND">
+			sd.ID = #sortId#
+		</isNotEmpty>
+		<isNotEmpty property="s_province" prepend="AND">
+			stu.S_PROVINCE =
+			#s_province#
+		</isNotEmpty>
+		<isNotEmpty property="s_city" prepend="AND">
+			stu.S_CITY = #s_city#
+		</isNotEmpty>
+		<isNotEmpty property="s_county" prepend="AND">
+			stu.S_COUNTY =
+			#s_county#
+		</isNotEmpty>
+		<isNotEmpty property="deptId" prepend="AND">
+			stu.ID IN (SELECT
+			u.USER_ID FROM XHLM_TB_USER_XH u WHERE u.P_ID = #deptId#)
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的用户列表信息 -->
+	<select id="findUserInfoList" resultClass="user">
+		SELECT
+		stu.ID,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.SORT_ID sortId,
+		stu.PRODUCT_ID productId,
+		sd.NAME name,
+		stu.S_PROVINCE s_province,
+		stu.S_CITY s_city,
+		stu.S_COUNTY s_county,
+		stu.JD jd,
+		stu.WD wd,
+		stu.ADDRESS address,
+		stu.INTRODUCE introduce,
+		stu.LOGO logo,
+		stu.BANNER banner,
+		stu.ZZT_ID zztId,
+		stu.PRODUCT product,
+		stu.TYPE type,
+		stu.STATUS status,
+		stu.DEPT_ID deptId,
+		(SELECT GROUP_CONCAT(uu.USER_NAME) FROM XHLM_TB_USER uu WHERE uu.ID IN
+		(SELECT u.USER_ID FROM XHLM_TB_USER_XH u WHERE u.P_ID = #deptId#))
+		userNamep,
+		stu.TJ tj,
+		(SELECT iu.STATUS FROM XHLM_TB_USER_XH iu WHERE iu.P_ID = #deptId# AND
+		iu.USER_ID = stu.ID LIMIT 1) inStatus
+		FROM XHLM_TB_USER stu
+		left join XHLM_TB_SORT_DETAIL sd
+		on sd.ID= stu.SORT_ID
+		WHERE stu.LOGIN_ID != 'system'
+		<isNotEmpty property="loginId" prepend="AND">
+			stu.LOGIN_ID LIKE
+			CONCAT('%',#loginId#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="sortId" prepend="AND">
+			sd.ID = #sortId#
+		</isNotEmpty>
+		<isNotEmpty property="s_province" prepend="AND">
+			stu.S_PROVINCE =
+			#s_province#
+		</isNotEmpty>
+		<isNotEmpty property="s_city" prepend="AND">
+			stu.S_CITY = #s_city#
+		</isNotEmpty>
+		<isNotEmpty property="s_county" prepend="AND">
+			stu.S_COUNTY =
+			#s_county#
+		</isNotEmpty>
+		<isNotEmpty property="deptId" prepend="AND">
+			stu.ID IN (SELECT
+			u.USER_ID FROM XHLM_TB_USER_XH u WHERE u.P_ID = #deptId#)
+		</isNotEmpty>
+		ORDER BY stu.CREATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据用户ID查找该用户的详细信息 -->
+	<select id="getUserInfo" resultClass="user" parameterClass="long">
+		SELECT
+		stu.ID id,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.SORT_ID sortId,
+		(SELECT sd.NAME FROM
+		XHLM_TB_SORT_DETAIL sd WHERE sd.ID =stu.SORT_ID) name,
+		stu.PRODUCT_ID
+		productId,
+		(SELECT sd.NAME FROM XHLM_TB_SORT_DETAIL sd WHERE sd.ID
+		=stu.PRODUCT_ID) pname,
+		stu.S_PROVINCE s_province,
+		stu.S_CITY s_city,
+		stu.S_COUNTY s_county,
+		stu.JD jd,
+		stu.WD wd,
+		stu.ADDRESS address,
+		stu.INTRODUCE introduce,
+		stu.LOGO logo,
+		stu.BANNER banner,
+		stu.ZZT_ID
+		zztId,
+		stu.PRODUCT product,
+		stu.TYPE type,
+		stu.STATUS status,
+		stu.DEPT_ID
+		deptId,
+		(SELECT GROUP_CONCAT(uu.APTITUDE) FROM XHLM_TB_USER_ZZT uu
+		WHERE uu.USER_ID = stu.ID) aptitude,
+		stu.TJ tj
+		FROM XHLM_TB_USER stu
+		WHERE stu.ID = #id#
+	</select>
+
+	<!-- 根据用户ID更新用户信息 -->
+	<update id="updateUserInfoById" parameterClass="user">
+		UPDATE
+		XHLM_TB_USER stu
+		SET
+		stu.UPDATE_DATE = now(),
+		stu.STATUS = #status#
+		WHERE
+		stu.ID = #id#
+	</update>
+
+	<!-- 根据用户ID删除用户信息 -->
+	<delete id="deleteUserInfoById" parameterClass="long">
+		DELETE FROM
+		XHLM_TB_USER
+		WHERE ID = #id#
+	</delete>
+
+	<!-- 根据查询条件查询符合条件的用户列表信息 -->
+	<select id="getUserList" resultClass="user">
+		SELECT
+		stu.ID,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.SORT_ID sortId,
+		(SELECT sd.NAME FROM XHLM_TB_SORT_DETAIL sd WHERE sd.ID =stu.SORT_ID) name,
+		stu.PRODUCT_ID productId,
+		(SELECT sd.NAME FROM XHLM_TB_SORT_DETAIL sd WHERE sd.ID =stu.PRODUCT_ID)
+		pname,
+		stu.S_PROVINCE s_province,
+		stu.S_CITY s_city,
+		stu.S_COUNTY s_county,
+		stu.JD jd,
+		stu.WD wd,
+		stu.ADDRESS address,
+		stu.INTRODUCE introduce,
+		stu.LOGO logo,
+		stu.BANNER banner,
+		stu.ZZT_ID zztId,
+		stu.PRODUCT product,
+		stu.TYPE type,
+		stu.STATUS status,
+		stu.DEPT_ID deptId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.ID = stu.DEPT_ID) userNamep,
+		stu.TJ tj
+		FROM XHLM_TB_USER stu
+		WHERE stu.DEPT_ID = #deptId#
+	</select>
+
+	<!-- 根据查询条件查询符合条件的用户列表信息 -->
+	<select id="findHomeUserInfoListByXh" resultClass="user">
+		SELECT
+		stu.ID,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.SORT_ID sortId,
+		stu.PRODUCT_ID productId,
+		sd.NAME name,
+		stu.S_PROVINCE s_province,
+		stu.S_CITY s_city,
+		stu.S_COUNTY s_county,
+		stu.JD jd,
+		stu.WD wd,
+		stu.ADDRESS address,
+		stu.INTRODUCE introduce,
+		stu.LOGO logo,
+		stu.BANNER banner,
+		stu.ZZT_ID zztId,
+		stu.PRODUCT product,
+		stu.TYPE type,
+		stu.STATUS status,
+		stu.DEPT_ID deptId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.ID = stu.DEPT_ID) userNamep,
+		(SELECT COUNT(*) FROM XHLM_TB_USER_XH xh WHERE xh.P_ID = stu.ID)
+		deptCount,
+		stu.TJ tj
+		FROM XHLM_TB_USER stu
+		left join XHLM_TB_SORT_DETAIL sd
+		on sd.ID= stu.SORT_ID
+		WHERE stu.LOGIN_ID != 'system'
+		AND stu.Tj =#tj#
+		AND stu.TYPE = #type#
+		ORDER BY stu.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID更新某条类别分类信息 -->
+	<update id="updateUserByTj" parameterClass="user">
+		UPDATE XHLM_TB_USER
+		stu
+		SET stu.UPDATE_DATE = now(),
+		stu.TJ = #tj#
+		WHERE stu.ID = #id#
+	</update>
+
+	<!-- 根据查询条件查询符合条件的用户列表信息 -->
+	<select id="findHomeUserInfoListByXhNew" resultClass="user">
+		SELECT
+		stu.ID,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.SORT_ID sortId,
+		stu.PRODUCT_ID productId,
+		sd.NAME name,
+		stu.S_PROVINCE s_province,
+		stu.S_CITY s_city,
+		stu.S_COUNTY s_county,
+		stu.JD jd,
+		stu.WD wd,
+		stu.ADDRESS address,
+		stu.INTRODUCE introduce,
+		stu.LOGO logo,
+		stu.BANNER banner,
+		stu.ZZT_ID zztId,
+		stu.PRODUCT product,
+		stu.TYPE type,
+		stu.STATUS status,
+		stu.DEPT_ID deptId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.ID = stu.DEPT_ID) userNamep,
+		stu.TJ tj
+		FROM XHLM_TB_USER stu
+		left join XHLM_TB_SORT_DETAIL sd
+		on sd.ID= stu.SORT_ID
+		WHERE stu.LOGIN_ID != 'system'
+		AND stu.TYPE = #type#
+		ORDER BY stu.CREATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据查询条件查询符合条件的用户总数量(页面分页使用) -->
+	<select id="findHomeUserInfoCountByXhNew" resultClass="int">
+		SELECT
+		COUNT(*)
+		FROM XHLM_TB_USER stu
+		left join XHLM_TB_SORT_DETAIL sd
+		on sd.ID= stu.SORT_ID
+		WHERE stu.LOGIN_ID != 'system'
+		AND stu.TYPE = #type#
+	</select>
+
+	<!-- 插入一条用户信息至用户表 -->
+	<insert id="insertIntoUser" parameterClass="user">
+		INSERT INTO
+		XHLM_TB_USER
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		LOGIN_ID,
+		PASSWORD,
+		USER_NAME,
+		USER_NAME_PY,
+		SORT_ID,
+		PRODUCT_ID,
+		S_PROVINCE,
+		S_CITY,
+		S_COUNTY,
+		JD,
+		WD,
+		ADDRESS,
+		INTRODUCE,
+		LOGO,
+		BANNER,
+		ZZT_ID,
+		PRODUCT,
+		TYPE,
+		STATUS,
+		DEPT_ID,
+		TJ
+		)
+		VALUES(
+		now(),
+		now(),
+		#loginId#,
+		#password#,
+		#userName#,
+		#userNamePy#,
+		#sortId#,
+		#productId#,
+		#s_province#,
+		#s_city#,
+		#s_county#,
+		#jd#,
+		#wd#,
+		#address#,
+		#introduce#,
+		#logo#,
+		#banner#,
+		#zztId#,
+		#product#,
+		#type#,
+		#status#,
+		#deptId#,
+		#tj#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据用户ID更新用户信息 -->
+	<update id="updateUserInfoByHome" parameterClass="user">
+		UPDATE
+		XHLM_TB_USER stu
+		SET
+		stu.UPDATE_DATE = now(),
+		stu.LOGIN_ID =
+		#loginId#,
+		stu.USER_NAME = #userName#,
+		stu.USER_NAME_PY = #userNamePy#,
+		<isNotEmpty property="sortId">
+			stu.SORT_ID = #sortId#,
+		</isNotEmpty>
+		<isNotEmpty property="productId">
+			stu.PRODUCT_ID = #productId#,
+		</isNotEmpty>
+		stu.S_PROVINCE = #s_province#,
+		stu.S_CITY = #s_city#,
+		stu.S_COUNTY =
+		#s_county#,
+		stu.JD =#jd#,
+		stu.WD =#wd#,
+		stu.ADDRESS = #address#,
+		stu.INTRODUCE = #introduce#,
+		stu.LOGO = #logo#,
+		stu.BANNER = #banner#,
+		<isNotEmpty property="zztId">
+			stu.ZZT_ID = #zztId#,
+		</isNotEmpty>
+		stu.PRODUCT = #product#,
+		stu.TYPE = #type#,
+		stu.STATUS = #status#,
+		<isNotEmpty property="deptId">
+			stu.DEPT_ID = #deptId#,
+		</isNotEmpty>
+		stu.TJ = #tj#
+		WHERE stu.ID = #id#
+	</update>
+
+	<!-- 根据查询条件查询符合条件的用户总数量(页面分页使用) -->
+	<select id="findHomeUserInfoCountByFl" resultClass="int">
+		SELECT
+		COUNT(*)
+		FROM XHLM_TB_USER stu
+		left join XHLM_TB_SORT_DETAIL sd
+		on sd.ID= stu.SORT_ID
+		WHERE stu.LOGIN_ID != 'system'
+		AND stu.TYPE = 1
+		<isNotEmpty property="sortId" prepend="AND">
+			stu.SORT_ID =
+			#sortId#
+		</isNotEmpty>
+		<isNotEmpty property="productId" prepend="AND">
+			stu.PRODUCT_ID =
+			#productId#
+		</isNotEmpty>
+		<isNotEmpty property="s_province" prepend="AND">
+			stu.S_PROVINCE =
+			#s_province#
+		</isNotEmpty>
+		<isNotEmpty property="s_city" prepend="AND">
+			stu.S_CITY = #s_city#
+		</isNotEmpty>
+		<isNotEmpty property="s_county" prepend="AND">
+			stu.S_COUNTY =
+			#s_county#
+		</isNotEmpty>
+		<isNotEmpty property="type" prepend="AND">
+			stu.TYPE = #type#
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的用户列表信息 -->
+	<select id="findHomeUserInfoListByFl" resultClass="user">
+		SELECT
+		stu.ID,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.SORT_ID sortId,
+		(SELECT sd.NAME FROM XHLM_TB_SORT_DETAIL sd WHERE sd.ID =stu.SORT_ID) name,
+		stu.PRODUCT_ID productId,
+		(SELECT sd.NAME FROM XHLM_TB_SORT_DETAIL sd WHERE sd.ID =stu.PRODUCT_ID)
+		pname,
+		stu.S_PROVINCE s_province,
+		stu.S_CITY s_city,
+		stu.S_COUNTY s_county,
+		stu.JD jd,
+		stu.WD wd,
+		stu.ADDRESS address,
+		stu.INTRODUCE introduce,
+		stu.LOGO logo,
+		stu.BANNER banner,
+		stu.ZZT_ID zztId,
+		stu.PRODUCT product,
+		stu.TYPE type,
+		stu.STATUS status,
+		stu.DEPT_ID deptId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.ID = stu.DEPT_ID) userNamep,
+		stu.TJ tj
+		FROM XHLM_TB_USER stu
+		left join XHLM_TB_SORT_DETAIL sd
+		on sd.ID= stu.SORT_ID
+		WHERE stu.LOGIN_ID != 'system'
+		AND stu.TYPE = 1
+		<isNotEmpty property="userName" prepend="AND">
+			( stu.USER_NAME
+			LIKE CONCAT('%',#userName#,'%')
+			OR stu.USER_NAME_PY LIKE
+			CONCAT('%',#userName#,'%')
+			)
+		</isNotEmpty>
+		<isNotEmpty property="sortId" prepend="AND">
+			stu.SORT_ID =
+			#sortId#
+		</isNotEmpty>
+		<isNotEmpty property="productId" prepend="AND">
+			stu.PRODUCT_ID =
+			#productId#
+		</isNotEmpty>
+		<isNotEmpty property="s_province" prepend="AND">
+			stu.S_PROVINCE =
+			#s_province#
+		</isNotEmpty>
+		<isNotEmpty property="s_city" prepend="AND">
+			stu.S_CITY = #s_city#
+		</isNotEmpty>
+		<isNotEmpty property="s_county" prepend="AND">
+			stu.S_COUNTY =
+			#s_county#
+		</isNotEmpty>
+		<isNotEmpty property="jd" prepend="AND">
+			stu.JD = #jd#
+		</isNotEmpty>
+		<isNotEmpty property="wd" prepend="AND">
+			stu.WD = #wd#
+		</isNotEmpty>
+		ORDER BY stu.CREATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据用户ID更新是否入住协会信息 -->
+	<update id="updateUserDeptIdByHome" parameterClass="user">
+		UPDATE
+		XHLM_TB_USER stu
+		SET
+		stu.UPDATE_DATE = now(),
+		stu.DEPT_ID = #deptId#
+		WHERE stu.ID = #id#
+		AND stu.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据用户ID更新是否入住协会信息 -->
+	<update id="updateUserProductByHome" parameterClass="user">
+		UPDATE
+		XHLM_TB_USER stu
+		SET
+		stu.UPDATE_DATE = now(),
+		stu.PRODUCT = #product#
+		WHERE stu.ID = #id#
+	</update>
+
+	<!-- 根据用户LoginID查找该用户的入住协会详细信息 -->
+	<select id="getUserInfoByXhId" resultClass="user"
+		parameterClass="long">
+		SELECT
+		stu.ID,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.SORT_ID sortId,
+		(SELECT sd.NAME FROM XHLM_TB_SORT_DETAIL sd WHERE sd.ID =stu.SORT_ID) name,
+		stu.PRODUCT_ID productId,
+		(SELECT sd.NAME FROM XHLM_TB_SORT_DETAIL sd WHERE sd.ID =stu.PRODUCT_ID)
+		pname,
+		stu.S_PROVINCE s_province,
+		stu.S_CITY s_city,
+		stu.S_COUNTY s_county,
+		stu.JD jd,
+		stu.WD wd,
+		stu.ADDRESS address,
+		stu.INTRODUCE introduce,
+		stu.LOGO logo,
+		stu.BANNER banner,
+		stu.ZZT_ID zztId,
+		stu.PRODUCT product,
+		stu.TYPE type,
+		stu.STATUS status
+		FROM XHLM_TB_USER stu
+		WHERE stu.ID IN (SELECT xh.P_ID FROM XHLM_TB_USER_XH
+		xh WHERE xh.USER_ID = #id# AND xh.STATUS = 1)
+	</select>
+
+	<!-- 根据用户LoginID查找该用户的入住协会详细信息 -->
+	<select id="getUserInfoByXhVipId" resultClass="user"
+		parameterClass="long">
+		SELECT
+		stu.ID,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.SORT_ID sortId,
+		(SELECT sd.NAME FROM XHLM_TB_SORT_DETAIL sd WHERE sd.ID =stu.SORT_ID) name,
+		stu.PRODUCT_ID productId,
+		(SELECT sd.NAME FROM XHLM_TB_SORT_DETAIL sd WHERE sd.ID =stu.PRODUCT_ID)
+		pname,
+		stu.S_PROVINCE s_province,
+		stu.S_CITY s_city,
+		stu.S_COUNTY s_county,
+		stu.JD jd,
+		stu.WD wd,
+		stu.ADDRESS address,
+		stu.INTRODUCE introduce,
+		stu.LOGO logo,
+		stu.BANNER banner,
+		stu.ZZT_ID zztId,
+		stu.PRODUCT product,
+		stu.TYPE type,
+		stu.STATUS status
+		FROM XHLM_TB_USER stu
+		WHERE stu.ID IN (SELECT xh.USER_ID FROM
+		XHLM_TB_USER_XH xh WHERE xh.P_ID = #id# AND xh.STATUS = 1)
+	</select>
+
+	<!-- 根据用户LoginID查找该用户的入住协会详细信息 -->
+	<select id="getUserInfoXhStatus" resultClass="user"
+		parameterClass="long">
+		SELECT
+		stu.ID id,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.STATUS status,
+		stu.TYPE type
+		FROM XHLM_TB_USER stu
+		WHERE stu.ID IN (SELECT xh.P_ID FROM XHLM_TB_USER_XH
+		xh WHERE xh.USER_ID = #id# AND xh.STATUS = 1)
+	</select>
+
+	<!-- 根据用户LoginID查找该用户的入住协会详细信息 -->
+	<select id="getUserListAll" resultClass="user">
+		SELECT
+		stu.ID id,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.STATUS status,
+		stu.TYPE type
+		FROM XHLM_TB_USER stu
+		WHERE stu.LOGIN_ID != 'system'
+		<isNotEmpty property="type" prepend="AND">
+			stu.TYPE = #type#
+		</isNotEmpty>
+	</select>
+</sqlMap>

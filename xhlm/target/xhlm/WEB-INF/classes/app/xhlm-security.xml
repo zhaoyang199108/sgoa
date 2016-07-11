@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+	http://www.springframework.org/schema/security   
+	http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+	<!-- Url Auth -->
+	<security:http>
+		<security:form-login login-page="/admin/login.htm"
+			login-processing-url="/admin/login" default-target-url="/admin/main.htm"
+			authentication-failure-url="/admin/login.htm" />
+		<security:logout logout-url="/admin/logout"
+			invalidate-session="true" logout-success-url="/admin/login.htm" />
+	</security:http>
+
+	<!-- User Roles -->
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:password-encoder ref="md5Encoder" />
+			<security:jdbc-user-service
+				data-source-ref="dataSource"
+				users-by-username-query="SELECT login_id username, password, 'true' status FROM XHLM_TB_USER WHERE login_id = ? AND status = '1'"
+				authorities-by-username-query="SELECT t.username,  authorities 
+												 FROM 
+												 ( SELECT ur.login_id username, r.role_code authorities FROM XHLM_TB_USER_ROLE ur, XHLM_TB_ROLE r
+	                                       			WHERE ur.role_id = r.id   
+												) t
+	 										    WHERE t.username = ?" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	<bean id="md5Encoder" class="com.bcqsoft.xhlm.core.security.MD5Encoder" />
+
+	<bean id="accessDecisionManager"
+		class="org.springframework.security.access.vote.AffirmativeBased">
+		<property name="decisionVoters">
+			<list>
+				<bean class="org.springframework.security.access.vote.RoleVoter" />
+				<bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

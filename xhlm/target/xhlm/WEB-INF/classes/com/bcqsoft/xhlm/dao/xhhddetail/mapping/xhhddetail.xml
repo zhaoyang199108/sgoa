@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="xhhddetail">
+	<typeAlias alias="xhhddetail"
+		type="com.bcqsoft.xhlm.dao.xhhddetail.dataobject.XhhdDetail" />
+
+	<!-- 插入一条信息至类别协会服务详细表 -->
+	<insert id="insertIntoXhhdDetail" parameterClass="xhhddetail">
+		INSERT INTO XHLM_TB_XHHD_DETAIL(
+		CREATE_DATE,
+		UPDATE_DATE,
+		XHHD_ID,
+		LOGIN_ID,
+		ENABLED
+		)VALUES(
+		now(),
+		now(),
+		#xhhdId#,
+		#loginId#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的类别协会服务详细(页面分页使用) -->
+	<select id="findXhhdDetailInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_XHHD_DETAIL xd,XHLM_TB_XHHD x
+		WHERE xd.ENABLED = 'Y'
+		And
+		xd.XHHD_ID=x.id
+		AND x.LOGIN_ID=#loginId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别协会服务详细 -->
+	<select id="findXhhdDetailInfoList" resultClass="xhhddetail">
+		SELECT
+		xd.ID,
+		xd.CREATE_DATE createDate,
+		xd.UPDATE_DATE updateDate,
+		xd.XHHD_ID xhhdId,
+		x.TITLE title,
+		x.LOGIN_ID xhId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.LOGIN_ID = x.LOGIN_ID LIMIT
+		1) xhName,
+		xd.LOGIN_ID loginId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.LOGIN_ID = xd.LOGIN_ID LIMIT
+		1) userName,
+		xd.ENABLED enabled
+		FROM XHLM_TB_XHHD_DETAIL xd,XHLM_TB_XHHD x
+		WHERE xd.ENABLED =
+		'Y'
+		And xd.XHHD_ID=x.id
+		AND x.LOGIN_ID=#loginId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		ORDER BY xd.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条类别协会服务详细 -->
+	<select id="getXhhdDetailInfo" resultClass="xhhddetail">
+		SELECT
+		xd.ID,
+		xd.CREATE_DATE createDate,
+		xd.UPDATE_DATE updateDate,
+		xd.XHHD_ID xhhdId,
+		xd.LOGIN_ID loginId,
+		xd.ENABLED enabled
+		FROM XHLM_TB_XHHD_DETAIL xd
+		WHERE xd.ID = #id#
+		AND xd.ENABLED = 'Y'
+	</select>
+
+	<!-- 根据ID更新某条类别协会服务详细信息 -->
+	<update id="updateXhhdDetailInfoById" parameterClass="xhhddetail">
+		UPDATE
+		XHLM_TB_XHHD_DETAIL xd
+		SET xd.UPDATE_DATE = now(),
+		xd.XHHD_ID = #xhhdId#
+		WHERE xd.ID = #id#
+		AND xd.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据ID删除某条类别协会服务详细信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="deleteXhhdDetailInfoById" parameterClass="long">
+		UPDATE
+		XHLM_TB_XHHD_DETAIL xd
+		SET xd.UPDATE_DATE = now(),
+		xd.ENABLED = 'N'
+		WHERE xd.ID = #id#
+		AND xd.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据查询条件查询符合条件的类别协会服务详细(页面分页使用) -->
+	<select id="findXhhdDetailInfoCountByXhhdId" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_XHHD_DETAIL xd,XHLM_TB_XHHD x
+		WHERE xd.ENABLED = 'Y'
+		And
+		xd.XHHD_ID=x.id
+		AND xd.XHHD_ID = #xhhdId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别协会服务详细 -->
+	<select id="findXhhdDetailInfoListByXhhdId" resultClass="xhhddetail">
+		SELECT
+		xd.ID,
+		xd.CREATE_DATE createDate,
+		xd.UPDATE_DATE updateDate,
+		xd.XHHD_ID xhhdId,
+		x.TITLE title,
+		x.LOGIN_ID xhId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.LOGIN_ID = x.LOGIN_ID LIMIT
+		1) xhName,
+		xd.LOGIN_ID loginId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.LOGIN_ID = xd.LOGIN_ID LIMIT
+		1) userName,
+		xd.ENABLED enabled
+		FROM XHLM_TB_XHHD_DETAIL xd,XHLM_TB_XHHD x
+		WHERE xd.ENABLED =
+		'Y'
+		And xd.XHHD_ID=x.id
+		AND xd.XHHD_ID = #xhhdId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		ORDER BY xd.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别协会服务详细(页面分页使用) -->
+	<select id="findXhhdDetailLoginCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_XHHD_DETAIL xd
+		WHERE xd.ENABLED = 'Y'
+		And xd.XHHD_ID=#xhhdId#
+		AND xd.LOGIN_ID=#loginId#
+	</select>
+
+	<!-- 根据ID删除某条类别协会服务详细信息(逻辑删除,将该条信息状态变为不可用) -->
+	<delete id="deleteXhhdDetailByLoginId">
+		DELETE FROM XHLM_TB_XHHD_DETAIL
+		WHERE LOGIN_ID = #loginId#
+		AND XHHD_ID = #xhhdId#
+	</delete>
+</sqlMap>

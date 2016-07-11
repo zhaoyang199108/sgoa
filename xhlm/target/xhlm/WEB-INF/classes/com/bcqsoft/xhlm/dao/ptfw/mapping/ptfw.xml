@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ptfw">
+	<typeAlias alias="ptfw" type="com.bcqsoft.xhlm.dao.ptfw.dataobject.Ptfw" />
+
+	<!-- 插入一条信息至类别分类表 -->
+	<insert id="insertIntoPtfw" parameterClass="ptfw">
+		INSERT INTO XHLM_TB_PTFW(
+		CREATE_DATE,
+		UPDATE_DATE,
+		TITLE,
+		SORT_ID,
+		ZQ,
+		YQ,
+		ZP,
+		CONTENT,
+		LOGIN_ID,
+		ENABLED
+		)VALUES(
+		now(),
+		now(),
+		#title#,
+		#sortId#,
+		#zq#,
+		#yq#,
+		#zp#,
+		#content#,
+		#loginId#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的类别分类(页面分页使用) -->
+	<select id="findPtfwInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_PTFW x
+		WHERE x.ENABLED = 'Y'
+		AND x.LOGIN_ID=#loginId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别分类 -->
+	<select id="findPtfwInfoList" resultClass="ptfw">
+		SELECT
+		x.ID,
+		x.CREATE_DATE createDate,
+		x.UPDATE_DATE updateDate,
+		x.TITLE title,
+		x.LOGIN_ID loginId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.LOGIN_ID = x.LOGIN_ID LIMIT
+		1) userName,
+		x.SORT_ID sortId,
+		(SELECT NAME FROM XHLM_TB_SORT_DETAIL sd WHERE x.SORT_ID=sd.ID) sortName,
+		x.ZQ zq,
+		x.YQ yq,
+		x.ZP zp,
+		x.CONTENT content,
+		x.ENABLED enabled
+		FROM XHLM_TB_PTFW x
+		WHERE x.ENABLED = 'Y'
+		AND x.LOGIN_ID=#loginId#
+		<isNotEmpty property="title" prepend="AND">
+			x.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		ORDER BY x.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条类别分类 -->
+	<select id="getPtfwInfo" resultClass="ptfw">
+		SELECT
+		x.ID,
+		x.CREATE_DATE createDate,
+		x.UPDATE_DATE updateDate,
+		x.TITLE title,
+		x.LOGIN_ID loginId,
+		x.SORT_ID sortId,
+		x.ZQ zq,
+		x.YQ yq,
+		x.ZP zp,
+		x.CONTENT content,
+		x.ENABLED enabled
+		FROM XHLM_TB_PTFW x
+		WHERE x.ID = #id#
+		AND x.ENABLED = 'Y'
+	</select>
+
+	<!-- 根据ID更新某条类别分类信息 -->
+	<update id="updatePtfwInfoById" parameterClass="ptfw">
+		UPDATE
+		XHLM_TB_PTFW x
+		SET x.UPDATE_DATE = now(),
+		x.TITLE = #title#,
+		x.SORT_ID = #sortId#,
+		x.ZQ = #zq#,
+		x.YQ = #yq#,
+		x.ZP = #zp#,
+		x.CONTENT = #content#
+		WHERE x.ID = #id#
+		AND x.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据ID删除某条类别分类信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="deletePtfwInfoById" parameterClass="long">
+		UPDATE
+		XHLM_TB_PTFW x
+		SET x.UPDATE_DATE = now(),
+		x.ENABLED = 'N'
+		WHERE x.ID = #id#
+		AND x.ENABLED = 'Y'
+	</update>
+	<!-- 根据查询条件查询符合条件的类别分类 -->
+	<select id="getPtfwInfoListByLoginId" resultClass="ptfw">
+		SELECT
+		x.ID,
+		x.CREATE_DATE createDate,
+		x.UPDATE_DATE updateDate,
+		x.TITLE title,
+		x.LOGIN_ID loginId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.LOGIN_ID = x.LOGIN_ID LIMIT
+		1) userName,
+		x.SORT_ID sortId,
+		(SELECT NAME FROM XHLM_TB_SORT_DETAIL sd WHERE x.SORT_ID=sd.ID) sortName,
+		x.ZQ zq,
+		x.YQ yq,
+		x.ZP zp,
+		x.CONTENT content,
+		x.ENABLED enabled
+		FROM XHLM_TB_PTFW x
+		WHERE x.ENABLED = 'Y'
+		AND x.LOGIN_ID = #loginId#
+		LIMIT 1
+	</select>
+</sqlMap>

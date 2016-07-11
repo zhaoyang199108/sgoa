@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="notice">
+	<typeAlias alias="notice"
+		type="com.bcqsoft.xhlm.dao.notice.dataobject.Notice" />
+
+	<!-- 插入一条信息至类别分类表 -->
+	<insert id="insertIntoNotice" parameterClass="notice">
+		INSERT INTO XHLM_TB_NOTICE(
+		CREATE_DATE,
+		UPDATE_DATE,
+		TITLE,
+		SORT_ID,
+		CONTENT,
+		LOGIN_ID,
+		TYPE,
+		ENABLED
+		)VALUES(
+		now(),
+		now(),
+		#title#,
+		#sortId#,
+		#content#,
+		#loginId#,
+		#type#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的类别分类(页面分页使用) -->
+	<select id="findNoticeInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM XHLM_TB_NOTICE m
+		WHERE m.ENABLED = 'Y'
+		<isNotEmpty property="loginId" prepend="AND">
+			m.LOGIN_ID=#loginId#
+		</isNotEmpty>
+		<isNotEmpty property="title" prepend="AND">
+			m.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的类别分类 -->
+	<select id="findNoticeInfoList" resultClass="notice">
+		SELECT
+		m.ID,
+		m.CREATE_DATE createDate,
+		m.UPDATE_DATE updateDate,
+		m.TITLE title,
+		m.LOGIN_ID loginId,
+		(SELECT u.USER_NAME FROM XHLM_TB_USER u WHERE u.LOGIN_ID = m.LOGIN_ID LIMIT
+		1) userName,
+		m.SORT_ID sortId,
+		(SELECT NAME FROM XHLM_TB_SORT_DETAIL sd WHERE m.SORT_ID=sd.ID) sortName,
+		m.CONTENT content,
+		m.ENABLED enabled
+		FROM XHLM_TB_NOTICE m
+		WHERE m.ENABLED = 'Y'
+		<isNotEmpty property="loginId" prepend="AND">
+			m.LOGIN_ID=#loginId#
+		</isNotEmpty>
+		<isNotEmpty property="type" prepend="AND">
+			m.TYPE=#type#
+		</isNotEmpty>
+		<isNotEmpty property="title" prepend="AND">
+			m.TITLE LIKE CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		ORDER BY m.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条类别分类 -->
+	<select id="getNoticeInfo" resultClass="notice">
+		SELECT
+		m.ID,
+		m.CREATE_DATE createDate,
+		m.UPDATE_DATE updateDate,
+		m.TITLE title,
+		m.LOGIN_ID loginId,
+		m.SORT_ID sortId,
+		m.TYPE type,
+		m.CONTENT content,
+		m.ENABLED enabled
+		FROM XHLM_TB_NOTICE m
+		WHERE m.ID = #id#
+		AND m.ENABLED = 'Y'
+	</select>
+
+	<!-- 根据ID更新某条类别分类信息 -->
+	<update id="updateNoticeInfoById" parameterClass="notice">
+		UPDATE
+		XHLM_TB_NOTICE m
+		SET m.UPDATE_DATE = now(),
+		m.TITLE = #title#,
+		m.SORT_ID = #sortId#,
+		m.TYPE = #type#,
+		m.CONTENT = #content#
+		WHERE m.ID = #id#
+		AND m.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据ID删除某条类别分类信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="deleteNoticeInfoById" parameterClass="long">
+		UPDATE
+		XHLM_TB_NOTICE m
+		SET m.UPDATE_DATE = now(),
+		m.ENABLED = 'N'
+		WHERE m.ID = #id#
+		AND m.ENABLED = 'Y'
+	</update>
+</sqlMap>
