@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/bcqSoft/!svn/ver/7858/source/sgoa/trunk/src/main/webapp/WEB-INF/view/template
+END
+template_detail.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/bcqSoft/!svn/ver/7776/source/sgoa/trunk/src/main/webapp/WEB-INF/view/template/template_detail.ftl
+END
+test_sign.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bcqSoft/!svn/ver/7858/source/sgoa/trunk/src/main/webapp/WEB-INF/view/template/test_sign.ftl
+END
+template_edit.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/bcqSoft/!svn/ver/7776/source/sgoa/trunk/src/main/webapp/WEB-INF/view/template/template_edit.ftl
+END
+add_template.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcqSoft/!svn/ver/7776/source/sgoa/trunk/src/main/webapp/WEB-INF/view/template/add_template.ftl
+END
+template_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/bcqSoft/!svn/ver/7099/source/sgoa/trunk/src/main/webapp/WEB-INF/view/template/template_list.ftl
+END

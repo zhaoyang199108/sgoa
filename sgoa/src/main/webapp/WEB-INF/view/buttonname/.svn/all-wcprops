@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/bcqSoft/!svn/ver/7101/source/sgoa/trunk/src/main/webapp/WEB-INF/view/buttonname
+END
+buttonname_detail.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/bcqSoft/!svn/ver/6589/source/sgoa/trunk/src/main/webapp/WEB-INF/view/buttonname/buttonname_detail.ftl
+END
+buttonname_edit.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bcqSoft/!svn/ver/6589/source/sgoa/trunk/src/main/webapp/WEB-INF/view/buttonname/buttonname_edit.ftl
+END
+add_buttonname.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/bcqSoft/!svn/ver/6589/source/sgoa/trunk/src/main/webapp/WEB-INF/view/buttonname/add_buttonname.ftl
+END
+menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bcqSoft/!svn/ver/7092/source/sgoa/trunk/src/main/webapp/WEB-INF/view/buttonname/menu.ftl
+END
+buttonname_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bcqSoft/!svn/ver/7101/source/sgoa/trunk/src/main/webapp/WEB-INF/view/buttonname/buttonname_list.ftl
+END

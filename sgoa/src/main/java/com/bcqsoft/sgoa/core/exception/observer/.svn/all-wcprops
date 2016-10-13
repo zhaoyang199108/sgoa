@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/core/exception/observer
+END
+ExceptionObserver.java
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/core/exception/observer/ExceptionObserver.java
+END
+EmailSendingObserver.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/core/exception/observer/EmailSendingObserver.java
+END
+DatabaseRecordObserver.java
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/core/exception/observer/DatabaseRecordObserver.java
+END

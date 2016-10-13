@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息表SQL映射文件, TABLE: SCOA_TB_SW -->
+<sqlMap namespace="sw">
+	
+	<typeAlias alias="sw"
+		type="com.bcqsoft.sgoa.dao.sw.dataobject.Sw" />
+		
+	<!-- 插入一条信息至信息表 -->
+	<insert id="insertIntoSw" parameterClass="sw">
+		INSERT INTO	
+			SCOA_TB_SW
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			TITLE,
+			RECEIVER_TIME,
+			TEXT_TIME,
+			FONDS_NUM,
+			URGENT,
+			SECURITY,
+			FONDS_NAME,
+			FILE_DEPT,
+			APPROVAL_IDS,
+			STEPS,
+			FILE_NUM,
+			REGISTER_NUM,
+			SUPERVISE,
+			RECEIVER_ID,
+		    REMARK,
+			D_RECORDID,
+			APPROVAL_ID,
+			STEP,
+			SORT,
+			SRC_FILE_NAME,
+			FILE_DIR,
+			CURRENT_OPT_ID,
+			NEXT_OPT_ID,
+			STATUS,
+			ENABLED,
+			LOGIN_ID
+		) 
+		VALUES(
+			now(),
+			now(),
+			#title#,
+			#receiverTime#,
+			#textTime#,
+			#fondsNum#,
+			#urgent#,
+			#security#,
+			#fondsName#,
+			#fileDept#,
+			#approvalIds#,
+			#steps#,
+			#fileNum#,
+			#registerNum#,
+			#supervise#,
+			#receiverId#,
+		    #remark#,
+			#dRecordid#,
+			#approvalId#,
+			#step#,
+			#sort#,
+			#srcFileName#,
+			#fileDir#,
+			#currentOptId#,
+			#nextOptId#,
+			#status#,
+			#enabled#,
+			#loginId#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findMyDraftSwCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.LOGIN_ID = #loginId#
+		  AND t.ENABLED = 2
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findMyDraftSwList" resultClass="sw">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.LOGIN_ID = #loginId#
+		  AND t.ENABLED = 2
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findMySwCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.ID in (SELECT DOCIN_ID FROM SCOA_TB_SW_HU b WHERE b.RECEIVER_ID=#receivedId#)
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findMySwList" resultClass="sw">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			(SELECT b.STATUS FROM  SCOA_TB_SW_HU b WHERE b.RECEIVER_ID='wzm' AND b.DOCIN_ID=t.id LIMIT 1) boxStatus,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.ID in (SELECT DOCIN_ID FROM SCOA_TB_SW_HU b WHERE b.RECEIVER_ID=#receivedId#)
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据条件查找该用户我的申请信息数量 -->
+	<select id="findApprovedSwCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.LOGIN_ID = #loginId#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户我的申请的信息集合 -->
+	<select id="findApprovedSwList" resultClass="sw">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.STATUS status,
+			t.FILE_DIR fileDir,
+			t.CURRENT_OPT_ID currentOptId,
+			t.LOGIN_ID loginId,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.LOGIN_ID = #loginId#
+		 AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据条件查找该用户待审核信息数量 -->
+	<select id="findSwReviewCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.NEXT_OPT_ID = #loginId#
+		  AND (t.STATUS = 1 || t.STATUS = 2)
+		  AND t.ENABLED = 1
+		  AND t.SORT = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户待审核的信息集合 -->
+	<select id="findSwReviewList" resultClass="sw">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.STATUS status,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.NEXT_OPT_ID = #loginId#
+		  AND (t.STATUS = 1 || t.STATUS = 2)
+		  AND t.SORT = 1
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据条件查找该用户待审核信息数量 -->
+	<select id="findSwDoinoutCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.NEXT_OPT_ID = #loginId#
+		  AND t.STATUS = 4
+		  AND t.SORT = 2
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户待审核的信息集合 -->
+	<select id="findSwDoinoutList" resultClass="sw">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.STATUS status,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.NEXT_OPT_ID = #loginId#
+		  AND t.STATUS = 4
+		  AND t.SORT = 2
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+		<!-- 根据条件查找该用户经我审核信息数量 -->
+	<select id="getMySwReviewCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_SW t
+		 WHERE t.ID in (
+			SELECT r.DOCIN_ID
+			FROM SCOA_TB_SW_REVIEW r
+			WHERE r.CURRENT_OPT_ID = #loginId#	 
+		 )
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户经我审核的信息集合 -->
+	<select id="getMySwReviewList" resultClass="sw">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.STATUS status,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_SW t
+		 WHERE t.ID in (
+			SELECT r.DOCIN_ID
+			FROM SCOA_TB_SW_REVIEW r
+			WHERE r.CURRENT_OPT_ID = #loginId#	 
+		 )
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据信息ID更新该条信息记录状态为已删除 -->
+	<update id="updateSwStatusToEnabled" parameterClass="long">
+		UPDATE 
+			SCOA_TB_SW t
+		   SET t.UPDATE_DATE = now(),
+		   	   t.ENABLED = 3
+		 WHERE t.ID = #id#
+	</update>
+	
+		<!-- 根据ID取得信息草稿数据 -->
+	<select id="findSwDetailInfoById" resultClass="sw">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.SORT sort,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.SRC_FILE_NAME srcFileName,
+			t.FILE_DIR fileDir,
+			t.REMARK remark,
+			t.D_RECORDID dRecordid,
+			t.APPROVAL_ID approvalId,
+			t.STEP step,
+			t.CURRENT_OPT_ID currentOptId,
+			t.NEXT_OPT_ID nextOptId,
+			(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = t.NEXT_OPT_ID LIMIT 1) nextOptName,
+			t.STATUS status,
+			t.ENABLED enabled,
+			t.FONDS_NUM fondsNum,
+			t.URGENT urgent,
+			t.SECURITY security,
+			t.FONDS_NAME fondsName,
+			t.FILE_DEPT fileDept,
+			t.APPROVAL_IDS approvalIds,
+			t.STEPS steps,
+			t.FILE_NUM fileNum,
+			t.REGISTER_NUM registerNum,
+			t.SUPERVISE supervise,
+			t.RECEIVER_ID receiverId
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.ID = #id#
+	</select>
+	
+	<!-- 根据信息ID更新该条信息 -->
+	<update id="updateSwInfoById" parameterClass="sw">
+		UPDATE 
+			SCOA_TB_SW t
+		   SET t.UPDATE_DATE = now(),
+			   t.TITLE = #title#,
+			   t.RECEIVER_TIME = #receiverTime#,
+			   t.TEXT_TIME = #textTime#,
+			   t.APPROVAL_ID = #approvalId#,
+			   t.REMARK = #remark#,
+			   t.STATUS = #status#,
+			   t.ENABLED = #enabled#,
+			   t.D_RECORDID = #dRecordid#,
+			   t.NEXT_OPT_ID = #nextOptId#,
+			   t.FONDS_NUM = #fondsNum#,
+			   t.URGENT = #urgent#,
+			   t.SECURITY = #security#,
+			   t.FONDS_NAME = #fondsName#,
+			   t.FILE_DEPT = #fileDept#,
+			   t.APPROVAL_IDS = #approvalIds#,
+			   t.STEPS = #steps#,
+			   t.FILE_NUM = #fileNum#,
+			   t.REGISTER_NUM = #registerNum#,
+			   t.SUPERVISE = #supervise#,
+			   t.RECEIVER_ID = #receiverId#,
+			   t.SRC_FILE_NAME = #srcFileName#,
+			   t.FILE_DIR = #fileDir#
+		 WHERE t.ID = #id#
+	</update>
+	
+	<!-- 根据信息ID更新该条信息 -->
+	<update id="updateOneSwInfo" parameterClass="Long">
+		UPDATE 
+			SCOA_TB_SW t
+		   SET t.UPDATE_DATE = now(),
+			   t.NEXT_OPT_ID = '',
+			   t.ENABLED = 2
+		 WHERE t.ID = #id#
+	</update>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateSwById" parameterClass="sw">
+		UPDATE
+		SCOA_TB_SW t
+		SET
+		t.UPDATE_DATE=now(),
+		t.STEP = #step#,
+		t.CURRENT_OPT_ID = #currentOptId#,
+		t.SORT=#sort#,
+		t.APPROVAL_IDS = #approvalIds#,
+		t.STEPS = #steps#,
+		t.NEXT_OPT_ID = #nextOptId#,
+		t.STATUS = #status#,
+		t.ENABLED = #enabled#,
+		t.SUPERVISE = #supervise#,
+		t.RECEIVER_ID = #receiverId#
+		WHERE t.ID = #id#
+	</update>
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findSwSeacheCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.STATUS = #status#
+		  AND  t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findSwSeacheList" resultClass="sw">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.STATUS = #status#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateSwWorkById" parameterClass="sw">
+		UPDATE
+		SCOA_TB_SW t
+		SET
+		t.UPDATE_DATE=now(),
+		t.CURRENT_OPT_ID = #currentOptId#,
+		t.STEPS = #steps#,
+		t.NEXT_OPT_ID = #nextOptId#,
+		t.ENABLED = #enabled#,
+		t.SUPERVISE = #supervise#,
+		t.RECEIVER_ID = #receiverId#,
+		t.STATUS = #status#
+		WHERE t.ID = #id#
+	</update>
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findSwDubanCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE (t.STATUS = 4||t.STATUS = 5)
+		  AND  t.ENABLED = 1
+		  AND t.SUPERVISE=1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findSwDubanList" resultClass="sw">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE (t.STATUS = 4||t.STATUS = 5)
+		  AND  t.ENABLED = 1
+		  AND t.SUPERVISE=1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据条件查找该用户待审核信息数量 -->
+	<select id="findSwReviewCountForIndex" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_SW t
+		WHERE t.NEXT_OPT_ID = #loginId#
+		  AND t.STATUS = #status#
+		  AND t.ENABLED = 1
+		  AND t.SORT = 1
+	</select>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateSwStatusById" parameterClass="sw">
+		UPDATE
+		SCOA_TB_SW t
+		SET
+		t.UPDATE_DATE=now(),
+		t.STATUS = #status# 
+		WHERE t.ID = #id# 
+	</update>
+</sqlMap>

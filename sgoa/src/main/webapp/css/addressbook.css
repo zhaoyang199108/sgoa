@@ -1,0 +1,87 @@
+table.yxb{ width:100%; border:0px;}
+td.left_xl{ width:16%; float:left;}
+td.right_ad{width:80%; float:left; padding-left:30px; *padding-right:30px;}
+.txcd{overflow:hidden;}
+.xl_menu{ overflow:hidden; border:1px solid #51A4F2;}
+.modl{ background:#8FC5FD; height:32px;}
+.modl a.ovw{ background:url(../images/oe.png) no-repeat 25px 8px; float: left; font-size:14px; font-weight:bold; padding-left:50px; line-height:33px; }
+.modl a.ovw_active{ background:url(../images/oe.png) no-repeat 25px -35px; float: left; font-size:14px; font-weight:bold; padding-left:50px; line-height:33px; }
+.xl_menu ul{ width:100%;}
+.xl_menu ul li{background:url(../images/oe.png) no-repeat 28px -80px #FFFFFF;} 
+.xl_menu ul li a{ padding-left:50px;border-bottom:1px solid #E1E1E1; display:block; line-height:33px; text-align:left;_height:33px;}
+.xl_menu ul li a:hover{background:url(../images/oe.png) no-repeat 28px -80px #F8F8F8; border-bottom:1px solid #51A4F2;}
+.sear{ overflow:hidden; margin-bottom:15px; padding-top:28px;}
+.sear input{ width:28%; height:22px; line-height:22px; margin-right:20px; float: left}
+.sear a.search-btn{ float:left;background:url(../images/pic-bg.png) -18px -240px; width:61px; line-height:26px;height:26px; font-weight:bold; text-align:center;}
+.sear a.search-btn:hover{ background-position:-121px -240px; color:#FF6600;}
+.sear a.lxr22{ margin-right:20px;float:left; width:94px; background: url(../images/xjlx.png) no-repeat 0px 0px; height:28px; text-align:center; line-height:28px;}
+.sear a.lxr22:hover{ background-position:0px -48px;}
+.lxr{ width:100%; float:left; border:1px solid #E1E1E1;  *margin-top:15px; }
+ h4.tite{ border:1px solid #FF6600; background:#FFD8B0; height:32px; line-height:32px; text-align:center; font-size:14px; font-weight:bold;}
+.lx_lb{ width:100%;}
+.dd{ height:320px; overflow-y:auto;}
+.dwe{ height:252px; overflow-y:auto;}
+ul.lxd{ width:100%;_width:95%;}
+ul.lxd li{cursor:pointer;border-bottom:1px dashed #D8D8D8; padding:5px; overflow:hidden;_height:50px;}
+ul.lxd li img{ float:left; border:1px solid #EFEFEF;}
+ul.lxd li span{ float:left; font-size:14px; padding-left:6%;}
+ul.lxd li:hover{ background: #F5F5F5;}
+
+
+
+.xq{ width:80%; float: left; margin:30px 0px 0px 20px;border:1px solid #E1E1E1; }
+.biw{ width:98%; margin-top:20px;}
+.biw th{ width:15%; text-align:left; font-weight:normal;}
+.biw td { text-align:left; padding:3px;}
+.biw td input{ float:left;}
+.biw td input.btn{ float:left; font-size:14px; margin-right:15px; width:58px; height:25px;}
+
+.xjlx{ width:800px; margin:0 auto;}
+.tableblock{ width:700px; margin: 0 auto; border:1px solid #E1E1E1;}
+.tableblock td{ padding:3px; text-align:left;  border:1px solid #E1E1E1; line-height:25px;}
+.tableblock tr{border:1px solid #E1E1E1;}
+.tableblock td.tableheader{ background:#8FC5FD; }
+.tableblock td.tableheader02{ background:#8FC5FD; text-align:center; }
+
+.wile{ width:100%; float:left;}
+.wile td{border:1px solid #E1E1E1;}
+.wile th{ background:#FFD8B0;  border:1px solid #E1E1E1;}
+.ri{float:right; margin-right:20px;}
+
+a.action-opt{
+	float:right;
+	background: url(../images/xjlx.png)  -1px -98px;
+	width:62px; 
+	line-height:27px;
+	height:27px; 
+	text-align:center; 
+	margin-bottom:10px;
+}
+a.action-opt:hover{ 
+	float:right;
+	background: url(../images/xjlx.png) -1px -143px; 
+	width:62px; 
+	line-height:27px;
+	height:27px; 
+	text-align:center; 
+	margin-bottom:10px;
+}
+
+table.wes{ width:100%; border:1px solid #C9E4FE; background:#FBFDFF;}
+table.wes th{ width:15%; background:#E1F0FE; border:1px solid #C9E4FE;}
+table.wes td{border:1px solid #C9E4FE; line-height:22px; padding:3px;}
+table.wes td.woj{ text-align:right; padding-right:29px;}
+table.wes td input.oitb{ background:url(../images/xjlx.png) no-repeat -3px -259px; width:60px; height:26px; border:0px; line-height:26px;}
+table.wes td span{ float:left; padding-left:20px;}
+table.wes td span.sho{ float:right;}
+span.sho a{ background:url(../images/xjlx.png) no-repeat -0px -204px; float:left; width:38px; margin-right:10px; padding-left:20px; text-align:left;}
+span.sho a.fz0{ background-position:-58px -204px;}
+span.sho a.sc0{ background-position:-116px -204px;}
+span.sho a.qk0{ background-position:-172px -204px;}
+span.sho a:hover{ color:#FF9900;}
+table.wes td input.op{ float:left; width:75%; height:18px; }
+table.wes td select{ float:left; width:75%;}
+
+
+
+

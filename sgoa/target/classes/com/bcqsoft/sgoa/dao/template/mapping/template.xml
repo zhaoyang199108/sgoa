@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 物资设备申领表SQL映射文件, TABLE: sgoa_TB_APPLY_GET -->
+<sqlMap namespace="template">
+
+	<typeAlias alias="template"
+		type="com.bcqsoft.sgoa.dao.template.dataobject.Template" />
+
+
+	<!-- 根据查询条件查询符合条件的物资设备申领表(页面分页使用) -->
+	<select id="findTemplateInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM EWEBOFFICE_T_TEMPLATEFILE d
+		WHERE 1=1
+		<isNotEmpty property="fileName" prepend="AND">
+			d.D_FileName LIKE CONCAT('%',#fileName#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的物资设备申领表 -->
+	<select id="findTemplateInfoList" resultClass="template">
+		SELECT
+		d.D_ID id,
+		d.D_TemplateID templateId,
+		d.D_FileDate fileDate,
+		d.D_FileName fileName,
+		d.D_FileType fileType,
+		d.D_FileSize fileSize,
+		d.D_FileBody fileBody,
+		d.D_FilePath filePath,
+		d.D_UserName userName,
+		d.D_Descript descript
+		FROM EWEBOFFICE_T_TEMPLATEFILE d
+		WHERE 1=1
+		<isNotEmpty property="fileName" prepend="AND">
+			d.D_FileName LIKE CONCAT('%',#fileName#,'%')
+		</isNotEmpty>
+		ORDER BY d.D_ID DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询符合条件的物资设备申领表 -->
+	<select id="getTemplateInfo" resultClass="template"
+		parameterClass="long">
+		SELECT
+		d.D_ID id,
+		d.D_TemplateID templateId,
+		d.D_FileDate fileDate,
+		d.D_FileName fileName,
+		d.D_FileType fileType,
+		d.D_FileSize fileSize,
+		d.D_FileBody fileBody,
+		d.D_FilePath filePath,
+		d.D_UserName userName,
+		d.D_Descript descript
+		FROM EWEBOFFICE_T_TEMPLATEFILE d
+		WHERE d.D_ID=#id#
+	</select>
+
+	<!-- 根据办公用品ID删除办公用品信息 -->
+	<delete id="deleteTemplateInfoById" parameterClass="long">
+		DELETE FROM
+		EWEBOFFICE_T_TEMPLATEFILE
+		WHERE D_ID=#id#
+	</delete>
+</sqlMap>

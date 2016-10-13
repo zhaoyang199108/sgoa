@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 站内信收件箱表SQL映射文件, TABLE: SCOA_TB_MSGONE_INBOX -->
+<sqlMap namespace="msgoneInbox">
+
+	<typeAlias alias="msgoneInbox"
+		type="com.bcqsoft.sgoa.dao.msgoneinbox.dataobject.MsgoneInbox" />
+
+	<insert id="insertIntoMsgoneInbox" parameterClass="msgoneInbox">
+		INSERT INTO
+		SCOA_TB_MSGONE_INBOX
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		RECEIVER_ID,
+		SENDER_ID,
+		TITLE,
+		TEXT_ID,
+		ENABLED
+		)
+		VALUES(
+		now(),
+		now(),
+		#receiverId#,
+		#senderId#,
+		#title#,
+		#textId#,
+		'Y'
+		)
+
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+	<!-- 根据查询条件查询符合条件的通讯录(页面分页使用) -->
+	<select id="findMsgoneInboxInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_MSGONE_INBOX mi ,SCOA_TB_MSGONE_TEXT mt
+		WHERE mi.ENABLED='Y' and
+		mi.TEXT_ID=mt.ID and
+		mi.RECEIVER_ID =#receiverId#
+		<isNotEmpty property="title" prepend="AND">
+			mi.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="createDate" prepend="AND">
+			mi.CREATE_DATE
+			LIKE CONCAT('%',#createDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="senderId" prepend="AND">
+			mi.SENDER_ID =
+			#senderId#
+		</isNotEmpty>
+		<isNotEmpty property="isRead" prepend="AND">
+			mi.IS_READ = #isRead#
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的通讯录 -->
+	<select id="findMsgoneInboxInfoList" resultClass="msgoneInbox">
+		select mi.ID id,
+		mi.CREATE_DATE createDate,
+		mi.UPDATE_DATE updateDate,
+		mi.RECEIVER_ID receiverId,
+		mi.SENDER_ID senderId,
+        u.USER_NAME senderName,
+		mi.TITLE title,
+		mi.TEXT_ID textId,
+		mt.D_RECORDID dRecordid,
+		mt.PHONE_TEXT phoneText,
+		mt.SRC_FILE_NAME srcFileName,
+		mt.FILE_DIR fileDir,
+		mi.IS_READ isRead,
+		mi.READ_DATE readDate
+		FROM SCOA_TB_MSGONE_INBOX mi ,SCOA_TB_MSGONE_TEXT mt,
+        SCOA_TB_USER u
+		WHERE mi.ENABLED='Y' and
+		mi.TEXT_ID=mt.ID and
+        u.LOGIN_ID=mi.SENDER_ID and
+		mi.RECEIVER_ID =#receiverId#
+		<isNotEmpty property="title" prepend="AND">
+			mi.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="createDate" prepend="AND">
+			mi.CREATE_DATE
+			LIKE CONCAT('%',#createDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="senderId" prepend="AND">
+			mi.SENDER_ID =
+			#senderId#
+		</isNotEmpty>
+		<isNotEmpty property="isRead" prepend="AND">
+			mi.IS_READ = #isRead#
+		</isNotEmpty>
+		ORDER BY mi.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	<!-- 根据ID查询符合条件的通讯录 -->
+	<select id="selectMsgoneInboxById" resultClass="msgoneInbox">
+	
+	SELECT  mo.ID id,
+			mo.CREATE_DATE createDate,
+			mo.UPDATE_DATE updateDate,
+			mo.RECEIVER_ID receiverId,
+			mo.SENDER_ID senderId,
+			mo.IS_READ isRead,
+			u.USER_NAME senderName,
+			mo.TITLE title,
+			mo.TEXT_ID textId,
+			mt.D_RECORDID dRecordid,
+			mt.PHONE_TEXT phoneText,
+			mt.SRC_FILE_NAME srcFileName,
+		    mt.FILE_DIR fileDir
+	FROM
+			SCOA_TB_MSGONE_INBOX mo,SCOA_TB_MSGONE_TEXT mt,
+			SCOA_TB_USER u
+	WHERE 	mo.TEXT_ID=mt.ID and
+			u.LOGIN_ID=mo.SENDER_ID and
+			mo.ID=#id#
+	</select>
+
+	<!-- 根据ID更新某条通讯录 -->
+	<update id="updateMsgoneInboxInfoById" parameterClass="msgoneInbox">
+		UPDATE
+		SCOA_TB_MSGONE_INBOX mi
+		SET
+		mi.UPDATE_DATE = now(),
+		mi.IS_READ ='Y',
+		mi.READ_DATE =now()
+		WHERE mi.ID = #id#
+		AND mi.ENABLED = 'Y'
+	</update>
+	<!-- 根据ID删除某条通讯录(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="updateMsgoneInboxStatusToDisabled" parameterClass="long">
+		UPDATE
+		SCOA_TB_MSGONE_INBOX mi
+		SET mi.UPDATE_DATE = now(),
+		mi.ENABLED = 'N'
+		WHERE mi.ID = #id#
+		AND mi.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据查询条件查询符合条件的垃圾箱 -->
+	<select id="findDustbinInfoList" resultClass="msgoneInbox">
+	SELECT * FROM ( SELECT  mo.ID id,
+			mo.CREATE_DATE createDate,
+			mo.UPDATE_DATE updateDate,
+			mo.RECEIVER_IDS receiverIds,
+			mo.SENDER_ID senderId,
+            u.USER_NAME senderName,
+			mo.TITLE title,
+			mo.TEXT_ID textId,
+			mt.D_RECORDID dRecordid,
+			mt.PHONE_TEXT phoneText,
+			mt.SRC_FILE_NAME srcFileName,
+		    mt.FILE_DIR fileDir,
+       	    'Y' msgType,
+       	    mo.ENABLED       	    
+	FROM
+		    SCOA_TB_MSGONE_OUTBOX mo ,SCOA_TB_MSGONE_TEXT mt,
+            SCOA_TB_USER u
+	WHERE   mo.TEXT_ID=mt.ID and
+            u.LOGIN_ID=mo.SENDER_ID and
+		    mo.SENDER_ID=#receiverId#
+	union
+	SELECT  mo.ID id,
+			mo.CREATE_DATE createDate,
+			mo.UPDATE_DATE updateDate,
+			mo.RECEIVER_ID receiverId,
+			mo.SENDER_ID senderId,
+            u.USER_NAME senderName,
+			mo.TITLE title,
+			mo.TEXT_ID textId,
+			mt.D_RECORDID dRecordid,
+			mt.PHONE_TEXT phoneText,
+			mt.SRC_FILE_NAME srcFileName,
+	     	mt.FILE_DIR fileDir,
+       		'N' msgType,
+       		mo.ENABLED  
+	FROM
+			SCOA_TB_MSGONE_INBOX mo,
+			SCOA_TB_MSGONE_TEXT mt,
+            SCOA_TB_USER u
+	WHERE 	mo.TEXT_ID=mt.ID and
+            u.LOGIN_ID=mo.SENDER_ID and
+			mo.RECEIVER_ID=#receiverId#) y
+	WHERE 	y.ENABLED='N'
+		<isNotEmpty property="title" prepend="AND">
+			y.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="createDate" prepend="AND">
+			y.createDate
+			LIKE CONCAT('%',#createDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="senderId" prepend="AND">
+			y.senderId =#senderId#
+		</isNotEmpty>
+		ORDER BY y.updateDate DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据查询条件查询符合条件的垃圾箱(页面分页使用) -->
+	<select id="findDustbinInfoCount" resultClass="int">
+	SELECT COUNT(*) FROM (
+ 	SELECT  mo.ID id,
+			mo.CREATE_DATE createDate,
+			mo.UPDATE_DATE updateDate,
+			mo.RECEIVER_IDS receiverIds,
+			mo.SENDER_ID senderId,
+            u.USER_NAME senderName,
+			mo.TITLE title,
+			mo.TEXT_ID textId,
+			mt.D_RECORDID dRecordid,
+			mt.PHONE_TEXT phoneText,
+			mt.SRC_FILE_NAME srcFileName,
+		    mt.FILE_DIR fileDir,
+       	    'Y' msgType,
+       	    mo.ENABLED       	    
+	FROM
+		    SCOA_TB_MSGONE_OUTBOX mo ,SCOA_TB_MSGONE_TEXT mt,
+            SCOA_TB_USER u
+	WHERE   mo.TEXT_ID=mt.ID and
+            u.LOGIN_ID=mo.SENDER_ID and
+		    mo.SENDER_ID=#receiverId#
+	union
+	SELECT  mo.ID id,
+			mo.CREATE_DATE createDate,
+			mo.UPDATE_DATE updateDate,
+			mo.RECEIVER_ID receiverId,
+			mo.SENDER_ID senderId,
+            u.USER_NAME senderName,
+			mo.TITLE title,
+			mo.TEXT_ID textId,
+			mt.D_RECORDID dRecordid,
+			mt.PHONE_TEXT phoneText,
+			mt.SRC_FILE_NAME srcFileName,
+	    	mt.FILE_DIR fileDir,
+       		'N' msgType,
+       		mo.ENABLED  
+	FROM
+			SCOA_TB_MSGONE_INBOX mo,
+			SCOA_TB_MSGONE_TEXT mt,
+            SCOA_TB_USER u
+	WHERE 	mo.TEXT_ID=mt.ID and
+            u.LOGIN_ID=mo.SENDER_ID and
+			mo.RECEIVER_ID=#receiverId#) a
+	WHERE a.ENABLED='N'
+		<isNotEmpty property="title" prepend="AND">
+			a.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="createDate" prepend="AND">
+			a.createDate
+			LIKE CONCAT('%',#createDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="senderId" prepend="AND">
+			a.senderId =#senderId#
+		</isNotEmpty>
+	</select>
+		<!-- 根据ID恢复某条发信(将该条信息状态变为可用) -->
+	<update id="updateMsgoneInboxById" parameterClass="long">
+		UPDATE
+		SCOA_TB_MSGONE_INBOX mo
+		SET mo.UPDATE_DATE = now(),
+		mo.ENABLED = 'Y'
+		WHERE mo.ID = #id#
+	</update>
+	
+	
+	<!-- 查看未读的站内信 -->
+	<select id="findUnreadMessageByUserId" resultClass="msgoneInbox">
+	 SELECT m.ID id,
+			m.CREATE_DATE createDate,
+			m.SENDER_ID senderId,
+			m.TITLE title
+	   FROM
+			SCOA_TB_MSGONE_INBOX m
+	  WHERE m.RECEIVER_ID = #userId#
+	    AND m.IS_READ = 'N'
+	    AND m.ENABLED = 'Y'
+	</select>
+</sqlMap>

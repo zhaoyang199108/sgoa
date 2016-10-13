@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/bcqSoft/!svn/ver/6778/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ipmac
+END
+detail_ipmac.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bcqSoft/!svn/ver/6770/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ipmac/detail_ipmac.ftl
+END
+edit_ipmac.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/6778/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ipmac/edit_ipmac.ftl
+END
+add_ipmac.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bcqSoft/!svn/ver/6778/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ipmac/add_ipmac.ftl
+END
+ipmac_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/6770/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ipmac/ipmac_list.ftl
+END

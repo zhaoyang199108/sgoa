@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 通讯录表SQL映射文件, TABLE: SCOA_TB_ADDRESS_BOOK -->
+<sqlMap namespace="addressBookType">
+
+	<typeAlias alias="addressBookType"
+		type="com.bcqsoft.sgoa.dao.addressbooktype.dataobject.AddressBookType" />
+		
+
+	<!-- 根据查询条件查询符合条件的通讯录 -->
+	<select id="findAddressBookTypeInfoList" resultClass="addressBookType">
+		SELECT abt.ID,
+		       abt.CREATE_DATE createDate,
+		       abt.UPDATE_DATE updateDate,
+		       abt.SORTING sorting,
+		       abt.TYPE_NAME typeName 
+		FROM SCOA_TB_ADDRESS_BOOK_TYPE abt
+		WHERE abt.ENABLED='Y'
+		AND abt.LOGIN_ID= #loginId#
+		ORDER BY abt.SORTING ASC,abt.UPDATE_DATE DESC
+	</select>
+	
+	<!-- 查找全部通讯录名称列表 -->
+	<select id="findAllTypeInfo" resultClass="addressBookType">
+		SELECT
+		abt.ID id,
+		abt.LOGIN_ID loginId,
+		abt.TYPE_NAME typeName
+		FROM
+		SCOA_TB_ADDRESS_BOOK_TYPE abt
+		WHERE abt.LOGIN_ID = #loginId#
+		AND abt.ENABLED ='Y'
+	</select>
+	
+	<!-- 插入一条通讯录分组信息 -->
+	<insert id="insertIntoAddressBookType" parameterClass="addressBookType">
+		INSERT INTO	
+			SCOA_TB_ADDRESS_BOOK_TYPE
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			LOGIN_ID,
+			SORTING,
+			TYPE_NAME,
+			ENABLED
+		) 
+		VALUES(
+			now(),
+			now(),
+			#loginId#,
+			#sorting#,
+			#typeName#,
+			#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+	<!-- 根据ID更新某条通讯录分组 -->
+	<update id="updateAddressBookTypeInfoById" parameterClass="addressBookType">
+		UPDATE 
+			SCOA_TB_ADDRESS_BOOK_TYPE abt
+		SET 
+			abt.UPDATE_DATE = now(),
+			abt.LOGIN_ID = #loginId#,    
+			abt.SORTING = #sorting#,   
+			abt.TYPE_NAME = #typeName#  
+		WHERE abt.ID = #id#
+		  AND abt.ENABLED = 'Y'
+	</update>
+	
+	<!-- 根据ID删除某条通讯录分组(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="updateAddressBookTypeStatusToDisabled" parameterClass="long">
+		UPDATE 
+			SCOA_TB_ADDRESS_BOOK_TYPE abt
+		SET abt.UPDATE_DATE = now(),
+			abt.ENABLED = 'N'
+		WHERE abt.ID = #id#
+		  AND abt.ENABLED = 'Y'
+	</update>
+	
+</sqlMap>

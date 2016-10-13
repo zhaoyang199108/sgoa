@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/bcqSoft/!svn/ver/11795/source/sgoa/trunk
+END
+.classpath
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/.classpath
+END
+.project
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/.project
+END
+pom.xml
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/bcqSoft/!svn/ver/11480/source/sgoa/trunk/pom.xml
+END

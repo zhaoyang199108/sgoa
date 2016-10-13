@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 会议室表SQL映射文件, TABLE: SCOA_TB_MEETING_ROOM -->
+<sqlMap namespace="meetingYy">
+
+	<typeAlias alias="meetingYy"
+		type="com.bcqsoft.sgoa.dao.meetingyy.dataobject.MeetingYy" />
+
+	<insert id="insertIntoMeetingYy" parameterClass="meetingYy">
+		INSERT INTO
+		    SCOA_TB_MEETING_YY
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		LOGIN_ID,
+		ROOM_ID,
+		APPROVAL_ID,
+		START_TIME,
+		END_TIME,
+		STEP,
+		CURRENT_OPT_ID,
+		NEXT_OPT_ID,
+		STATUS,
+		ENABLED,
+		FILING_DATE
+		)
+		VALUES(
+		now(),
+		now(),
+		#loginId#,
+		#roomId#,
+		#approvalId#,
+		#startTime#,
+		#endTime#,
+		#step#,
+		#currentOptId#,
+		#nextOptId#,
+		#status#,
+		#enabled#,
+		#filingDate#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+	
+	<!-- 根据查询条件查询符合条件的会议室预约数量(页面分页使用) -->
+	<select id="getMeetingYyInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_MEETING_YY y
+		WHERE y.LOGIN_ID = #loginId#
+		 AND y.ENABLED = 1
+		<isNotEmpty property="roomId" prepend="AND">
+			y.ROOM_ID LIKE CONCAT('%',#roomId#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的会议室预约集合 -->
+	<select id="getMeetingYyInfoList" resultClass="meetingYy">
+		SELECT
+		y.ID,
+		y.CREATE_DATE createDate,
+		y.UPDATE_DATE updateDate,
+		y.ROOM_ID roomId,
+		(SELECT ROOM_NAME FROM SCOA_TB_MEETING_ROOM r WHERE r.ID=y.ROOM_ID) roomName,
+		y.LOGIN_ID loginId,
+		(SELECT USER_NAME FROM SCOA_TB_USER u WHERE u.LOGIN_ID=y.LOGIN_ID) userName,
+		y.APPROVAL_ID approvalId,
+		(SELECT APPROVAL_NAME FROM SCOA_TB_APPROVAL a WHERE a.ID=y.APPROVAL_ID) approvalName,
+		y.STEP step,
+		y.START_TIME startTime,
+		y.END_TIME endTime,
+		y.CURRENT_OPT_ID currentOptId,
+		y.NEXT_OPT_ID nextOptId,
+		y.ENABLED enabled,
+		y.STATUS status,
+		y.FILING_DATE filingDate
+		FROM
+		SCOA_TB_MEETING_YY y
+		WHERE y.LOGIN_ID = #loginId#
+		 AND y.ENABLED = 1
+		<isNotEmpty property="roomId" prepend="AND">
+			y.ROOM_ID LIKE CONCAT('%',#roomId#,'%')
+		</isNotEmpty>
+		ORDER BY y.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+
+	<!-- 根据查询条件查询符合条件的会议室待审核数量(页面分页使用) -->
+	<select id="getMeetingYyReviewInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM
+		SCOA_TB_MEETING_YY y
+		WHERE y.NEXT_OPT_ID = #loginId#
+		  AND (y.STATUS = 1 || y.STATUS = 2)
+		  AND y.ENABLED = 1
+		<isNotEmpty property="roomId" prepend="AND">
+			y.ROOM_ID LIKE CONCAT('%',#roomId#,'%')
+		</isNotEmpty>
+	</select>
+	
+	<!-- 根据查询条件查询符合条件的会议室待审核数量(页面分页使用) -->
+	<select id="getMeetingYyReviewInfoCountForAlert" resultClass="int">
+		SELECT COUNT(*)
+		FROM
+		SCOA_TB_MEETING_YY y
+		WHERE y.CURRENT_OPT_ID=#nextOptId# 
+		AND y.STATUS='1' 
+		<isNotEmpty property="roomId" prepend="AND">
+			y.ROOM_ID LIKE CONCAT('%',#roomId#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的会议室待审核集合 -->
+	<select id="getMeetingYyReviewInfoList" resultClass="meetingYy">
+		SELECT
+		y.ID,
+		y.CREATE_DATE createDate,
+		y.UPDATE_DATE updateDate,
+		y.ROOM_ID roomId,
+		(SELECT ROOM_NAME FROM SCOA_TB_MEETING_ROOM r WHERE r.ID=y.ROOM_ID) roomName,
+		y.LOGIN_ID loginId,
+		(SELECT USER_NAME FROM SCOA_TB_USER u WHERE u.LOGIN_ID=y.LOGIN_ID) userName,
+		y.APPROVAL_ID approvalId,
+		(SELECT APPROVAL_NAME FROM SCOA_TB_APPROVAL a WHERE a.ID=y.APPROVAL_ID) approvalName,
+		y.STEP step,
+		y.START_TIME startTime,
+		y.END_TIME endTime,
+		y.CURRENT_OPT_ID currentOptId,
+		y.NEXT_OPT_ID nextOptId,
+		y.ENABLED enabled,
+		y.STATUS status,
+		y.FILING_DATE filingDate
+		FROM
+		SCOA_TB_MEETING_YY y
+		WHERE y.NEXT_OPT_ID = #loginId#
+		  AND (y.STATUS = 1 || y.STATUS = 2)
+		  AND y.ENABLED = 1
+		<isNotEmpty property="roomId" prepend="AND">
+			y.ROOM_ID = #roomId# 
+		</isNotEmpty>
+		ORDER BY y.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据查询条件查询符合条件的会议室经我审核数量(页面分页使用) -->
+	<select id="getMyReviewInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_MEETING_YY y
+		WHERE y.ID in (
+			SELECT r.YY_ID
+			FROM SCOA_TB_MEETING_YY_REVIEW r
+			WHERE r.CURRENT_OPT_ID = #loginId#	 
+		 )
+		  AND y.ENABLED = 1
+		<isNotEmpty property="roomId" prepend="AND">
+			y.ROOM_ID LIKE CONCAT('%',#roomId#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的会议室经我审核集合 -->
+	<select id="getMyReviewInfoList" resultClass="meetingYy">
+	SELECT
+		y.ID,
+		y.CREATE_DATE createDate,
+		y.UPDATE_DATE updateDate,
+		y.ROOM_ID roomId,
+		(SELECT ROOM_NAME FROM SCOA_TB_MEETING_ROOM r WHERE r.ID=y.ROOM_ID) roomName,
+		y.LOGIN_ID loginId,
+		(SELECT USER_NAME FROM SCOA_TB_USER u WHERE u.LOGIN_ID=y.LOGIN_ID) userName,
+		y.APPROVAL_ID approvalId,
+		(SELECT APPROVAL_NAME FROM SCOA_TB_APPROVAL a WHERE a.ID=y.APPROVAL_ID) approvalName,
+		y.STEP step,
+		y.START_TIME startTime,
+		y.END_TIME endTime,
+		y.CURRENT_OPT_ID currentOptId,
+		y.NEXT_OPT_ID nextOptId,
+		y.ENABLED enabled,
+		y.STATUS status,
+		y.FILING_DATE filingDate
+		FROM
+		SCOA_TB_MEETING_YY y
+		WHERE y.ID in (
+			SELECT r.YY_ID
+			FROM SCOA_TB_MEETING_YY_REVIEW r
+			WHERE r.CURRENT_OPT_ID = #loginId#	 
+		 )
+		  AND y.ENABLED = 1
+		<isNotEmpty property="roomId" prepend="AND">
+			y.ROOM_ID LIKE CONCAT('%',#roomId#,'%')
+		</isNotEmpty>
+		ORDER BY y.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<select id="selectMeetingYyInfo" parameterClass="long" resultClass="meetingYy">
+		SELECT
+		y.ID,
+		y.CREATE_DATE createDate,
+		y.UPDATE_DATE updateDate,
+		y.ROOM_ID roomId,
+		(SELECT ROOM_NAME FROM SCOA_TB_MEETING_ROOM r WHERE r.ID=y.ROOM_ID) roomName,
+		y.LOGIN_ID loginId,
+		(SELECT USER_NAME FROM SCOA_TB_USER u WHERE u.LOGIN_ID=y.LOGIN_ID) userName,
+		y.APPROVAL_ID approvalId,
+		(SELECT APPROVAL_NAME FROM SCOA_TB_APPROVAL a WHERE a.ID=y.APPROVAL_ID) approvalName,
+		y.STEP step,
+		y.START_TIME startTime,
+		y.END_TIME endTime,
+		y.CURRENT_OPT_ID currentOptId,
+		(SELECT u.USER_NAME from
+		SCOA_TB_USER u WHERE u.LOGIN_ID = y.CURRENT_OPT_ID) currentOptName,
+		y.NEXT_OPT_ID nextOptId,
+		(SELECT u0.USER_NAME from
+		SCOA_TB_USER u0 WHERE u0.LOGIN_ID = y.NEXT_OPT_ID) nextOptName,
+		y.ENABLED enabled,
+		y.STATUS status,
+		y.FILING_DATE filingDate
+		FROM
+		SCOA_TB_MEETING_YY y
+		WHERE y.ID=#id#
+	</select>
+	
+    <!-- 根据预约ID更新会议室预约信息 -->
+	<update id="updateMeetingYy" parameterClass="meetingYy">
+		UPDATE
+		SCOA_TB_MEETING_YY y
+		SET
+		y.UPDATE_DATE=now(),
+		y.CURRENT_OPT_ID = #currentOptId#,
+		y.NEXT_OPT_ID = #nextOptId#,
+		y.STATUS = #status#,
+		y.ENABLED = #enabled#
+		WHERE y.ID = #id#
+	</update>
+	
+	<!-- 根据预约ID更新会议预约信息 -->
+	<update id="updateMeetingYyById" parameterClass="meetingYy">
+		UPDATE
+		SCOA_TB_MEETING_YY y
+		SET
+		y.UPDATE_DATE=now(),
+		y.STEP = #step#,
+		y.CURRENT_OPT_ID = #currentOptId#,
+		y.NEXT_OPT_ID = #nextOptId#,
+		y.ENABLED = #enabled#,
+		y.STATUS = #status#,
+		y.FILING_DATE = #filingDate#
+		WHERE y.ID = #id#
+	</update>
+	
+		<!-- 根据查询条件查询符合条件的会议室预约集合 -->
+	<select id="getMeetingYyTimeCompare" resultClass="meetingYy">
+		SELECT
+		y.ID,
+		y.CREATE_DATE createDate,
+		y.UPDATE_DATE updateDate,
+		y.ROOM_ID roomId,
+		y.LOGIN_ID loginId,
+		y.APPROVAL_ID approvalId,
+		y.STEP step,
+		y.START_TIME startTime,
+		y.END_TIME endTime,
+		y.CURRENT_OPT_ID currentOptId,
+		y.NEXT_OPT_ID nextOptId,
+		y.ENABLED enabled,
+		y.STATUS status,
+		y.FILING_DATE filingDate
+		FROM
+		SCOA_TB_MEETING_YY y
+		WHERE y.LOGIN_ID= #loginId#
+		AND y.ROOM_ID = #roomId#
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,32 @@
+#facebox .body{
+	font-family: "Arial";
+	padding: 0px; border:1px solid #CDEDF8;
+	
+}
+
+#facebox .body p{
+	padding:5px;
+	font-size: 12px;
+	width: 350px;
+	line-height: 20px;
+	color: #000000;
+}
+
+#facebox .body p a, #facebox .body p a:visited{
+	color: #333333;
+	text-decoration: underline;
+}
+
+#facebox .body p a:hover{
+	color: #2A65A0;
+	text-decoration: underline;
+}
+
+#facebox .body h2{
+    background: url(../facebox/we.png) no-repeat #CCE8F9;
+	margin: 0;
+	padding: 10px 10px 10px 45px;
+	font-size: 20px;
+	font-family: "Arial";
+	border:none !important;
+}

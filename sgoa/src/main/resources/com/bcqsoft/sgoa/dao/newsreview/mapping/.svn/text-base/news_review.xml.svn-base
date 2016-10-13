@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息审核表SQL映射文件, TABLE: SCOA_TB_NEWS_REVIEW -->
+<sqlMap namespace="newsreview">
+	
+	<typeAlias alias="newsReview"
+		type="com.bcqsoft.sgoa.dao.newsreview.dataobject.NewsReview" />
+		
+	<!-- 插入一条信息至信息审核表 -->
+	<insert id="insertIntoNewsReview" parameterClass="newsReview">
+		INSERT INTO	
+			SCOA_TB_NEWS_REVIEW
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			NEWS_ID,
+			CURRENT_OPT_ID,
+			OPINION,
+			REMARK,
+			DO_ACTION
+		) 
+		VALUES(
+			now(),
+			now(),
+			#newsId#,
+			#currentOptId#,
+			#opinion#,
+			#remark#,
+			#doAction#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+	<!-- 根据信息ID读取信息的全部审核记录 -->
+	<select id="findAllNewsReviewById" resultClass="newsReview">
+		SELECT 
+			r.ID id,
+			r.CREATE_DATE createDate,
+			r.NEWS_ID newsId,
+			r.OPINION opinion,
+			r.REMARK remark,
+			u0.USER_NAME optName,
+			u1.USER_NAME nextOptName
+		 FROM
+		 	SCOA_TB_NEWS_REVIEW r,
+		 	SCOA_TB_USER u0,
+		 	SCOA_TB_USER u1
+		WHERE r.NEWS_ID = #msgId#
+		  AND r.OPT_ID = u0.LOGIN_ID
+		  AND r.NEXT_OPT_ID = u1.LOGIN_ID
+	</select>
+	
+	<!-- 根据信息ID读取信息的全部审核记录 -->
+	<select id="findNewsReviewList" resultClass="newsReview">
+		SELECT 
+			r.ID id,
+			r.CREATE_DATE createDate,
+			r.CURRENT_OPT_ID currentOptId,
+			u0.USER_NAME currentOptName,
+			r.OPINION opinion
+		 FROM
+		 	SCOA_TB_NEWS_REVIEW r,
+		 	SCOA_TB_USER u0
+		WHERE r.NEWS_ID = #id#
+		  AND r.CURRENT_OPT_ID = u0.LOGIN_ID
+	</select>
+	
+	
+	<!-- 根据信息ID读取信息的一条审核记录 -->
+	<select id="findNewsReviewListByOne" resultClass="newsReview">
+		SELECT 
+			r.ID id,
+			r.CREATE_DATE createDate,
+			r.CURRENT_OPT_ID currentOptId,
+			u0.USER_NAME currentOptName,
+			r.OPINION opinion
+		 FROM
+		 	SCOA_TB_NEWS_REVIEW r,
+		 	SCOA_TB_USER u0
+		WHERE r.NEWS_ID = #id#
+		  AND r.CURRENT_OPT_ID = u0.LOGIN_ID
+		ORDER BY ID desc
+        LIMIT 1
+	</select>
+	
+	
+	
+	
+</sqlMap>

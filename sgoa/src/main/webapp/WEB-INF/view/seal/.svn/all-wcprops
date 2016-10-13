@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/bcqSoft/!svn/ver/7965/source/sgoa/trunk/src/main/webapp/WEB-INF/view/seal
+END
+add_seal.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/bcqSoft/!svn/ver/6164/source/sgoa/trunk/src/main/webapp/WEB-INF/view/seal/add_seal.ftl
+END
+seal_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bcqSoft/!svn/ver/7098/source/sgoa/trunk/src/main/webapp/WEB-INF/view/seal/seal_list.ftl
+END
+menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/bcqSoft/!svn/ver/7965/source/sgoa/trunk/src/main/webapp/WEB-INF/view/seal/menu.ftl
+END
+seal_detail.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/6164/source/sgoa/trunk/src/main/webapp/WEB-INF/view/seal/seal_detail.ftl
+END
+seal_edit.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bcqSoft/!svn/ver/6164/source/sgoa/trunk/src/main/webapp/WEB-INF/view/seal/seal_edit.ftl
+END

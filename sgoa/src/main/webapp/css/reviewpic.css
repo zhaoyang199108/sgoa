@@ -1,0 +1,34 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td a {
+    margin: 0;
+    padding: 0;
+}
+li {
+    list-style: none;
+}
+a {
+    color: #000000;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000000;
+    text-decoration: none;
+}
+.lct{  font-size:14px; font-family:"ËÎÌו"; color: #000000; float:left;}
+.lct ul li{ width:125px; background:#A0C4E8;background: url(../image/ico.png) no-repeat -138px 0px; height:38px; padding-top:103px; margin-left:128px; }
+.lct ul li a{ display:block; height:38px; background:#A0C4E8; text-align:center; line-height:38px;}
+.lct ul li.start{ height:26px; padding-left:80px; padding-top:0px; line-height:26px;}
+.lct ul li.noe01{ background-position:-138px -23px;}
+.lct ul li.noe02{ background-position:-138px -167px;}
+.lct ul li.noe03{ background-position:-138px -307px;}
+.lct ul li.noe04{ background-position:-138px -446px;}
+
+.lct ul li.noe05{ background-position:-8px -584px; float:left; padding-top:115px; margin-left:0px;}
+.lct ul li.noe05_01{ background-position:-8px -731px; float:left; padding-top:115px; margin-left:0px;}
+.lct ul li.noe06{ background-position:-142px -584px; float:left; padding-top:115px; margin-left:133px;display:inline;}
+.lct ul li.noe06_01{ background-position:-142px -731px; float:left; padding-top:115px; margin-left:133px;display:inline;}
+.lct ul li.noe07{ background-position:-274px -584px; float:left; padding-top:115px; margin-left:8px;}
+.lct ul li.noe07_01{ background-position:-274px -731px; float:left; padding-top:115px; margin-left:8px;}
+.lct ul li.end{ height:17px; clear:both; padding-left:80px; padding-top:65px; background-position:-138px -884px;}
+.zs{ float:left; line-height:23px; color:#FF0000; font-size:13px; display:inline; margin-top:125px;}
+

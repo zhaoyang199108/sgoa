@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息表SQL映射文件, TABLE: SCOA_TB_MESSAGE -->
+<sqlMap namespace="messageLook">
+
+	<typeAlias alias="messageLook"
+		type="com.bcqsoft.sgoa.dao.messagelook.dataobject.MessageLook" />
+
+	<!-- 插入一条信息至信息表 -->
+	<insert id="addMessageInfo" parameterClass="messageLook">
+		INSERT INTO
+		SCOA_TB_MESSAGE_LOOK
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		MESSAGE_ID,
+		LOGIN_ID,
+		STATUS
+		)
+		VALUES(
+		now(),
+		now(),
+		#messageId#,
+		#loginId#,
+		'1'
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="getAllMessageLookList" parameterClass="messageLook"
+		resultClass="messageLook">
+		SELECT
+		t.ID id,
+		t.CREATE_DATE createDate,
+		t.UPDATE_DATE
+		updateDate,
+		t.LOGIN_ID loginId,
+		t.MESSAGE_ID messageId,
+		t.STATUS status
+		FROM
+		SCOA_TB_MESSAGE_LOOK t
+		WHERE
+		t.MESSAGE_ID =#messageId#
+		AND
+		t.LOGIN_ID=#loginId#
+		ORDER BY t.UPDATE_DATE
+		DESC
+	</select>
+
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="getAllMessageLookListAll" parameterClass="long" resultClass="messageLook">
+		SELECT
+		t.ID id,
+		t.CREATE_DATE createDate,
+		t.UPDATE_DATE updateDate,
+		t.LOGIN_ID loginId,
+		(SELECT USER_NAME FROM SCOA_TB_USER d WHERE d.LOGIN_ID=t.LOGIN_ID) loginName,
+        d.DEPT_NAME deptName,
+		t.MESSAGE_ID messageId,
+		t.STATUS status
+		FROM SCOA_TB_MESSAGE_LOOK t,SCOA_TB_USER u,SCOA_TB_DEPT d
+		WHERE t.MESSAGE_ID =#id#
+        AND t.LOGIN_ID=u.LOGIN_ID        
+        AND u.DEPT_ID=d.ID
+		ORDER BY t.UPDATE_DATE DESC
+	</select>
+</sqlMap>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 物资设备申领表SQL映射文件, TABLE: sgoa_TB_APPLY_GET -->
+<sqlMap namespace="approvalDetail">
+
+	<typeAlias alias="ApprovalDetail"
+		type="com.bcqsoft.sgoa.dao.approvaldetail.dataobject.ApprovalDetail" />
+	<!-- 查找全部审批流程列表 -->
+	<select id="findAllApprovalDetailInfo" resultClass="approvalDetail">
+		SELECT
+		d.ID id,
+		d.P_ID pId,
+		d.POSITION_ID positionId,
+		d.STATUS status,
+		(SELECT GRPO_NAME FROM SCOA_TB_GRPO g WHERE g.ID=d.POSITION_ID) grpoName
+		FROM
+		SCOA_TB_APPROVAL_DETAIL d
+		WHERE d.ENABLED ='Y'
+	</select>
+
+	<!-- 插入审批流程信息 -->
+	<insert id="insertIntoApprovalDetail" parameterClass="approvalDetail">
+		INSERT INTO
+		SCOA_TB_APPROVAL_DETAIL
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		DETIL_ID,
+		P_ID,
+		POSITION_ID,
+		STATUS,
+		ENABLED
+		)
+		VALUES(
+		now(),
+		now(),
+		#detailId#,
+		#pId#,
+		#positionId#,
+		#status#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据ID删除某条审批流程信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="updateApprovalDetailStatusToDisabled" parameterClass="map">
+		UPDATE
+		SCOA_TB_APPROVAL_DETAIL d
+		SET d.UPDATE_DATE = now(),
+		d.ENABLED = 'N'
+		WHERE d.ENABLED = 'Y'
+		<isNotNull property="idList">
+			AND d.ID IN
+			<iterate property="idList" conjunction="," open="(" close=")">
+				#idList[]#
+			</iterate>
+		</isNotNull>
+	</update>
+	
+	<!-- 根据ID查询某一条审批流程 -->
+	<select id="findAllApprovalDetailByPid" resultClass="approvalDetail">		
+		SELECT
+		d.ID id,
+		d.P_ID pId,
+		d.DETIL_ID detailId,
+		d.POSITION_ID positionId,
+		d.STATUS status,
+		(SELECT GRPO_NAME FROM SCOA_TB_GRPO g WHERE g.ID=d.POSITION_ID) grpoName
+		FROM
+		SCOA_TB_APPROVAL_DETAIL d
+		WHERE d.P_ID = #pId#
+		AND d.ENABLED ='Y'
+	</select>
+	<!-- 根据ID查询某一条审批流程 -->
+	<select id="findApprovalDetailInfoById" resultClass="approvalDetail">		
+		SELECT
+		d.ID id,
+		d.P_ID pId,
+		d.DETIL_ID detailId,
+		d.POSITION_ID positionId,
+		d.STATUS status,
+		(SELECT GRPO_NAME FROM SCOA_TB_GRPO g WHERE g.ID=d.POSITION_ID) grpoName
+		FROM
+		SCOA_TB_APPROVAL_DETAIL d
+		WHERE d.DETIL_ID = #detailId#
+		AND d.ENABLED ='Y'
+	</select>
+	
+	<!-- 根据ID更新审批流程信息 -->
+	<update id="updateApprovalDetailInfoById" parameterClass="approvalDetail">
+		UPDATE
+		SCOA_TB_APPROVAL_DETAIL d
+		SET
+		d.UPDATE_DATE =now(),
+		d.POSITION_ID=#positionId#,
+		d.STATUS = #status#
+		WHERE d.ID = #id#
+		AND d.ENABLED = 'Y'
+	</update>
+	
+	<!-- 根据流程主表ID与职务ID查询出当前流程详细信息 -->
+	<select id="getApprovalDetailForList" resultClass="approvalDetail">
+		SELECT
+		d.ID id,
+		d.P_ID pId,
+		d.POSITION_ID positionId,
+		d.STATUS status,
+		(SELECT GRPO_NAME FROM SCOA_TB_GRPO g WHERE g.ID=d.POSITION_ID) grpoName
+		FROM
+		SCOA_TB_APPROVAL_DETAIL d
+		WHERE d.POSITION_ID=#positionId#
+		AND  d.DETIL_ID = #detailId# 
+		AND d.ENABLED ='Y'
+		LIMIT 1 
+	</select>
+	
+	<!-- 根据流程主表ID与父ID查询出所有子ID -->
+	<select id="getApprovalDetailForPIdList" resultClass="approvalDetail">
+		SELECT
+		d.ID id,
+		d.P_ID pId,
+		d.POSITION_ID positionId,
+		d.STATUS status,
+		(SELECT GRPO_NAME FROM SCOA_TB_GRPO g WHERE g.ID=d.POSITION_ID) grpoName
+		FROM
+		SCOA_TB_APPROVAL_DETAIL d
+		WHERE d.P_ID = #pId#
+		AND  d.DETIL_ID = #detailId#	
+		AND d.ENABLED ='Y'
+	</select>
+	
+	<!-- 根据ID查询出流程详细信息 -->
+	<select id="getApprovalDetailForId" resultClass="approvalDetail">
+		SELECT
+		d.ID id,
+		d.P_ID pId,
+		d.POSITION_ID positionId,
+		d.STATUS status,
+		(SELECT GRPO_NAME FROM SCOA_TB_GRPO g WHERE g.ID=d.POSITION_ID) grpoName
+		FROM
+		SCOA_TB_APPROVAL_DETAIL d
+		WHERE d.ID = #id# 
+		AND d.ENABLED ='Y' 
+	</select>
+	
+	<!-- 根据ID查询出流程详细信息 -->
+	<select id="getApprovalDetailForIdByPId" resultClass="approvalDetail">
+		SELECT
+		d.ID id,
+		d.P_ID pId,
+		d.POSITION_ID positionId,
+		d.STATUS status,
+		(SELECT GRPO_NAME FROM SCOA_TB_GRPO g WHERE g.ID=d.POSITION_ID) grpoName
+		FROM
+		SCOA_TB_APPROVAL_DETAIL d
+		WHERE d.P_ID = #id# 
+		AND d.DETIL_ID = #detailId#
+		AND d.ENABLED ='Y' 
+	</select>
+	
+	<!-- 根据ID查询出流程详细信息 -->
+	<select id="getApprovalDetailForPositionId" resultClass="approvalDetail">
+		SELECT
+		d.ID id,
+		d.P_ID pId,
+		d.POSITION_ID positionId,
+		d.STATUS status,
+		(SELECT GRPO_NAME FROM SCOA_TB_GRPO g WHERE g.ID=d.POSITION_ID) grpoName
+		FROM
+		SCOA_TB_APPROVAL_DETAIL d
+		WHERE d.P_ID IN (SELECT 
+							p.ID FROM SCOA_TB_APPROVAL_DETAIL p 
+						WHERE p.POSITION_ID = #positionId# 
+						AND p.DETIL_ID = #detailId# 
+						AND p.ENABLED ='Y' )
+		AND d.DETIL_ID = #detailId# 
+		AND d.ENABLED ='Y' 
+	</select>
+</sqlMap>

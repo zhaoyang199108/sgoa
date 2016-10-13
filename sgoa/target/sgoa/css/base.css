@@ -1,0 +1,120 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td a {
+    margin: 0;
+    padding: 0;
+}
+
+fieldset, img {
+    border: 0;
+}
+
+li {
+    list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: inherit;
+}
+
+body {
+    font: 12px / 1.5 tahoma, arial, simsun, sans-serif;
+    color: #333333;
+}
+
+table {
+    font-size: inherit;
+}
+
+a {
+    color: #656565;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #3349C1;
+    text-decoration: none;
+}
+
+.big{
+   font-size:16px; 
+   float: left;
+} 
+
+body {
+    text-align: center;
+}
+
+#main {
+    overflow: hidden;
+}
+
+input.but{font-size:12px;}
+
+input.but02{font-size:14px; background:url(../images/tj.png) 0 0; width:83px; height:32px; font-weight:bold; color:#FFF; border:0px;}
+input.but02:hover{background-position:0 -60px; color:#0E5EAD;}
+#left {
+    width: 12%;
+    float: left;
+    background-color: #CDEDFA;
+    overflow: hidden;
+}
+
+#left .md {
+    background: url(../image/module_bg.jpg) repeat-x;
+    height: 22px;
+}
+
+#left .md p {
+    color: #FFFFFF;
+    font: 14px / 21px;
+	*line-height:22px;
+}
+
+#left .menu {
+    overflow: hidden;
+}
+
+.menu .module {
+    background: url(../image/menu_bg.jpg) repeat-x;
+    height: 23px;
+    padding-left: 16px;
+}
+
+.menu .module h3 {
+    background: url(../image/sign_add.jpg) no-repeat;
+    text-align: left;
+    padding-left: 21px;
+    font: 12px / 24px;
+	*line-height:25px;
+}
+.btn-ctt{height:18px;}
+.menu ul.sub-list {
+}
+
+.menu ul.sub-list li a {
+    display: block;
+    height: 23px;
+    text-align: left;
+    color: #6B6F6E;
+    padding-left: 38px;
+    line-height: 22px;
+}
+
+.menu ul.sub-list li a:hover {
+    background-color: #A4DEF6;
+}
+
+#content {
+    float: left;
+    width: 98%;
+    margin-left: 8px;
+    overflow: hidden;
+}
+.block ul.dt li a.tbc{color:#3E52C3;}
+  

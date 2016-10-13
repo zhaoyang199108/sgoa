@@ -1,0 +1,107 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector
+END
+db_common.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/db_common.php
+END
+grid_connector.php
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/grid_connector.php
+END
+tools.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/tools.php
+END
+db_mssql.php
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/db_mssql.php
+END
+tree_connector.php
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/tree_connector.php
+END
+dataprocessor.php
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/dataprocessor.php
+END
+combo_connector.php
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/combo_connector.php
+END
+db_oracle.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/db_oracle.php
+END
+treegrid_connector.php
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/treegrid_connector.php
+END
+connector.js
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/connector.js
+END
+crosslink_connector.php
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/crosslink_connector.php
+END
+update.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/update.php
+END
+db_mysqli.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/db_mysqli.php
+END
+base_connector.php
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/base_connector.php
+END
+db_pdo.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/db_pdo.php
+END
+scheduler_connector.php
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/scheduler_connector.php
+END
+db_postgre.php
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/js/scheduler/connector/db_postgre.php
+END

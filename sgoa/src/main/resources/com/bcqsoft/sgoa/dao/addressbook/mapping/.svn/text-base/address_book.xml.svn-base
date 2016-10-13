@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 通讯录表SQL映射文件, TABLE: SCOA_TB_ADDRESS_BOOK -->
+<sqlMap namespace="addressBook">
+
+	<typeAlias alias="addressBook"
+		type="com.bcqsoft.sgoa.dao.addressbook.dataobject.AddressBook" />
+		
+	<!-- 根据查询条件查询符合条件的通讯录(页面分页使用) -->
+	<select id="findAddressBookInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_ADDRESS_BOOK ab
+		WHERE ab.ENABLED='Y'
+		AND ab.LOGIN_ID= #loginId#
+		<isNotEmpty property="addName" prepend="AND">
+			ab.ADD_NAME LIKE
+			CONCAT('%',#addName#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的通讯录 -->
+	<select id="findAddressBookInfoList" resultClass="addressBook">
+		SELECT ab.ID,
+		       ab.CREATE_DATE createDate,
+		       ab.UPDATE_DATE updateDate,
+		       ab.LOGIN_ID loginId,
+		       ab.TYPE_ID typeId,
+		       (SELECT abt.TYPE_NAME FROM SCOA_TB_ADDRESS_BOOK_TYPE abt  WHERE abt.ID = ab.TYPE_ID ) typeName,            
+		       ab.ADD_NAME addName,       
+		       ab.Photo photo
+		FROM SCOA_TB_ADDRESS_BOOK ab
+		WHERE ab.ENABLED='Y'
+		AND ab.LOGIN_ID= #loginId#
+		<isNotEmpty property="addName" prepend="AND">
+			ab.ADD_NAME LIKE
+			CONCAT('%',#addName#,'%')
+		</isNotEmpty>
+		ORDER BY ab.SORTING ASC,ab.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+		
+		<insert id="insertIntoAddressBook" parameterClass="addressBook">
+		INSERT INTO	
+			SCOA_TB_ADDRESS_BOOK
+			
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			LOGIN_ID,
+			TYPE_ID,
+			SORTING,
+			AGE,
+			PHOTO,
+			ADD_NAME,
+			GENDER,
+			BIRTHDAY,
+			NICK_NAME,
+			DUTIES,
+			SPOUSE,
+			CHILDREN,
+			UNIT_NAME,
+			UNIT_ADDRESS,
+			UNIT_CODE,
+			UNIT_TEL,
+			UNIT_FAX,
+			HOME_ADDRESS,
+			HOME_CODE,
+			HOME_TEL,
+			CELL_PHONE,
+			HOME_PHS,
+			EMAIL,
+			QQ,
+			MSN,
+			REMARK,
+			ENABLED
+		) 
+		VALUES(
+			now(),
+			now(),
+			#loginId#,
+			#typeId#,
+			#sorting#,
+			#age#,
+			#photo#,
+            #addName#,
+			#gender#,
+			#birthday#,
+			#nickName#,
+			#duties#,
+			#spouse#,
+			#children#,
+			#unitName#,
+			#unitAddress#,
+			#unitCode#,
+			#unitTel#,
+			#unitFax#,
+			#homeAddress#,
+			#homeCode#,
+			#homeTel#,
+			#cellPhone#,
+			#homePhs#,
+			#email#,
+			#qq#,
+			#msn#,
+			#remark#,
+			#enabled#
+		)
+      
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+	<!-- 根据ID查询符合条件的通讯录 -->
+	<select id="selectAddressBookById" resultClass="addressBook">
+		SELECT ab.ID,
+		       ab.CREATE_DATE createDate,
+		       ab.UPDATE_DATE updateDate,
+		       ab.LOGIN_ID loginId,   
+		       ab.TYPE_ID typeId,
+		       (SELECT abt.TYPE_NAME FROM SCOA_TB_ADDRESS_BOOK_TYPE abt  WHERE abt.ID = ab.TYPE_ID ) typeName, 
+		       ab.SORTING sorting,  
+		       ab.AGE age, 
+		       ab.PHOTO photo, 
+		       ab.ADD_NAME addName,       
+		       ab.GENDER gender,       
+		       ab.BIRTHDAY birthday,       
+               ab.NICK_NAME nickName,
+               ab.DUTIES duties,
+               ab.SPOUSE spouse,
+               ab.CHILDREN children,
+               ab.UNIT_NAME unitName,
+               ab.UNIT_ADDRESS unitAddress,
+               ab.UNIT_CODE unitCode,
+               ab.UNIT_TEL unitTel,
+               ab.UNIT_FAX unitFax,
+               ab.HOME_ADDRESS homeAddress,
+               ab.HOME_CODE homeCode,
+               ab.HOME_TEL homeTel,
+               ab.CELL_PHONE cellPhone,
+               ab.HOME_PHS homePhs,
+               ab.EMAIL email,
+               ab.QQ qq,
+               ab.MSN msn,
+		       ab.REMARK remark       
+		FROM SCOA_TB_ADDRESS_BOOK ab
+		WHERE ab.ID = #id#
+	</select>
+	
+	<!-- 根据TYPE_ID查询符合条件的通讯录 -->
+	<select id="getAddressBookList" resultClass="addressBook">
+		SELECT ab.ID,
+		       ab.CREATE_DATE createDate,
+		       ab.UPDATE_DATE updateDate,
+		       ab.LOGIN_ID loginId,   
+		       ab.PHOTO photo, 
+		       ab.ADD_NAME addName      
+		FROM SCOA_TB_ADDRESS_BOOK ab
+		WHERE ab.TYPE_ID = #id#
+		AND ab.ENABLED = 'Y'
+		ORDER BY ab.SORTING ASC
+	</select>
+	
+		<!-- 根据ID更新某条通讯录 -->
+	<update id="updateAddressBookInfoById" parameterClass="addressBook">
+		UPDATE 
+			SCOA_TB_ADDRESS_BOOK ab
+		SET 
+			ab.UPDATE_DATE = now(),
+			ab.LOGIN_ID = #loginId#,
+            ab.TYPE_ID = #typeId#,
+            ab.SORTING = #sorting#,
+            ab.AGE = #age#,   
+            ab.PHOTO = #photo#,  
+			ab.ADD_NAME = #addName#,             
+			ab.GENDER = #gender#,       
+			ab.BIRTHDAY = #birthday#,                  
+			ab.NICK_NAME = #nickName#,                   
+			ab.DUTIES = #duties#,                  
+			ab.SPOUSE = #spouse#,                   
+			ab.CHILDREN = #children#,                   
+			ab.UNIT_NAME = #unitName#,                   
+			ab.UNIT_ADDRESS = #unitAddress#,       
+			ab.UNIT_CODE = #unitCode#,                  
+			ab.UNIT_TEL = #unitTel#,      
+        	ab.UNIT_FAX = #unitFax#,       
+			ab.HOME_ADDRESS = #homeAddress#,                  
+			ab.HOME_CODE = #homeCode#,                               
+			ab.HOME_TEL = #homeTel#,                  
+			ab.CELL_PHONE = #cellPhone#,                               
+			ab.HOME_PHS = #homePhs#,                   
+			ab.EMAIL = #email#,                   
+			ab.QQ = #qq#,       
+			ab.MSN = #msn#,                  			                                     
+			ab.REMARK = #remark#       
+		WHERE ab.ID = #id#
+		  AND ab.ENABLED = 'Y'
+	</update>
+	
+	<!-- 根据ID删除某条信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="updateAddressBookStatusToDisabled" parameterClass="long">
+		UPDATE
+		SCOA_TB_ADDRESS_BOOK ab
+		SET ab.UPDATE_DATE = now(),
+		ab.ENABLED = 'N'
+		WHERE ab.ID = #id#
+		AND
+		ab.ENABLED = 'Y'
+	</update>
+</sqlMap>

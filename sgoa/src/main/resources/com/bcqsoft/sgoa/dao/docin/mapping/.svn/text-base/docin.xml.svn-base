@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息表SQL映射文件, TABLE: SCOA_TB_DOCIN -->
+<sqlMap namespace="docin">
+	
+	<typeAlias alias="docin"
+		type="com.bcqsoft.sgoa.dao.docin.dataobject.Docin" />
+		
+	<!-- 插入一条信息至信息表 -->
+	<insert id="insertIntoDocin" parameterClass="docin">
+		INSERT INTO	
+			SCOA_TB_DOCIN
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			TITLE,
+			RECEIVER_TIME,
+			TEXT_TIME,
+			FONDS_NUM,
+			URGENT,
+			SECURITY,
+			FONDS_NAME,
+			FILE_DEPT,
+			APPROVAL_IDS,
+			STEPS,
+			FILE_NUM,
+			REGISTER_NUM,
+			SUPERVISE,
+			RECEIVER_ID,
+		    REMARK,
+			D_RECORDID,
+			APPROVAL_ID,
+			STEP,
+			SORT,
+			CURRENT_OPT_ID,
+			NEXT_OPT_ID,
+			STATUS,
+			ENABLED,
+			LOGIN_ID,
+			CATEGORY,
+			BLQX,
+			YX_OPT_ID
+		) 
+		VALUES(
+			now(),
+			now(),
+			#title#,
+			#receiverTime#,
+			#textTime#,
+			#fondsNum#,
+			#urgent#,
+			#security#,
+			#fondsName#,
+			#fileDept#,
+			#approvalIds#,
+			#steps#,
+			#fileNum#,
+			#registerNum#,
+			#supervise#,
+			#receiverId#,
+		    #remark#,
+			#dRecordid#,
+			#approvalId#,
+			#step#,
+			#sort#,
+			#currentOptId#,
+			#nextOptId#,
+			#status#,
+			#enabled#,
+			#loginId#,
+			#category#,
+			#blqx#,
+			#yxOptId#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findMyDraftDocinCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.LOGIN_ID = #loginId#
+		  AND t.ENABLED = 2
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findMyDraftDocinList" resultClass="docin">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.YX_OPT_ID yxOptId,
+			(SELECT GROUP_CONCAT(stu.USER_NAME) FROM SCOA_TB_USER stu WHERE FIND_IN_SET(stu.LOGIN_ID,t.YX_OPT_ID)) yxOptName,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.LOGIN_ID = #loginId#
+		  AND t.ENABLED = 2
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findMyDocinCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.ID in (SELECT DOCIN_ID FROM SCOA_TB_DOCIN_BOX b WHERE b.RECEIVER_ID=#receivedId#)
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findMyDocinList" resultClass="docin">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			(SELECT b.STATUS FROM  SCOA_TB_DOCIN_BOX b WHERE b.RECEIVER_ID='wzm' AND b.DOCIN_ID=t.id LIMIT 1) boxStatus,
+			t.YX_OPT_ID yxOptId,
+			(SELECT GROUP_CONCAT(stu.USER_NAME) FROM SCOA_TB_USER stu WHERE FIND_IN_SET(stu.LOGIN_ID,t.YX_OPT_ID)) yxOptName,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.ID in (SELECT DOCIN_ID FROM SCOA_TB_DOCIN_BOX b WHERE b.RECEIVER_ID=#receivedId#)
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据条件查找该用户我的申请信息数量 -->
+	<select id="findApprovedDocinCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.LOGIN_ID = #loginId#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="startTime" prepend="AND">
+	  			t.CREATE_DATE &gt;= #startTime#
+	  		</isNotEmpty>
+	  		<isNotEmpty property="endTime" prepend="AND">
+	  			t.CREATE_DATE &lt;= #endTime#
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户我的申请的信息集合 -->
+	<select id="findApprovedDocinList" resultClass="docin">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.STATUS status,
+			t.CURRENT_OPT_ID currentOptId,
+			t.LOGIN_ID loginId,
+			(SELECT stu.USER_NAME FROM SCOA_TB_USER stu WHERE stu.LOGIN_ID =t.LOGIN_ID) loginName,
+			t.YX_OPT_ID yxOptId,
+			(SELECT GROUP_CONCAT(stu.USER_NAME) FROM SCOA_TB_USER stu WHERE FIND_IN_SET(stu.LOGIN_ID,t.YX_OPT_ID)) yxOptName,
+			t.FILE_DEPT fileDept,
+			t.REGISTER_NUM registerNum
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.LOGIN_ID = #loginId#
+		 AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="startTime" prepend="AND">
+	  			t.CREATE_DATE &gt;= #startTime#
+	  		</isNotEmpty>
+	  		<isNotEmpty property="endTime" prepend="AND">
+	  			t.CREATE_DATE &lt;= #endTime#
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据条件查找该用户待审核信息数量 -->
+	<select id="findDocinReviewCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE FIND_IN_SET(#loginId#,t.NEXT_OPT_ID) 
+		  AND (t.STATUS = 1 || t.STATUS = 2)
+		  AND t.ENABLED = 1
+		  AND t.SORT = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户待审核的信息集合 -->
+	<select id="findDocinReviewList" resultClass="docin">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.STATUS status,
+			t.YX_OPT_ID yxOptId,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE FIND_IN_SET(#loginId#,t.NEXT_OPT_ID) 
+		  AND (t.STATUS = 1 || t.STATUS = 2)
+		  AND t.SORT = 1
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据条件查找该用户待审核信息数量 -->
+	<select id="findDocinDoinoutCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.NEXT_OPT_ID = #loginId#
+		  AND t.STATUS = 4
+		  AND t.SORT = 2
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户待审核的信息集合 -->
+	<select id="findDocinDoinoutList" resultClass="docin">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.STATUS status,
+			t.YX_OPT_ID yxOptId,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.NEXT_OPT_ID = #loginId#
+		  AND t.STATUS = 4
+		  AND t.SORT = 2
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+		<!-- 根据条件查找该用户经我审核信息数量 -->
+	<select id="getMyDocinReviewCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCIN t
+		 WHERE t.ID in (
+			SELECT r.DOCIN_ID
+			FROM SCOA_TB_DOCIN_REVIEW r
+			WHERE r.CURRENT_OPT_ID = #loginId#	 
+		 )
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户经我审核的信息集合 -->
+	<select id="getMyDocinReviewList" resultClass="docin">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.STATUS status,
+			t.YX_OPT_ID yxOptId,
+			(SELECT GROUP_CONCAT(stu.USER_NAME) FROM SCOA_TB_USER stu WHERE FIND_IN_SET(stu.LOGIN_ID,t.YX_OPT_ID)) yxOptName,
+			t.FILE_DEPT fileDept,
+			t.NEXT_OPT_ID nextOptId
+		 FROM
+		 	SCOA_TB_DOCIN t
+		 WHERE t.ID in (
+			SELECT r.DOCIN_ID
+			FROM SCOA_TB_DOCIN_REVIEW r
+			WHERE r.CURRENT_OPT_ID = #loginId#	 
+		 )
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据信息ID更新该条信息记录状态为已删除 -->
+	<update id="updateDocinStatusToEnabled" parameterClass="long">
+		UPDATE 
+			SCOA_TB_DOCIN t
+		   SET t.UPDATE_DATE = now(),
+		   	   t.ENABLED = 3
+		 WHERE t.ID = #id#
+	</update>
+	
+		<!-- 根据ID取得信息草稿数据 -->
+	<select id="findDocinDetailInfoById" resultClass="docin">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.SORT sort,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.REMARK remark,
+			t.D_RECORDID dRecordid,
+			t.APPROVAL_ID approvalId,
+			t.STEP step,
+			t.CURRENT_OPT_ID currentOptId,
+			t.NEXT_OPT_ID nextOptId,
+			(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = t.NEXT_OPT_ID LIMIT 1) nextOptName,
+			t.STATUS status,
+			t.ENABLED enabled,
+			t.FONDS_NUM fondsNum,
+			t.URGENT urgent,
+			t.SECURITY security,
+			t.FONDS_NAME fondsName,
+			t.FILE_DEPT fileDept,
+			t.APPROVAL_IDS approvalIds,
+			t.STEPS steps,
+			t.FILE_NUM fileNum,
+			t.REGISTER_NUM registerNum,
+			t.SUPERVISE supervise,
+			t.RECEIVER_ID receiverId,
+			t.CATEGORY category,
+			t.YX_OPT_ID yxOptId,
+			(SELECT GROUP_CONCAT(stu.USER_NAME) FROM SCOA_TB_USER stu WHERE FIND_IN_SET(stu.LOGIN_ID,t.YX_OPT_ID)) yxOptName,
+			t.BLQX blqx
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.ID = #id#
+	</select>
+	
+	<!-- 根据信息ID更新该条信息 -->
+	<update id="updateDocinInfoById" parameterClass="docin">
+		UPDATE 
+			SCOA_TB_DOCIN t
+		   SET t.UPDATE_DATE = now(),
+			   t.TITLE = #title#,
+			   t.RECEIVER_TIME = #receiverTime#,
+			   t.TEXT_TIME = #textTime#,
+			   t.APPROVAL_ID = #approvalId#,
+			   t.REMARK = #remark#,
+			   t.STATUS = #status#,
+			   t.ENABLED = #enabled#,
+			   t.D_RECORDID = #dRecordid#,
+			   t.NEXT_OPT_ID = #nextOptId#,
+			   t.FONDS_NUM = #fondsNum#,
+			   t.URGENT = #urgent#,
+			   t.SECURITY = #security#,
+			   t.FONDS_NAME = #fondsName#,
+			   t.FILE_DEPT = #fileDept#,
+			   t.APPROVAL_IDS = #approvalIds#,
+			   t.STEPS = #steps#,
+			   t.FILE_NUM = #fileNum#,
+			   t.REGISTER_NUM = #registerNum#,
+			   t.SUPERVISE = #supervise#,
+			   t.RECEIVER_ID = #receiverId#,
+			   t.CATEGORY = #category#,
+			   t.BLQX = #blqx#
+		 WHERE t.ID = #id#
+	</update>
+	
+	<!-- 根据信息ID更新该条信息 -->
+	<update id="updateOneDocinInfo" parameterClass="Long">
+		UPDATE 
+			SCOA_TB_DOCIN t
+		   SET t.UPDATE_DATE = now(),
+			   t.NEXT_OPT_ID = '',
+			   t.ENABLED = 2
+		 WHERE t.ID = #id#
+	</update>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateDocinById" parameterClass="docin">
+		UPDATE
+		SCOA_TB_DOCIN t
+		SET
+		t.UPDATE_DATE=now(),
+		t.STEP = #step#,
+		t.CURRENT_OPT_ID = #currentOptId#,
+		t.SORT=#sort#,
+		t.APPROVAL_IDS = #approvalIds#,
+		t.STEPS = #steps#,
+		t.NEXT_OPT_ID = #nextOptId#,
+		t.STATUS = #status#,
+		t.ENABLED = #enabled#,
+		t.SUPERVISE = #supervise#,
+		<isNotEmpty property="yxOptId">
+		t.YX_OPT_ID = #yxOptId#,
+		</isNotEmpty>
+		t.RECEIVER_ID = #receiverId#
+		WHERE t.ID = #id#
+	</update>
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findDocinSeacheCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.STATUS = #status#
+		  AND  t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findDocinSeacheList" resultClass="docin">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.YX_OPT_ID yxOptId,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.STATUS = #status#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateDocinWorkById" parameterClass="docin">
+		UPDATE
+		SCOA_TB_DOCIN t
+		SET
+		t.UPDATE_DATE=now(),
+		t.CURRENT_OPT_ID = #currentOptId#,
+		t.STEPS = #steps#,
+		t.NEXT_OPT_ID = #nextOptId#,
+		t.ENABLED = #enabled#,
+		t.SUPERVISE = #supervise#,
+		t.RECEIVER_ID = #receiverId#,
+		t.STATUS = #status#
+		WHERE t.ID = #id#
+	</update>
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findDocinDubanCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE (t.STATUS = 4||t.STATUS = 5)
+		  AND  t.ENABLED = 1
+		  AND t.SUPERVISE=1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findDocinDubanList" resultClass="docin">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.YX_OPT_ID yxOptId,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE (t.STATUS = 4||t.STATUS = 5)
+		  AND  t.ENABLED = 1
+		  AND t.SUPERVISE=1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据条件查找该用户待审核信息数量 -->
+	<select id="findDocinReviewCountForIndex" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE t.NEXT_OPT_ID = #loginId#
+		  AND t.STATUS = #status#
+		  AND t.ENABLED = 1
+		  AND t.SORT = 1
+	</select>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateDocinStatusById" parameterClass="docin">
+		UPDATE
+		SCOA_TB_DOCIN t
+		SET
+		t.UPDATE_DATE=now(),
+		t.STATUS = #status# 
+		WHERE t.ID = #id# 
+	</update>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="getDocinList" resultClass="String">
+		SELECT 
+			 MAX(RIGHT (REGISTER_NUM,3)) registerNum
+		 FROM
+		 	SCOA_TB_DOCIN 
+		 WHERE substring(REGISTER_NUM,3,8) = #reNum#
+	</select>
+	
+	<select id="getDocinListByFileNum" resultClass="docin" parameterClass="String">
+		SELECT 
+			t.ID id,
+			t.FILE_NUM fileNum
+		FROM SCOA_TB_DOCIN t
+		WHERE t.REGISTER_NUM NOT LIKE '%P%' 
+		AND t.FILE_NUM LIKE '%$fileNum$%' 
+	</select>
+	
+	<select id="getDocinFileNum" resultClass="docin" parameterClass="String">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.SORT sort,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.REMARK remark,
+			t.D_RECORDID dRecordid,
+			t.APPROVAL_ID approvalId,
+			t.STEP step,
+			t.CURRENT_OPT_ID currentOptId,
+			t.NEXT_OPT_ID nextOptId,
+			(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = t.NEXT_OPT_ID LIMIT 1) nextOptName,
+			t.STATUS status,
+			t.ENABLED enabled,
+			t.FONDS_NUM fondsNum,
+			t.URGENT urgent,
+			t.SECURITY security,
+			t.FONDS_NAME fondsName,
+			t.FILE_DEPT fileDept,
+			t.APPROVAL_IDS approvalIds,
+			t.STEPS steps,
+			t.FILE_NUM fileNum,
+			t.REGISTER_NUM registerNum,
+			t.SUPERVISE supervise,
+			t.RECEIVER_ID receiverId,
+			t.CATEGORY category,
+			t.YX_OPT_ID yxOptId,
+			(SELECT GROUP_CONCAT(stu.USER_NAME) FROM SCOA_TB_USER stu WHERE FIND_IN_SET(stu.LOGIN_ID,t.YX_OPT_ID)) yxOptName,
+			t.BLQX blqx
+		FROM SCOA_TB_DOCIN t
+		WHERE t.FILE_NUM = #fileNum# 
+		AND t.REGISTER_NUM NOT LIKE '%P%' 
+	</select>
+	
+	
+	<!-- 根据条件查找该用户流程变更信息数量 -->
+	<select id="findDocinLcbgCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE (t.STATUS = 1 || t.STATUS = 2)
+		  AND t.ENABLED = 1
+		  AND t.SORT = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户待审核的信息集合 -->
+	<select id="findDocinLcbgList" resultClass="docin">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.RECEIVER_TIME receiverTime,
+			t.TEXT_TIME textTime,
+			t.FILE_NUM fileNum,
+			t.STATUS status,
+			t.YX_OPT_ID yxOptId,
+			t.FILE_DEPT fileDept
+		 FROM
+		 	SCOA_TB_DOCIN t
+		WHERE (t.STATUS = 1 || t.STATUS = 2)
+		  AND t.ENABLED = 1
+		  AND t.SORT = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotEmpty property="textTime" prepend="AND">
+	  			t.TEXT_TIME LIKE CONCAT('%',#textTime#,'%')
+	  		</isNotEmpty>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateDocinByNextOptId" parameterClass="docin">
+		UPDATE
+		SCOA_TB_DOCIN t
+		SET
+		t.UPDATE_DATE=now(),
+		t.NEXT_OPT_ID = #nextOptId#
+		WHERE t.ID = #id#
+	</update>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateDocinByYxOptId" parameterClass="docin">
+		UPDATE
+		SCOA_TB_DOCIN t
+		SET
+		t.UPDATE_DATE=now(),
+		t.YX_OPT_ID = #yxOptId#
+		WHERE t.ID = #id#
+	</update>
+	
+</sqlMap>

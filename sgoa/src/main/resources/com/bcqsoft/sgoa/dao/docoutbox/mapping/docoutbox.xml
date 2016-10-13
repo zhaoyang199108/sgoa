@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息表SQL映射文件, TABLE: SCOA_TB_DOCOUT -->
+<sqlMap namespace="docoutBox">
+
+	<typeAlias alias="docoutBox"
+		type="com.bcqsoft.sgoa.dao.docoutbox.dataobject.DocoutBox" />
+
+	<!-- 插入一条信息至信息表 -->
+	<insert id="addDocoutInfo" parameterClass="docoutBox">
+		INSERT INTO
+		SCOA_TB_DOCOUT_BOX
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		DOCOUT_ID,
+		RECEIVER_ID,
+		ENABLED
+		)
+		VALUES(
+		now(),
+		now(),
+		#docoutId#,
+		#receiverId#,
+		'Y'
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="getAllDocoutBoxList" parameterClass="docoutBox"
+		resultClass="docoutBox">
+		SELECT
+		t.ID id,
+		t.CREATE_DATE createDate,
+		t.UPDATE_DATE
+		updateDate,
+		t.RECEIVER_ID receiverId,
+		t.DOCOUT_ID docoutId,
+		t.ENABLED enabled
+		FROM
+		SCOA_TB_DOCOUT_BOX t
+		WHERE
+		t.DOCOUT_ID =#docoutId#
+		AND
+		t.RECEIVER_ID=#receiverId#
+		ORDER BY t.UPDATE_DATE
+		DESC
+	</select>
+
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="getAllDocoutBoxListAll" parameterClass="long"
+		resultClass="docoutBox">
+		SELECT
+		t.ID id,
+		t.CREATE_DATE createDate,
+		t.UPDATE_DATE
+		updateDate,
+		t.RECEIVER_ID receiverId,
+		(SELECT USER_NAME FROM SCOA_TB_USER d WHERE d.RECEIVER_ID=t.RECEIVER_ID) loginName,
+		t.DOCOUT_ID docoutId,
+		t.ENABLED enabled
+		FROM
+		SCOA_TB_DOCOUT_BOX t
+		WHERE
+		t.DOCOUT_ID =#id#
+		ORDER BY
+		t.UPDATE_DATE
+		DESC
+	</select>
+</sqlMap>

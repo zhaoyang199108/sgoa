@@ -1,0 +1,16 @@
+.nav{ width:100%; overflow:visible;}
+.cu{ width:369px; margin:0 auto; height:209px;}
+.qxy{ width:369px; margin-top:115px; background:url(../image/tp.jpg) no-repeat; height:209px; position:relative;}
+.qxy h1.fw{ top:70px; left:60px; position:absolute; color:#FF7300; font-size:35px; font-weight:normal; border-bottom:1px solid #CCCCCC; line-height:55px;}
+.qxy h1.bt{ top:149px; left:70px;position:absolute;font-size:12px;font-family:"ËÎÌו";font-weight:normal; width: 289px;
+}
+
+
+.bc{ width:411px; margin:0 auto; height:178px;}
+.sio{ width:411px; background: url(../image/jop.png) no-repeat; height:179px; margin-top:115px; position:relative;}
+.lwo{ top:27px; left:27px; position:absolute;}
+.lwo p{ font-size:20px; line-height:35px;}
+.lwo span{ font-size:16px; float:left; margin-top:20px;}
+.jhu a{ background:url(../image/jop.png) no-repeat 0 0;  width:88px; height:27px; margin-top:15px;}
+.jhu a.f_home{ background-position: 0 -194px; float:left;}
+.jhu a.c_adm{  background-position: -90px -194px; float:left;}

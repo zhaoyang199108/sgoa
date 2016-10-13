@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 会议室表SQL映射文件, TABLE: SCOA_TB_MEETING_ROOM -->
+<sqlMap namespace="meetingYyReview">
+
+	<typeAlias alias="meetingYyReview"
+		type="com.bcqsoft.sgoa.dao.meetingyyreview.dataobject.MeetingYyReview" />
+
+	<!-- 插入一条信息至日程管理 -->
+	<insert id="insertIntoMeetingYyReview" parameterClass="meetingYyReview">
+		INSERT INTO
+		SCOA_TB_MEETING_YY_REVIEW
+		(
+			ID,
+			CREATE_DATE,
+			UPDATE_DATE,
+			YY_ID,
+			CURRENT_OPT_ID,
+			DO_ACTION,
+			OPINION,
+			REMARK
+		)
+			VALUES(
+			#id#,
+			now(),
+			now(),
+			#yyId#,
+			#currentOptId#,
+			#doAction#,
+			#opinion#,
+			#remark#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+	
+		<!-- 根据查询条件查询符合条件的物资报损申请列表信息 -->
+	<select id="findMeetingYyReviewList" resultClass="meetingYyReview">
+		SELECT yr.ID id,
+		       yr.CREATE_DATE createDate,
+		       yr.UPDATE_DATE updateDate, 
+		       yr.YY_ID yyId,        
+		       yr.CURRENT_OPT_ID currentOptId, 
+               u0.USER_NAME currentOptName,
+		       yr.DO_ACTION doAction,        
+		       yr.OPINION opinion,        
+		       yr.REMARK remark
+		FROM SCOA_TB_MEETING_YY_REVIEW yr,
+			 SCOA_TB_USER u0
+		WHERE yr.YY_ID=#id#
+		 AND yr.CURRENT_OPT_ID = u0.LOGIN_ID
+	</select>
+
+	
+</sqlMap>

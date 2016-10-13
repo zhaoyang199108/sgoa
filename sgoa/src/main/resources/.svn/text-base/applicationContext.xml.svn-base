@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<!-- Spring Security Configuration File  -->
+	<import resource="classpath:/app/sgoa-security.xml" />
+	<!-- Business Configuration File -->
+	<import resource="classpath:/app/service.xml" />
+	<!-- DAO Configuration File  -->
+	<import resource="classpath:/app/dao/dao.xml" />
+	<!-- Data Source Configuration -->
+	<import resource="classpath:/app/dao/dataSource.xml" />
+	<!-- Freemarker Configuration File  -->
+	<import resource="classpath:/app/freemarker.xml" />
+
+	<!-- Controller Annocation Scan Directory -->
+	<context:component-scan base-package="com.bcqsoft.sgoa.core" />
+	
+	<!-- Beans FactoryConfiguration -->
+	<bean id="beansFactory" class="com.bcqsoft.sgoa.core.factory.BeansFactory" />
+
+	<!-- Globle Properties File Configuration -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/sgoa.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Global Exception Resolve Configuration
+	<bean id="globalExceptionResolver" class="com.bcqsoft.sgoa.core.exception.GlobalExceptionResolver"/>
+ -->
+ 
+	<!-- File Upload Configuration -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="maxUploadSize" value="-1" />
+		<property name="maxInMemorySize" value="30720" />
+	</bean>
+
+</beans>

@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/bcqSoft/!svn/ver/7968/source/sgoa/trunk/src/main/webapp/WEB-INF/view/netfile
+END
+edit_netfile.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bcqSoft/!svn/ver/7690/source/sgoa/trunk/src/main/webapp/WEB-INF/view/netfile/edit_netfile.ftl
+END
+add_netfile.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bcqSoft/!svn/ver/7690/source/sgoa/trunk/src/main/webapp/WEB-INF/view/netfile/add_netfile.ftl
+END
+search_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/netfile/search_list.ftl
+END
+netfile_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/netfile/netfile_list.ftl
+END
+netfile_share_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/netfile/netfile_share_list.ftl
+END
+menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bcqSoft/!svn/ver/7968/source/sgoa/trunk/src/main/webapp/WEB-INF/view/netfile/menu.ftl
+END
+detail_netfile.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/bcqSoft/!svn/ver/7690/source/sgoa/trunk/src/main/webapp/WEB-INF/view/netfile/detail_netfile.ftl
+END
+netfile_down_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/netfile/netfile_down_list.ftl
+END
+detailnetfile.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcqSoft/!svn/ver/7690/source/sgoa/trunk/src/main/webapp/WEB-INF/view/netfile/detailnetfile.ftl
+END
+finddetail_netfile.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/netfile/finddetail_netfile.ftl
+END

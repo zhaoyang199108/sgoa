@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 单位总表SQL映射文件, TABLE: SCOA_TB_UNIT -->
+<sqlMap namespace="unit">
+	
+	<typeAlias alias="unit"
+		type="com.bcqsoft.sgoa.dao.unit.dataobject.Unit" />
+		
+
+	
+</sqlMap>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 文件夹名称科室表SQL映射文件, TABLE: scoa_tb_res_folder -->
+<sqlMap namespace="resfolder">
+
+	<typeAlias alias="resfolder" type="com.bcqsoft.sgoa.dao.resfolder.dataobject.ResFolder" />
+
+	<!-- 查找全部文件夹名称列表 -->
+	<select id="findAllResFolderInfo" resultClass="resfolder" parameterClass="String">
+		SELECT
+		d.ID id,
+		d.UNIT_ID unitId,
+		d.LOGIN_ID loginId,
+		d.FOLDER_NAME folderName,
+		d.ISFOLDER isFolder
+		FROM
+		SCOA_TB_RES_FOLDER d
+		WHERE d.ENABLED ='Y'
+	</select>
+	
+	<!-- 查找全部文件夹名称列表 -->
+	<select id="findResFolderInfoByLogin" resultClass="resfolder">
+		SELECT
+		d.ID id,
+		d.UNIT_ID unitId,
+		d.LOGIN_ID loginId,
+		d.FOLDER_NAME folderName
+		FROM
+		SCOA_TB_RES_FOLDER d
+		WHERE d.ENABLED ='Y'
+		AND d.LOGIN_ID = #loginId#
+	</select>
+
+	<!-- 插入文件夹名称信息 -->
+	<insert id="insertIntoResFolder" parameterClass="resfolder">
+		INSERT INTO
+		SCOA_TB_RES_FOLDER
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		FOLDER_NAME,
+		UNIT_ID,
+		LOGIN_ID,
+		ISFOLDER,
+		ENABLED
+		)
+		VALUES(
+		now(),
+		now(),
+		#folderName#,
+		#unitId#,
+		#loginId#,
+		#isFolder#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据ID查询某一条通告通知 -->
+	<select id="findResFolderInfoById" resultClass="resfolder">
+		SELECT
+		d.ID,
+		d.CREATE_DATE createDate,
+		d.UPDATE_DATE updateDate,
+		d.FOLDER_NAME folderName,
+		d.LOGIN_ID loginId,
+		d.UNIT_ID unitId
+		FROM SCOA_TB_RES_FOLDER d
+		WHERE d.ENABLED = 'Y'
+		and d.ID=#id#
+	</select>
+
+	<!-- 根据ID更新某条公告通知信息 -->
+	<update id="updateResFolderInfoById" parameterClass="resfolder">
+		UPDATE
+		SCOA_TB_RES_FOLDER d
+		SET d.UPDATE_DATE = now(),
+		d.FOLDER_NAME = #folderName#
+		WHERE d.ID = #id#
+		AND d.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据ID删除某条公告通知信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="updateResFolderStatusToDisabled" parameterClass="map">
+		UPDATE
+		SCOA_TB_RES_FOLDER d
+		SET d.UPDATE_DATE = now(),
+		d.ENABLED = 'N'
+		WHERE d.ENABLED = 'Y'
+		<isNotNull property="idList">
+			AND d.ID IN
+			<iterate property="idList" conjunction="," open="(" close=")">
+				#idList[]#
+			</iterate>
+		</isNotNull>
+	</update>
+
+
+	<!-- 根据用户登录Id查找文件夹名称信息 -->
+	<select id="findDeptInfoByLoginId" resultClass="resfolder"
+		parameterClass="String">
+		SELECT d.ID id,
+		d.FOLDER_NAME folderName,
+		d.UNIT_ID unitId
+		FROM SCOA_TB_RES_FOLDER
+		d,SCOA_TB_USER_ROLE ur
+		WHERE d.ID = ur.DEPT_ID
+		AND ur.LOGIN_ID = #loginId#
+		LIMIT 1
+	</select>
+</sqlMap>

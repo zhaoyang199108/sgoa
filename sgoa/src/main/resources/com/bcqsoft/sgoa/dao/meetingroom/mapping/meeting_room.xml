@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 会议室表SQL映射文件, TABLE: SCOA_TB_MEETING_ROOM -->
+<sqlMap namespace="meetingroom">
+
+	<typeAlias alias="meetingRoom"
+		type="com.bcqsoft.sgoa.dao.meetingroom.dataobject.MeetingRoom" />
+
+	<insert id="insertIntoMeetingRoom" parameterClass="meetingRoom">
+		INSERT INTO
+		    SCOA_TB_MEETING_ROOM
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		ROOM_NAME,
+		ROOM_ADDRESS,
+		ENABLED
+		)
+		VALUES(
+		now(),
+		now(),
+		#roomName#,
+		#roomAddress#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的会议室(页面分页使用) -->
+	<select id="findMeetingRoomInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_MEETING_ROOM n
+		WHERE n.ENABLED = 'Y'
+		<isNotEmpty property="roomName" prepend="AND">
+			n.ROOM_NAME LIKE
+			CONCAT('%',#roomName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="roomAddress" prepend="AND">
+			n.ROOM_ADDRESS
+			LIKE CONCAT('%',#roomAddress#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的会议室 -->
+	<select id="findMeetingRoomInfoList" resultClass="meetingRoom">
+		SELECT
+		n.ID,
+		n.CREATE_DATE createDate,
+		n.UPDATE_DATE updateDate,
+		n.ROOM_NAME roomName,
+		n.ROOM_ADDRESS roomAddress,
+		n.ENABLED enabled
+		FROM
+		SCOA_TB_MEETING_ROOM n
+		WHERE n.ENABLED = 'Y'
+		<isNotEmpty property="roomName" prepend="AND">
+			n.ROOM_NAME LIKE
+			CONCAT('%',#roomName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="roomAddress" prepend="AND">
+			n.ROOM_ADDRESS
+			LIKE CONCAT('%',#roomAddress#,'%')
+		</isNotEmpty>
+		ORDER BY n.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条会议室 -->
+	<select id="findMeetingRoomInfoById" resultClass="meetingRoom">
+		SELECT
+		n.ID,
+		n.CREATE_DATE createDate,
+		n.UPDATE_DATE updateDate,
+		n.ROOM_NAME
+		roomName,
+		n.ROOM_ADDRESS roomAddress,
+		n.ENABLED enabled
+		FROM
+		SCOA_TB_MEETING_ROOM n
+		WHERE n.ENABLED = 'Y'
+		and n.ID=#id#
+	</select>
+
+	<!-- 根据ID更新某条会议室信息 -->
+	<update id="updateMeetingRoomInfoById" parameterClass="meetingRoom">
+		UPDATE
+		SCOA_TB_MEETING_ROOM n
+		SET n.UPDATE_DATE = now(),
+		n.ROOM_NAME =
+		#roomName#,
+		n.ROOM_ADDRESS= #roomAddress#
+		WHERE n.ID = #id#
+		AND n.ENABLED
+		= 'Y'
+	</update>
+
+	<!-- 根据ID删除某条公告会议室(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="updateMeetingRoomStatusToDisabled" parameterClass="long">
+		UPDATE
+		SCOA_TB_MEETING_ROOM n
+		SET n.UPDATE_DATE = now(),
+		n.ENABLED = 'N'
+		WHERE n.ID = #id#
+		AND
+		n.ENABLED = 'Y'
+	</update>
+	
+	<select id="findAllMeetingRoomInfo" resultClass="meetingRoom">
+		SELECT
+		n.ID,
+		n.ROOM_NAME roomName
+		FROM SCOA_TB_MEETING_ROOM n
+		WHERE n.ENABLED = 'Y'
+	</select>
+
+</sqlMap>

@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息表SQL映射文件, TABLE: SCOA_TB_MESSAGE -->
+<sqlMap namespace="message">
+	
+	<typeAlias alias="message"
+		type="com.bcqsoft.sgoa.dao.message.dataobject.Message" />
+		
+	<!-- 插入一条信息至信息表 -->
+	<insert id="insertIntoMessage" parameterClass="message">
+		INSERT INTO	
+			SCOA_TB_MESSAGE
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			TITLE,
+			SUBJECT,
+			TEXT_TIME,
+		    REMARK,
+			D_RECORDID,
+			APPROVAL_ID,
+			STEP,
+			SORT,
+			DRAFTS_DEPT_ID,
+			DRAFTS_ID,
+			CURRENT_OPT_ID,
+			NEXT_OPT_ID,
+			STATUS,
+			SRC_FILE_NAME,
+			FILE_DIR,
+			ENABLED
+		) 
+		VALUES(
+			now(),
+			now(),
+			#title#,
+			#subject#,
+			#textTime#,
+		    #remark#,
+			#dRecordid#,
+			#approvalId#,
+			#step#,
+			#sort#,
+			#draftsDeptId#,
+			#draftsId#,
+			#currentOptId#,
+			#nextOptId#,
+			#status#,
+			#srcFileName#,
+			#fileDir#,
+			#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findMyDraftMessageCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_MESSAGE t
+		WHERE t.DRAFTS_ID = #draftsId#
+		  AND t.SORT =#sort#
+		  AND t.ENABLED = 2
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="draftsDeptId" prepend="AND">
+	  			t.DRAFTS_DEPT_ID = #draftsDeptId#
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findMyDraftMessageList" resultClass="message">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.SRC_FILE_NAME srcFileName,
+			t.FILE_DIR fileDir,
+			t.SORT sort
+		 FROM
+		 	SCOA_TB_MESSAGE t
+		WHERE t.DRAFTS_ID = #draftsId#
+		  AND t.SORT =#sort#
+		  AND t.ENABLED = 2
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="draftsDeptId" prepend="AND">
+	  			t.DRAFTS_DEPT_ID = #draftsDeptId#
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据条件查找该用户我的申请信息数量 -->
+	<select id="findApprovedMessageCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_MESSAGE t
+		WHERE t.DRAFTS_ID = #draftsId#
+		  AND t.SORT =#sort#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="draftsDeptId" prepend="AND">
+	  			t.DRAFTS_DEPT_ID = #draftsDeptId#
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户我的申请的信息集合 -->
+	<select id="findApprovedMessageList" resultClass="message">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.SORT sort,
+			t.STATUS status,
+			t.DRAFTS_ID draftsId,
+			t.CURRENT_OPT_ID currentOptId,
+			t.SRC_FILE_NAME srcFileName,
+			t.FILE_DIR fileDir
+		 FROM
+		 	SCOA_TB_MESSAGE t
+		WHERE t.DRAFTS_ID = #draftsId#
+		 AND t.SORT =#sort#
+		 AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="draftsDeptId" prepend="AND">
+	  			t.DRAFTS_DEPT_ID = #draftsDeptId#
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据条件查找该用户待审核信息数量 -->
+	<select id="findMessageReviewCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_MESSAGE t
+		WHERE t.NEXT_OPT_ID = #draftsId#
+		  AND (t.STATUS = 1 || t.STATUS = 2)
+		  AND t.SORT =#sort#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="draftsDeptId" prepend="AND">
+	  			t.DRAFTS_DEPT_ID = #draftsDeptId#
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户待审核的信息集合 -->
+	<select id="findMessageReviewList" resultClass="message">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.SORT sort,
+			t.SRC_FILE_NAME srcFileName,
+			t.FILE_DIR fileDir,
+			t.STATUS status
+		 FROM
+		 	SCOA_TB_MESSAGE t
+		WHERE t.NEXT_OPT_ID = #draftsId#
+		  AND (t.STATUS = 1 || t.STATUS = 2)
+		  AND t.SORT =#sort#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="draftsDeptId" prepend="AND">
+	  			t.DRAFTS_DEPT_ID = #draftsDeptId#
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据条件查找该用户经我审核信息数量 -->
+	<select id="getMyMessageReviewCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_MESSAGE t
+		 WHERE t.ID in (
+			SELECT r.MESSAGE_ID
+			FROM SCOA_TB_MESSAGE_REVIEW r
+			WHERE r.CURRENT_OPT_ID = #draftsId#	 
+		 )
+		  AND t.SORT =#sort#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="draftsDeptId" prepend="AND">
+	  			t.DRAFTS_DEPT_ID = #draftsDeptId#
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户经我审核的信息集合 -->
+	<select id="getMyMessageReviewList" resultClass="message">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.SORT sort,
+			t.SRC_FILE_NAME srcFileName,
+			t.FILE_DIR fileDir,
+			t.STATUS status
+		 FROM
+		 	SCOA_TB_MESSAGE t
+		 WHERE t.ID in (
+			SELECT r.MESSAGE_ID
+			FROM SCOA_TB_MESSAGE_REVIEW r
+			WHERE r.CURRENT_OPT_ID = #draftsId#	 
+		 )
+		  AND t.SORT =#sort#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="draftsDeptId" prepend="AND">
+	  			t.DRAFTS_DEPT_ID = #draftsDeptId#
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据信息ID更新该条信息记录状态为已删除 -->
+	<update id="updateMessageStatusToEnabled" parameterClass="long">
+		UPDATE 
+			SCOA_TB_MESSAGE t
+		   SET t.UPDATE_DATE = now(),
+		   	   t.ENABLED = 3
+		 WHERE t.ID = #id#
+	</update>
+	
+		<!-- 根据ID取得信息草稿数据 -->
+	<select id="findMessageDetailInfoById" resultClass="message">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.SORT sort,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.DRAFTS_DEPT_ID draftsDeptId,
+			d.DEPT_NAME draftsDeptName,
+			t.DRAFTS_ID draftsId,
+			u0.USER_NAME draftsName,
+			t.REMARK remark,
+			t.D_RECORDID dRecordid,
+			(SELECT D_FileBody FROM  EWEBMESSAGE_T_DOCUMENTFILE e WHERE e.D_RecordID=t.D_RECORDID) content,
+			t.APPROVAL_ID approvalId,
+			t.STEP step,
+			t.CURRENT_OPT_ID currentOptId,
+			(SELECT u2.USER_NAME FROM SCOA_TB_USER u2 WHERE u2.LOGIN_ID = t.CURRENT_OPT_ID LIMIT 1) currentOptName,
+			t.NEXT_OPT_ID nextOptId,
+			(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = t.NEXT_OPT_ID LIMIT 1) nextOptName,
+			t.STATUS status,
+			t.SRC_FILE_NAME srcFileName,
+			t.FILE_DIR fileDir,
+			t.ENABLED enabled
+		 FROM
+		 	SCOA_TB_MESSAGE t,
+		 	SCOA_TB_USER u0,
+		 	SCOA_TB_DEPT d
+		WHERE t.ID = #id#
+		  AND t.DRAFTS_ID = u0.LOGIN_ID
+		  AND t.DRAFTS_DEPT_ID = d.ID
+	</select>
+	
+	<!-- 根据信息ID更新该条信息 -->
+	<update id="updateMessageInfoById" parameterClass="message">
+		UPDATE 
+			SCOA_TB_MESSAGE t
+		   SET t.UPDATE_DATE = now(),
+			   t.TITLE = #title#,
+			   t.SUBJECT = #subject#,
+			   t.TEXT_TIME = #textTime#,
+			   t.APPROVAL_ID = #approvalId#,
+			   t.REMARK = #remark#,
+			   t.STATUS = #status#,
+			   t.ENABLED = #enabled#,
+			   t.D_RECORDID = #dRecordid#,
+			   t.NEXT_OPT_ID = #nextOptId#
+		 WHERE t.ID = #id#
+	</update>
+	
+	<!-- 根据信息ID更新该条信息 -->
+	<update id="updateOneMessageInfo" parameterClass="Long">
+		UPDATE 
+			SCOA_TB_MESSAGE t
+		   SET t.UPDATE_DATE = now(),
+			   t.NEXT_OPT_ID = '',
+			   t.ENABLED = 2
+		 WHERE t.ID = #id#
+	</update>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateMessageById" parameterClass="message">
+		UPDATE
+		SCOA_TB_MESSAGE t
+		SET
+		t.UPDATE_DATE=now(),
+		t.STEP = #step#,
+		t.CURRENT_OPT_ID = #currentOptId#,
+		t.NEXT_OPT_ID = #nextOptId#,
+		t.STATUS = #status#,
+		t.ENABLED = #enabled#
+		WHERE t.ID = #id#
+	</update>
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findMessageSeacheCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_MESSAGE t
+		WHERE t.STATUS = #status#
+		  AND t.SORT =#sort#
+		  AND  t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="draftsDeptId" prepend="AND">
+	  			t.DRAFTS_DEPT_ID = #draftsDeptId#
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findMessageSeacheList" resultClass="message">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.SORT sort,
+			t.SRC_FILE_NAME srcFileName,
+			t.FILE_DIR fileDir,
+			(SELECT count(*) FROM SCOA_TB_MESSAGE_LOOK ml WHERE ml.MESSAGE_ID=t.ID AND ml.LOGIN_ID=#draftsId#) isRead
+		 FROM
+		 	SCOA_TB_MESSAGE t
+		WHERE t.STATUS = #status#
+		  AND t.SORT =#sort#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="draftsDeptId" prepend="AND">
+	  			t.DRAFTS_DEPT_ID = #draftsDeptId#
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据条件查找该用户待审核信息数量 -->
+	<select id="findMessageReviewCountForIndex" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_MESSAGE t
+		WHERE t.NEXT_OPT_ID = #draftsId#
+		  AND t.STATUS = #status# 
+		  AND t.SORT =#sort#
+		  AND t.ENABLED = 1 
+	</select>
+	
+	<!-- 根据信息ID更新该条信息 -->
+	<update id="updateMessageStatusById" parameterClass="message">
+		UPDATE 
+			SCOA_TB_MESSAGE t
+		   SET t.UPDATE_DATE = now(),
+			   t.STATUS = #status# 
+		 WHERE t.ID = #id#
+	</update>
+</sqlMap>

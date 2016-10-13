@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!-- 信息表SQL映射文件, TABLE: SCOA_TB_CYD -->
+<sqlMap namespace="cydDetail">
+	<typeAlias alias="cydDetail" type="com.bcqsoft.sgoa.dao.cyddetail.dataobject.CydDetail" />
+			
+	<!-- 根据信息ID读取信息的全部记录 -->
+	<select id="findCydDetailList" resultClass="cydDetail">
+	
+	SELECT 
+			cd.ID id,				
+			cd.USER_ID userId,
+			u.user_Name userName,
+			cd.OUT_TIME outTime,
+			cd.IN_TIME inTime
+		 FROM
+		 	SCOA_TB_CYD_DETAIL cd,SCOA_TB_USER u
+		WHERE cd.CYD_ID = #id#
+   AND cd.user_ID=u.id
+		
+	</select>
+	<!-- 插入一条信息至信息表 -->
+	<insert id="insertIntoCydDetail" parameterClass="cydDetail">
+		INSERT INTO SCOA_TB_CYD_DETAIL(
+			CREATE_DATE,
+			UPDATE_DATE,
+			CYD_ID,
+			USER_ID,
+			OUT_TIME,
+			IN_TIME
+		) VALUES(
+			now(),
+			now(),
+			#cydId#,
+			#userId#,
+			#outTime#,
+			#inTime#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+	<!-- 根据ID删除 -->
+	<delete id="deleteCydDetailInfoById" parameterClass="long">
+		DELETE FROM SCOA_TB_CYD_DETAIL
+		WHERE CYD_ID = #id#		
+	</delete>		
+</sqlMap>

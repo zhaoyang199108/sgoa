@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 消息中心表SQL映射文件, TABLE: sgoa_TB_ALERT -->
+<sqlMap namespace="remind">
+
+	<typeAlias alias="remind"
+		type="com.bcqsoft.sgoa.dao.remind.dataobject.Remind" />
+
+	<!-- 插入消息中心记录 -->
+	<insert id="insertIntoRemind" parameterClass="remind">
+		INSERT INTO
+		SCOA_TB_REMIND
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		LOGIN_ID,
+		BUS_ID,
+		MODE_NAME,
+		TITLE,
+		URL,
+		STATUS,
+		START_TIME,
+		END_TIME
+		)
+		VALUES(
+		now(),
+		now(),
+		#loginId#,
+		#busId#,
+		#modeName#,
+		#title#,
+		#url#,
+		#status#,
+		#startTime#,
+		#endTime#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的消息中心表(页面分页使用) -->
+	<select id="findRemindInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_REMIND g
+		WHERE 1 = 1 
+		<isNotEmpty property="title" prepend="AND">
+			g.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="loginId" prepend="AND">
+			g.LOGIN_ID =#loginId#
+		</isNotEmpty>
+		<isNotEmpty property="modeName" prepend="AND">
+			g.MODE_NAME LIKE
+			CONCAT('%',#modeName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="status" prepend="AND">
+			g.STATUS =#status#
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的消息中心表 -->
+	<select id="findRemindInfoList" resultClass="remind">
+		SELECT g.ID,
+		g.CREATE_DATE createDate,
+		g.UPDATE_DATE updateDate,
+		g.LOGIN_ID loginId,
+		(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = g.LOGIN_ID LIMIT 1) userName,
+		g.BUS_ID busId,
+		g.MODE_NAME modeName,
+		g.TITLE title,
+		g.URL url,
+		g.STATUS status 
+		FROM SCOA_TB_REMIND g
+		WHERE 1 = 1 
+		<isNotEmpty property="title" prepend="AND">
+			g.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="loginId" prepend="AND">
+			g.LOGIN_ID =#loginId#
+		</isNotEmpty>
+			<isNotEmpty property="modeName" prepend="AND">
+			g.MODE_NAME = #modeName# 
+		</isNotEmpty>
+		<isNotEmpty property="status" prepend="AND">
+			g.STATUS =#status#
+		</isNotEmpty>
+		ORDER BY g.BUS_ID ASC, g.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询符合条件的消息中心表 -->
+	<select id="getRemindInfo" resultClass="remind" parameterClass="long">
+		SELECT g.ID,
+			g.CREATE_DATE createDate,
+			g.UPDATE_DATE updateDate,
+			g.LOGIN_ID loginId,
+			(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = g.LOGIN_ID LIMIT 1) userName,
+			g.BUS_ID busId,
+			g.MODE_NAME modeName,
+			g.TITLE title,
+			g.URL url,
+			g.STATUS status 
+		FROM SCOA_TB_REMIND g
+		WHERE 1 = 1 
+		AND g.ID=#id# 
+
+	</select>
+	<!-- 根据消息中心ID更新消息中心信息 -->
+	<update id="updateRemindInfoById" parameterClass="remind">
+		UPDATE
+		SCOA_TB_REMIND g
+		SET
+		g.UPDATE_DATE =now(),
+		g.STATUS = #status# 
+		WHERE g.ID = #id#
+	</update>
+	
+	<!-- 根据登录ID与业务ID与模块ID更新消息中心信息 -->
+	<update id="updateRemindInfoByLoginId" parameterClass="remind">
+		UPDATE
+		SCOA_TB_REMIND g
+		SET
+		g.UPDATE_DATE =now(),
+		g.STATUS = #status#,
+		g.START_TIME = #startTime#,
+		g.END_TIME = #endTime# 
+		WHERE g.LOGIN_ID = #loginId# 
+		AND g.BUS_ID = #busId# 
+		AND g.MODE_NAME = #modeName# 
+	</update>
+	
+	<!-- 根据登录ID与业务ID与模块ID更新消息中心信息 -->
+	<update id="updateRemindInfoByModeName" parameterClass="remind">
+		UPDATE
+		SCOA_TB_REMIND g
+		SET
+		g.UPDATE_DATE =now(),
+		g.STATUS = #status# 
+		WHERE 1=1 
+		<isNotEmpty property="modeName" prepend="AND">
+			g.MODE_NAME = #modeName# 
+		</isNotEmpty>
+		<isNotEmpty property="status" prepend="AND">
+			g.STATUS =#statusTemp#
+		</isNotEmpty>
+		<isNotEmpty property="loginId" prepend="AND">
+			g.LOGIN_ID =#loginId#
+		</isNotEmpty>
+	</update>
+
+	<!-- 根据消息中心ID删除消息中心信息 -->
+	<delete id="deleteRemindInfoById" parameterClass="long">
+		DELETE FROM 
+		SCOA_TB_REMIND 
+		WHERE ID = #id# 
+	</delete>
+	
+	<select id="findAllRemindInfo" resultClass="remind">
+		SELECT g.ID,
+			g.CREATE_DATE createDate,
+			g.UPDATE_DATE updateDate,
+			g.LOGIN_ID loginId,
+			(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = g.LOGIN_ID LIMIT 1) userName,
+			g.BUS_ID busId,
+			g.MODE_NAME modeName,
+			g.TITLE title,
+			g.URL url,
+			g.STATUS status 
+		FROM SCOA_TB_REMIND g 
+		ORDER BY g.BUS_ID ASC, g.UPDATE_DATE DESC
+	</select>
+	
+	<!-- 根据查询条件查询符合条件的消息中心表(页面分页使用) -->
+	<select id="findRemindInfoForIndex" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_REMIND g
+		WHERE 1 = 1 
+		<isNotEmpty property="loginId" prepend="AND">
+			g.LOGIN_ID =#loginId#
+		</isNotEmpty>
+			<isNotEmpty property="modeName" prepend="AND">
+			g.MODE_NAME = #modeName# 
+		</isNotEmpty>
+		<isNotEmpty property="status" prepend="AND">
+			g.STATUS = #status# 
+		</isNotEmpty>
+		<isNotEmpty property="startTime" prepend="AND">
+			g.START_TIME &lt;= NOW() 
+			AND g.END_TIME &gt;= NOW() 
+		</isNotEmpty>
+	</select>
+</sqlMap>

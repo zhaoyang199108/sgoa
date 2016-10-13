@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- IP/MAC表SQL映射文件, TABLE: SCOA_TB_IPMAC -->
+<sqlMap namespace="ipSet">
+
+	<typeAlias alias="ipSet"
+		type="com.bcqsoft.sgoa.dao.ipset.dataobject.IpSet" />
+
+	<!-- 根据ID查询某一条IP/MAC -->
+	<select id="findipSetInfoById" resultClass="ipSet">
+		SELECT
+			n.ID,
+			n.CREATE_DATE createDate,
+			n.UPDATE_DATE updateDate,
+			n.IS_OPEN isOpen 
+		FROM SCOA_TB_IP_SET n 
+		LIMIT 1 
+	</select>
+
+	<!-- 根据ID更新某条IP/MAC信息 -->
+	<update id="updateIpSetInfoById" parameterClass="ipSet">
+		UPDATE
+		SCOA_TB_IP_SET n
+		SET n.UPDATE_DATE = now(),
+		n.IS_OPEN = #isOpen# 
+		WHERE n.ID = #id# 
+	</update>
+
+</sqlMap>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 物资设备申领表SQL映射文件, TABLE: sgoa_TB_APPLY_GET -->
+<sqlMap namespace="seal">
+
+	<typeAlias alias="seal"
+		type="com.bcqsoft.sgoa.dao.seal.dataobject.Seal" />
+
+	<!-- 插入入库批次记录 -->
+	<insert id="insertIntoSeal" parameterClass="seal">
+	INSERT INTO
+	 eWebOffice_T_Seal 
+		 (D_UserName,
+		  D_PassWord,
+		  D_SealName,
+		  D_FileType,
+		  D_FileBody,
+		  D_FileSize,
+		  D_FileDate)
+	  values
+		    (
+		    #userName#,
+		    #passWord#,
+		    #sealName#,
+		    #fileType#,
+		    #fileBody#,
+		    #fileSize#,
+		    now()
+		    )
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的物资设备申领表(页面分页使用) -->
+	<select id="findSealInfoCount" resultClass="int">
+	SELECT COUNT(*)
+		FROM EWEBOFFICE_T_SEAL d
+		WHERE 1=1
+		<isNotEmpty property="userName" prepend="AND">
+			d.D_UserName LIKE CONCAT('%',#userName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="sealName" prepend="AND">
+			d.D_SealName LIKE CONCAT('%',#sealName#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的物资设备申领表 -->
+	<select id="findSealInfoList" resultClass="seal">
+		SELECT
+			d.D_ID id,
+			d.D_UserName userName,
+			d.D_PassWord passWord,
+			d.D_FileDate fileDate,
+			d.D_SealName sealName,
+			d.D_FileType fileType,
+			d.D_FileSize fileSize,
+			d.D_FileBody fileBody,
+			d.D_FilePath filePath
+		FROM EWEBOFFICE_T_SEAL d
+		WHERE 1=1
+		<isNotEmpty property="userName" prepend="AND">
+			d.D_UserName LIKE CONCAT('%',#userName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="sealName" prepend="AND">
+			d.D_SealName LIKE CONCAT('%',#sealName#,'%')
+		</isNotEmpty>
+		ORDER BY d.D_ID DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询符合条件的物资设备申领表 -->
+	<select id="getSealInfo" resultClass="seal" parameterClass="long">
+	  SELECT
+			d.D_ID id,
+			d.D_UserName userName,
+			d.D_PassWord passWord,
+			d.D_FileDate fileDate,
+			d.D_SealName sealName,
+			d.D_FileType fileType,
+			d.D_FileSize fileSize,
+			d.D_FileBody fileBody,
+			d.D_FilePath filePath
+		FROM EWEBOFFICE_T_SEAL d
+		WHERE d.D_ID=#id#
+	</select>
+	<!-- 根据办公用品ID更新办公用品信息 -->
+	<update id="updateSealInfoById" parameterClass="seal">
+		UPDATE	
+	 		EWEBOFFICE_T_SEAL d
+		SET
+			d.D_ID = #id#,
+			d.D_UserName= #userName#,
+			d.D_PassWord= #passWord#,
+			d.D_FileDate= now(),
+			d.D_SealName= #sealName#,
+			d.D_FileType= #fileType#,
+			d.D_FileSize= #fileSize#,
+			d.D_FileBody= #fileBody#,
+			d.D_FilePath= #filePath#
+		WHERE d.D_ID=#id#
+	</update>
+
+<!-- 根据办公用品ID删除办公用品信息 -->
+	<delete id="deleteSealInfoById" parameterClass="long">
+		DELETE FROM
+		EWEBOFFICE_T_SEAL
+		WHERE D_ID=#id#
+	</delete>
+	
+	<!-- 根据查询条件查询符合条件的物资设备申领表 -->
+	<select id="findSealInfoAllList" resultClass="seal">
+	</select>
+</sqlMap>

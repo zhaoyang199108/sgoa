@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!-- 信息表SQL映射文件, TABLE: SCOA_TB_CYD -->
+<sqlMap namespace="cyd">
+	<typeAlias alias="cyd" type="com.bcqsoft.sgoa.dao.cyd.dataobject.Cyd" />
+	
+	<!-- 根据条件查找该用户我的申请信息数量 -->
+	<select id="findCydCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_CYD c
+		WHERE c.CREATE_ID = #createId#		
+		<isNotEmpty property="numFirst" prepend="AND">
+	  		c.NUM_FIRST LIKE CONCAT('%',#numFirst#,'%')
+	  	</isNotEmpty>
+	</select>
+	
+	<!-- 根据条件查找该用户我的申请的信息集合 -->
+	<select id="findCydList" resultClass="cyd">
+		SELECT 
+			c.ID id,
+			c.CREATE_DATE createDate,
+			c.UPDATE_DATE updaceDate,
+			c.NUM_FIRST numFirst,
+			c.count
+		FROM SCOA_TB_CYD c
+		WHERE c.CREATE_ID = #createId#		
+		<isNotEmpty property="num" prepend="AND">
+	  		c.NUM_FIRST LIKE CONCAT('%',#num#,'%')
+	  	</isNotEmpty>
+	  	<isNotEmpty property="num" prepend="OR">
+	  		c.NUM_SECOND LIKE CONCAT('%',#num#,'%')
+	  	</isNotEmpty>
+	  	<isNotEmpty property="num" prepend="OR">
+	  		c.NUM_THIRD LIKE CONCAT('%',#num#,'%')
+	  	</isNotEmpty>
+	  	<isNotEmpty property="num" prepend="OR">
+	  		c.NUM_FOURTH LIKE CONCAT('%',#num#,'%')
+	  	</isNotEmpty>
+		ORDER BY c.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 插入一条信息至信息表 -->
+	<insert id="insertIntoCyd" parameterClass="cyd">
+		INSERT INTO SCOA_TB_CYD(
+			CREATE_DATE,
+			UPDATE_DATE,
+			NUM_FIRST,
+			NUM_SECOND,
+			NUM_THIRD,
+			NUM_FOURTH,
+			COUNT,
+			REMARK,
+			CREATE_ID			
+		)VALUES(
+			now(),
+			now(),
+			#numFirst#,
+			#numSecond#,
+			#numThird#,
+			#numFourth#,
+			#count#,
+			#remark#,
+			#createId#			
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+	<!-- 根据ID取得信息草稿数据 -->
+	<select id="findCydDetailInfoById" resultClass="cyd">
+		SELECT 
+			c.ID id,
+			c.CREATE_DATE createDate,
+			c.UPDATE_DATE updateDate,			
+			c.NUM_FIRST numFirst,
+			c.NUM_SECOND numSecond,
+			c.NUM_THIRD numThird,
+			c.NUM_FOURTH numFourth,
+			c.COUNT count,
+			c.REMARK remark,
+			c.CREATE_ID createId		
+		FROM SCOA_TB_CYD c
+		WHERE c.ID = #id#
+	</select>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateCydById" parameterClass="cyd">
+		UPDATE
+		SCOA_TB_CYD c
+		SET
+		c.UPDATE_DATE=now(),
+		c.NUM_FIRST=#numFirst#,
+		c.NUM_SECOND=#numSecond#,
+		c.NUM_THIRD=#numThird#,
+		c.NUM_FOURTH=#numFourth#,
+		c.COUNT=#count#,
+		c.REMARK=#remark#
+		WHERE c.ID = #id# 
+	</update>
+	<!-- 查找所有局级用户 -->
+	<select id="findAllUserByDept" parameterClass="long" resultClass="user">
+		SELECT
+			stu.ID id,			
+			stu.USER_NAME userName		
+		FROM
+			SCOA_TB_USER stu ,
+			SCOA_TB_DEPT d
+		WHERE stu.ENABLED = 'Y' 		
+		AND stu.DEPT_ID = d.ID
+		AND d.UNIT_ID = 2
+		ORDER BY ABS(stu.SORTING) ASC
+	</select>
+	<!-- 根据ID删除 -->
+	<delete id="deleteCydById" parameterClass="long">
+		DELETE FROM SCOA_TB_CYD
+		WHERE ID = #id#
+	</delete>	
+</sqlMap>

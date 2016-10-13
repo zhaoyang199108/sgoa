@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/bcqSoft/!svn/ver/11767/source/sgoa/trunk/src/main/resources/app/dao
+END
+sqlmap-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bcqSoft/!svn/ver/11767/source/sgoa/trunk/src/main/resources/app/dao/sqlmap-config.xml
+END
+dao.xml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/resources/app/dao/dao.xml
+END
+dataSource.xml
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/resources/app/dao/dataSource.xml
+END

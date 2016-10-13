@@ -1,0 +1,232 @@
+10
+
+dir
+11795
+http://192.168.1.10:9888/svn/bcqSoft/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/dao
+http://192.168.1.10:9888/svn/bcqSoft
+
+
+
+2016-08-31T01:28:51.934551Z
+11764
+chiqiaoling
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+c5e1ffd9-e8a2-ac42-8fe9-7d0d406a66f5
+
+docouthistory
+dir
+
+docoutreview
+dir
+
+messagestep
+dir
+
+message
+dir
+
+approval
+dir
+
+ipset
+dir
+
+netfile
+dir
+
+msginbox
+dir
+
+msgoutbox
+dir
+
+docinstep
+dir
+
+resfile
+dir
+
+docoutstep
+dir
+
+grporole
+dir
+
+leaderscheduler
+dir
+
+docin
+dir
+
+docout
+dir
+
+addressbook
+dir
+
+addressbooktype
+dir
+
+docinbox
+dir
+
+messagehistory
+dir
+
+approvaldetail
+dir
+
+alert
+dir
+
+newsstep
+dir
+
+meetingyy
+dir
+
+news
+dir
+
+remind
+dir
+
+docinhistory
+dir
+
+cyd
+dir
+
+seal
+dir
+
+swhu
+dir
+
+msgoneinbox
+dir
+
+errorlog
+dir
+
+newshistory
+dir
+
+userrole
+dir
+
+role
+dir
+
+messagereview
+dir
+
+resshare
+dir
+
+docinreview
+dir
+
+unit
+dir
+
+workscheduler
+dir
+
+resfolder
+dir
+
+ggtxl
+dir
+
+userkey
+dir
+
+sw
+dir
+
+meetingyyreview
+dir
+
+msgonetext
+dir
+
+newsreview
+dir
+
+optlog
+dir
+
+grpo
+dir
+
+netshare
+dir
+
+messagelook
+dir
+
+docinfj
+dir
+
+dooutinstep
+dir
+
+docoutlook
+dir
+
+meetingroom
+dir
+
+msgoneoutbox
+dir
+
+ipmac
+dir
+
+msgtext
+dir
+
+schedulerbak
+dir
+
+dept
+dir
+
+newslook
+dir
+
+cyddetail
+dir
+
+docoutbox
+dir
+
+template
+dir
+
+buttonname
+dir
+
+doinoutstep
+dir
+
+user
+dir
+
+scheduler
+dir
+

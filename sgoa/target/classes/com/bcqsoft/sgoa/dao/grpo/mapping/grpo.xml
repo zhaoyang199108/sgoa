@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 分组权限科室表SQL映射文件, TABLE: SCOA_TB_GRPO -->
+<sqlMap namespace="grpo">
+
+	<typeAlias alias="grpo" type="com.bcqsoft.sgoa.dao.grpo.dataobject.Grpo" />
+
+	<!-- 查找全部分组权限列表 -->
+	<select id="findAllGrpoInfo" parameterClass="grpo" resultClass="grpo">
+		SELECT
+		d.ID id,
+		d.REMARK remark,
+		d.GRPO_NAME grpoName
+		FROM
+		SCOA_TB_GRPO d
+		WHERE d.CATEGORY =#category#
+				
+	</select>
+
+	<!-- 插入分组权限信息 -->
+	<insert id="insertIntoGrpo" parameterClass="grpo">
+		INSERT INTO
+		SCOA_TB_GRPO
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		GRPO_NAME,
+		REMARK,
+		CATEGORY
+		)
+		VALUES(
+		now(),
+		now(),
+		#grpoName#,
+		#remark#,
+		#category#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的公告通知(页面分页使用) -->
+	<select id="findGrpoInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_GRPO d
+		WHERE 1=1
+		<isNotEmpty property="grpoName" prepend="AND">
+			d.GRPO_NAME LIKE CONCAT('%',#grpoName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="category" prepend="AND">
+			d.CATEGORY=#category#
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的公告通知 -->
+	<select id="findGrpoInfoList" resultClass="grpo">
+		SELECT
+		d.ID,
+		d.CREATE_DATE createDate,
+		d.UPDATE_DATE updateDate,
+		d.GRPO_NAME grpoName,
+		d.REMARK remark,
+		d.CATEGORY category
+		FROM SCOA_TB_GRPO d
+		WHERE 1=1
+		<isNotEmpty property="grpoName" prepend="AND">
+			d.GRPO_NAME LIKE CONCAT('%',#grpoName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="category" prepend="AND">
+			d.CATEGORY=#category#
+		</isNotEmpty>
+		ORDER BY d.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条通告通知 -->
+	<select id="findGrpoInfoById" resultClass="grpo">
+		SELECT
+		d.ID,
+		d.CREATE_DATE createDate,
+		d.UPDATE_DATE updateDate,
+		d.GRPO_NAME grpoName,
+		d.REMARK remark,
+		d.CATEGORY category
+		FROM SCOA_TB_GRPO d
+		WHERE d.ID=#id#
+	</select>
+
+	<!-- 根据ID更新某条公告通知信息 -->
+	<update id="updateGrpoInfoById" parameterClass="grpo">
+		UPDATE
+		SCOA_TB_GRPO d
+		SET d.UPDATE_DATE = now(),
+		d.GRPO_NAME = #grpoName#,
+		d.REMARK = #remark#
+		WHERE d.ID = #id#
+	</update>
+
+	<!-- 根据ID删除某条公告通知信息(逻辑删除,将该条信息状态变为不可用) -->
+	<delete id="deleteGrpoStatusToDisabled" parameterClass="long">
+		DELETE FROM
+		SCOA_TB_GRPO
+		WHERE ID=#id#
+	</delete>
+</sqlMap>

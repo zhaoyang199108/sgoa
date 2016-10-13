@@ -1,0 +1,201 @@
+10
+
+dir
+11795
+http://192.168.1.10:9888/svn/bcqSoft/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/mvc/controller
+http://192.168.1.10:9888/svn/bcqSoft
+
+
+
+2016-09-19T06:32:04.043843Z
+11795
+ly
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+c5e1ffd9-e8a2-ac42-8fe9-7d0d406a66f5
+
+workscheduler
+dir
+
+message
+dir
+
+ipset
+dir
+
+approval
+dir
+
+ggtxl
+dir
+
+netfile
+dir
+
+userkey
+dir
+
+InitController.java
+file
+
+
+
+
+2016-05-30T02:32:50.328125Z
+8c0ae4459a1b96d8beb0239ea82e1361
+2016-05-26T07:22:50.360355Z
+11229
+chiqiaoling
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+13207
+
+msgone
+dir
+
+resfile
+dir
+
+sw
+dir
+
+leaderscheduler
+dir
+
+docin
+dir
+
+LoginController.java
+file
+
+
+
+
+2016-05-30T02:32:50.328125Z
+876c73abe0ded6d0e9d2b9e1b61cfbfa
+2016-05-26T07:22:50.360355Z
+11229
+chiqiaoling
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+6386
+
+docout
+dir
+
+addressbook
+dir
+
+addressbooktype
+dir
+
+alert
+dir
+
+approvaldetail
+dir
+
+grpo
+dir
+
+meetingyy
+dir
+
+news
+dir
+
+remind
+dir
+
+cyd
+dir
+
+notice
+dir
+
+log
+dir
+
+seal
+dir
+
+meetingroom
+dir
+
+msg
+dir
+
+brief
+dir
+
+common
+dir
+
+ipmac
+dir
+
+dept
+dir
+
+template
+dir
+
+buttonname
+dir
+
+scheduler
+dir
+
+user
+dir
+

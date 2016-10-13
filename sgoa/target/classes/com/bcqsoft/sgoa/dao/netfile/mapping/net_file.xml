@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 资源(文件)表SQL映射文件, TABLE: SCOA_TB_NET_FILE -->
+<sqlMap namespace="netfile">
+
+	<typeAlias alias="netFile"
+		type="com.bcqsoft.sgoa.dao.netfile.dataobject.NetFile" />
+	<insert id="insertIntoNetFile" parameterClass="netFile">
+		INSERT INTO
+		SCOA_TB_NET_FILE
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		LOGIN_ID,
+		TITLE,
+		CONTENT,
+		SRC_FILE_NAME,
+		FILE_DIR,
+		IS_SHORE
+		)
+		VALUES(
+		now(),
+		now(),
+		#loginId#,
+		#title#,
+		#content#,
+		#srcFileName#,
+		#fileDir#,
+		#isShore#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+	
+	<select id="findNetFileInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_NET_FILE n
+		WHERE n.LOGIN_ID = #loginId#
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+	</select>
+	<select id="findNetFileInfoList" resultClass="netFile">
+		SELECT
+		n.ID,
+		n.UPDATE_DATE updateDate,
+		n.TITLE title,
+		n.CONTENT conTent,
+		n.SRC_FILE_NAME srcFileName,
+		n.FILE_DIR fileDir,
+		n.IS_SHORE isShore
+		FROM SCOA_TB_NET_FILE n
+		WHERE n.LOGIN_ID = #loginId#
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		
+		ORDER BY n.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<select id="findNetFileInfoById" resultClass="netFile">
+		SELECT
+		n.ID,
+		n.UPDATE_DATE updateDate,
+		n.TITLE title,
+		n.CONTENT conTent,
+		n.SRC_FILE_NAME srcFileName,
+		n.FILE_DIR fileDir,
+		n.IS_SHORE isShore
+		FROM SCOA_TB_NET_FILE n
+		WHERE
+		n.ID=#id#
+	</select>
+	<delete id="deleteNetFileToDisabled" parameterClass="long">
+		Delete FROM SCOA_TB_NET_FILE where ID=#id#
+
+	</delete>
+	<update id="updateNetFileInfoById" parameterClass="netFile">
+		UPDATE
+		SCOA_TB_NET_FILE n
+		SET n.UPDATE_DATE = now(),
+		n.IS_SHORE=#isShore#
+		WHERE n.ID = #id#
+
+	</update>
+	<update id="editNetFileInfoById" parameterClass="netFile">
+		UPDATE
+		SCOA_TB_NET_FILE n
+		SET n.UPDATE_DATE = now(),
+		    n.CONTENT = #content#,
+		    n.TITLE=#title#
+		    WHERE n.ID = #id#
+
+	</update>
+	<select id="findNetFileShareInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_NET_FILE n
+		WHERE n.ID in(
+		SELECT m.NET_ID
+		FROM SCOA_TB_NET_SHARE m
+		WHERE m.TO_SHARE_ID=#loginId#
+		AND m.STATUS='1'
+		)
+
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		
+	</select>
+	<select id="findNetFileShareInfoList" resultClass="netFile">
+		SELECT
+		n.ID,
+		n.UPDATE_DATE updateDate,
+		n.TITLE title,
+		n.CONTENT conTent,
+		n.SRC_FILE_NAME srcFileName,
+		n.FILE_DIR fileDir
+
+		FROM SCOA_TB_NET_FILE n
+		WHERE n.ID in(
+		SELECT m.NET_ID
+		FROM SCOA_TB_NET_SHARE m
+		WHERE m.TO_SHARE_ID=#loginId#
+		AND m.STATUS='1'
+		)
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		
+		ORDER BY n.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+
+	<select id="findNetFileDownShareInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_NET_FILE n
+		WHERE n.ID in(
+		SELECT m.NET_ID
+		FROM SCOA_TB_NET_SHARE m
+		WHERE m.TO_SHARE_ID=#loginId#
+		AND m.STATUS='2'
+		)
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		
+	</select>
+	<select id="findNetFileDownShareInfoList" resultClass="netFile">
+		SELECT
+		n.ID,
+		n.UPDATE_DATE updateDate,
+		n.TITLE title,
+		n.CONTENT conTent,
+		n.SRC_FILE_NAME srcFileName,
+		n.FILE_DIR fileDir
+
+		FROM SCOA_TB_NET_FILE n
+		WHERE n.ID in(
+		SELECT m.NET_ID
+		FROM SCOA_TB_NET_SHARE m
+		WHERE m.TO_SHARE_ID=#loginId#
+		AND m.STATUS='2'
+		)
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		ORDER BY n.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<update id="updateNetFileShareToDisabled" parameterClass="long">
+		UPDATE
+		SCOA_TB_NET_FILE n
+		SET n.UPDATE_DATE = now(),
+		n.IS_SHORE='N'
+		WHERE n.ID = #id#
+	</update>
+	
+	<select id="findSearchNetFileInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_NET_FILE n
+		WHERE 1=1
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+	</select>
+	<select id="findSearchNetFileInfoList" resultClass="netFile">
+		SELECT
+		n.ID,
+		n.UPDATE_DATE updateDate,
+		n.TITLE title,
+		n.CONTENT conTent,
+		n.SRC_FILE_NAME srcFileName,
+		n.FILE_DIR fileDir,
+		n.IS_SHORE isShore
+		FROM SCOA_TB_NET_FILE n
+		WHERE 1=1
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		
+		ORDER BY n.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+
+</sqlMap>

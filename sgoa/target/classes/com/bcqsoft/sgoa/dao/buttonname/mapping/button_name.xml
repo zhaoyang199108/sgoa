@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 按钮名称表SQL映射文件, TABLE: SCOA_TB_DEPT -->
+<sqlMap namespace="buttonName">
+
+	<typeAlias alias="buttonName" type="com.bcqsoft.sgoa.dao.buttonname.dataobject.ButtonName" />
+	
+	<!-- 根据条件查找按钮名称信息 -->
+	<select id="findButtonNameInfo"  parameterClass="buttonName" resultClass="buttonName">
+		SELECT
+		d.ID id,
+			d.CREATE_DATE createDate,
+			d.UPDATE_DATE updateDate,
+			d.POSITION_ID positionId,
+			d.BTN_NAME btnName,
+			d.MODULE module,
+			d.MODULE_TYPE moduleType 
+		FROM SCOA_TB_BUTTON_NAME d
+		WHERE 1=1 
+		<isNotEmpty property="positionId" prepend="AND">
+			d.POSITION_ID = #positionId# 
+		</isNotEmpty>
+		<isNotEmpty property="module" prepend="AND">
+			d.MODULE = #module# 
+		</isNotEmpty>
+		<isNotEmpty property="moduleType" prepend="AND">
+			d.MODULE_TYPE = #moduleType# 
+		</isNotEmpty>
+	</select>
+	<!-- 插入部门信息 -->
+	<insert id="insertIntoButtonName" parameterClass="buttonName">
+		INSERT INTO
+		SCOA_TB_BUTTON_NAME
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		POSITION_ID,
+		BTN_NAME,
+		MODULE,
+		MODULE_TYPE
+		)
+		VALUES(
+		now(),
+		now(),
+		#positionId#,
+		#btnName#,
+		#module#,
+		#moduleType#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的按钮名称(页面分页使用) -->
+	<select id="findButtonNameInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_BUTTON_NAME d
+		WHERE 1=1 
+		<isNotEmpty property="btnName" prepend="AND">
+			d.BTN_NAME LIKE
+			CONCAT('%',#btnName#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的按钮名称 -->
+	<select id="findButtonNameInfoList" resultClass="buttonName">
+		SELECT
+			d.ID id,
+			d.CREATE_DATE createDate,
+			d.UPDATE_DATE updateDate,
+			d.POSITION_ID positionId,
+			(SELECT ad.GRPO_NAME FROM SCOA_TB_GRPO ad WHERE ad.ID = d.POSITION_ID) grpoName,
+			d.BTN_NAME btnName,
+			d.MODULE module,
+			d.MODULE_TYPE moduleType
+		FROM SCOA_TB_BUTTON_NAME d
+		WHERE 1=1 
+		<isNotEmpty property="btnName" prepend="AND">
+			d.BTN_NAME LIKE
+			CONCAT('%',#btnName#,'%')
+		</isNotEmpty>
+		ORDER BY d.POSITION_ID,d.MODULE,d.MODULE_TYPE ASC 
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条通告通知 -->
+	<select id="findButtonNameInfoById" resultClass="buttonName">
+		SELECT
+			d.ID id,
+			d.CREATE_DATE createDate,
+			d.UPDATE_DATE updateDate,
+			d.POSITION_ID positionId,
+			d.BTN_NAME btnName,
+			d.MODULE module,
+			d.MODULE_TYPE moduleType
+		FROM SCOA_TB_BUTTON_NAME d
+		WHERE  d.ID=#id#
+	</select>
+
+	<!-- 根据ID更新某条按钮名称信息 -->
+	<update id="updateButtonNameInfoById" parameterClass="buttonName">
+		UPDATE
+		SCOA_TB_BUTTON_NAME d
+		SET d.UPDATE_DATE = now(),
+		d.POSITION_ID = #positionId#,
+		d.BTN_NAME = #btnName#,
+		d.MODULE = #module#,
+		d.MODULE_TYPE = #moduleType# 
+		WHERE d.ID = #id#
+	</update>
+	
+	<!-- 根据ID删除某条按钮名称信息 -->
+	<delete id="deleteButtonNameInfoById" parameterClass="long">
+		DELETE FROM SCOA_TB_BUTTON_NAME 
+		WHERE ID = #id#
+	</delete>
+	
+</sqlMap>

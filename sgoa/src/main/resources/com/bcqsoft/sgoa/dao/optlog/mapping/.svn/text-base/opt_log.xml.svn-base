@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 操作日志表SQL映射文件, TABLE: SCOA_TB_OPT_LOG -->
+<sqlMap namespace="optlog">
+	
+	<typeAlias alias="optLog"
+		type="com.bcqsoft.sgoa.dao.optlog.dataobject.OptLog" />
+		
+	<!-- 根据查询条件查询符合条件的操作日志总数量(页面分页使用) -->
+	<select id="findOptLogInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_OPT_LOG ol
+		WHERE TRUE
+		<isNotEmpty property="startTime" prepend="AND">
+			ol.CREATE_DATE &gt;= #startTime#
+		</isNotEmpty>
+		<isNotEmpty property="endTime" prepend="AND">
+			ol.CREATE_DATE &lt;= #endTime#
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的操作日志列表信息 -->
+	<select id="findOptLogInfoList" resultClass="optLog">
+	SELECT
+		ol.ID,
+		ol.CREATE_DATE createDate,
+		ol.UPDATE_DATE updateDate,
+		ol.OPT_ID optId,
+		(SELECT ur.USER_NAME from
+		SCOA_TB_USER ur WHERE ur.LOGIN_ID = ol.OPT_ID) optName,
+		ol.OPT_IP optIp,
+		ol.OPT_MAC optMac
+		FROM SCOA_TB_OPT_LOG ol
+		WHERE TRUE
+		<isNotEmpty property="startTime" prepend="AND">
+			ol.CREATE_DATE &gt;=#startTime#
+		</isNotEmpty>
+		<isNotEmpty property="endTime" prepend="AND">
+			ol.CREATE_DATE &lt;=#endTime#
+		</isNotEmpty>
+		ORDER BY ol.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 插入一条操作日志信息至操作日志表 -->
+	<insert id="insertIntoOptLog" parameterClass="optLog">
+		INSERT INTO
+		SCOA_TB_OPT_LOG
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		OPT_ID,
+		OPT_IP,
+		OPT_MAC
+		)
+		VALUES(
+		now(),
+		now(),
+		#optId#,
+		#optIp#,
+		#optMac#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+</sqlMap>

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/bcqSoft/!svn/ver/11767/source/sgoa/trunk/src/main/resources/app
+END
+service.xml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/resources/app/service.xml
+END
+freemarker.xml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/bcqSoft/!svn/ver/7956/source/sgoa/trunk/src/main/resources/app/freemarker.xml
+END
+log4j.properties
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/resources/app/log4j.properties
+END
+sgoa-security.xml
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/bcqSoft/!svn/ver/6074/source/sgoa/trunk/src/main/resources/app/sgoa-security.xml
+END

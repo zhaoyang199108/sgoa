@@ -1,0 +1,573 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td a {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+fieldset, img {
+    border: 0;
+}
+
+address, caption, cite, code, dfn, em, th, var {
+    font-style: normal;
+    font-weight: normal;
+}
+
+li {
+    list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+input, textarea, select, button {
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: inherit;
+    vertical-align: middle;
+    border:1px solid;
+    border-color: #AAAAAA #AAAAAA #D0D0D0 #D0D0D0;
+	padding:1px 2px;
+}
+
+body {
+    font: 12px / 1.5 tahoma, arial, simsun, sans-serif;
+    color: #333333;
+    text-align: center;
+}
+
+html, body{
+	height:100%;
+}
+table {
+    font-size: inherit;
+}
+
+a {
+    color: #000000;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #00A800;
+    text-decoration: none;
+}
+
+#main {
+    height: 98%;
+    background: url(../image/bg-x.png) #FFFFFF repeat-x 0 -261px;
+    margin: 5px 3px 1px 4px;
+    border: 1px solid #CCCCCC;
+}
+
+#content {
+    margin: 8px 14px;
+}
+
+.title {
+    color: #0A2965;
+    font-size:16px;
+    font-weight: bold;
+    padding: 2px 0 3px 22px;
+    text-align: left;
+    border-bottom: 2px solid #1DADE9;
+	margin-top:2px;
+}
+
+.search {
+    border: 1px solid #FFE5CA;
+    height: 60px;
+    margin-top: 12px;
+    background:#FFFBF4;
+}
+
+.search ul{
+	margin:10px;
+}
+
+.search ul li{
+	float:left;
+	margin-right:20px;
+}
+
+.search ul li input{
+	margin-left:5px;
+	display:inline;
+	*width:100px;
+}
+.search ul li input.noshow{
+	margin-left:5px;
+	display:inline;
+	*width:100px; border:0px; background:none;
+}
+
+.search ul li.action{
+	margin-left:20px;
+}
+
+/** 商品列表页面查询样式 */
+.seal_search ul {
+	margin:10px 2px 0 10px;
+}
+
+.seal_search ul li{
+	margin-right:15px;
+}
+
+.seal_search ul li input{
+	width:100px;
+}
+
+.seal_search ul li.action input{
+	width:40px;
+}
+/** 商品列表页面查询样式 */
+
+.list {
+    margin-top: 12px;
+}
+
+.list .opt-btn {
+    height: 20px;
+}
+
+.list .opt-btn ul li {
+    float: left;
+    width: 62px;
+}
+
+.list .opt-btn ul li input {
+    margin-right: 3px;
+}
+
+.list .opt-btn ul.select-btn {
+    float: left;
+}
+
+.list .opt-btn ul.action-btn {
+    float: right;
+}
+
+.tr-btn{
+	width:16px;
+	height:20px;
+}
+
+a.copy-tr-btn{
+	background-position: 0 -243px;
+}
+a.clear-tr-btn{
+	background-position: 0 -290px;
+}
+a.del-tr-btn{
+	background-position: 0 -267px;
+}
+
+.action-opt{
+	background: url(../image/icons.png) no-repeat;
+    padding-left: 20px;
+}
+
+a.action-new {
+    background-position: 0 -179px;
+    color:#005D96;
+	font_weight:bold;
+}
+
+a.action-upd {
+	background-position: 0 -65px;
+	color:#005D96;
+	font_weight:bold;
+	
+}
+
+a.action-del {
+	background-position: 0 -132px;
+	color:#005D96;
+	font_weight:bold;
+}
+
+a.act-update{
+	background-position: 0 -203px;
+	padding-left:14px;
+}
+
+a.act-role{
+	background-position: 0 -41px;
+	padding-left:16px;
+}
+
+a.act-delete{
+	background-position: 0 -225px;
+	padding-left:14px;
+}
+
+.list .page-info {
+    height: 25px;
+    margin-top: 5px;
+}
+
+.list .page-info p.page-count {
+    float: left;
+    padding-left: 2px;
+	line-height:20px;
+}
+
+.list .page-info p.page-count span {
+    font-weight: bold;
+}
+
+.list .page-info .page-btn {
+    float: right;
+}
+
+.list .page-info .page-btn a {
+    margin: 0 2px;
+    color: #1F4A65;
+}
+
+table.list-info {
+    width: 100%;
+    _width: 98%;
+}
+
+table.list-info th {
+    background: url(../image/bg-x.png) repeat-x 0px -49px #C5E1FE;
+    border: 1px solid #C9E4FE;
+    height: 26px;
+    font-weight: bold;
+}
+
+table.list-info td {
+    border: 1px solid #C9E4FE;
+    height: 21px;
+    padding: 1px 7px;
+    text-align: left;
+}
+
+table.list-info td.act {
+    width:40px;
+}
+
+table.list-info td.txt_center {
+    text-align: center;
+}
+
+ul.form-1c{
+	float:left;
+	margin:10px 0 0 10px;
+	text-align:left;
+}
+
+ul.form-1c li{
+	clear:both;
+	margin:6px 0;
+	overflow:hidden;
+}
+
+ul.form-1c li label{
+	float:left;
+	width:76px;
+}
+
+ul.form-1c li input.text{
+	width:160px;
+	padding:2px;
+}
+
+ul.form-1c li select{
+	width:160px;
+	padding:2px;
+}
+
+ul.form-1c li textarea{
+	padding:4px;
+}
+
+ul.form-1c li.action{
+	margin-top:40px;
+	margin-left:50px;
+}
+
+ul.form-1c li.action input{
+	margin:0 30px;
+	padding:0 3px;
+}
+
+
+/* 入库详细页面 */
+ul.batch-info{
+
+}
+
+ul.batch-info li{
+    display:inline;
+	margin-right:8px;
+}
+
+ul.batch-info li label{
+	margin-right:4px;
+}
+
+ul.batch-info li span.batch-no{
+	font-weight:bold;
+}
+
+ul.batch-info li input.batch-title{
+	width:150px;
+}
+ul.batch-info li input.batch-action{
+    *width:60px;
+    float:left;
+}
+
+p.seal-count{
+	float:right;
+	margin-right:20px;
+	width:300px;
+	line-height:30px;
+}
+
+p.seal-count span{
+	font-weight:bold;
+	color:red;
+	margin:0 2px; 
+}
+
+#boundTb tr{
+    background:#CDEDFA;
+	height:26px;
+	border:1px;
+}
+
+
+#boundTb tr th{
+	border-bottom:1px double #CCCCCC;
+}
+
+#boundTb tr td{
+	text-align:center;
+	padding:3px 6px;	
+	border:1px dashed #CCCCCC;
+}
+#boundTb tr td.opt-link{
+	padding:3px 4px;
+	width:35px;
+}
+
+#boundTb tr td.t-price-td{
+	padding:3px 2px;
+	width:85px;
+}
+#boundTb tr td input{
+	text-align:center;
+	width:65px;
+}
+
+#boundTb tr td input.bi{
+	text-align:center;
+	width:100%;
+}
+
+#boundTb tr td input.sm{
+	text-align:center;
+	width:35px;
+}
+
+#boundTb tr td input.check{
+	border:0px;
+	width:auto;
+}
+
+#boundTb tr td input.ib-count{
+	width:46px;
+}
+
+#boundTb tr td input.ib-price{
+	width:50px;
+	margin-right:4px;
+}
+
+#boundTb tr td input.ib-paid-price{
+	width:62px;
+	margin-right:4px;
+}
+
+#boundTb tr td input.ib-barcode{
+	width:92px;
+}
+
+#boundTb tr td select{
+	width:140px;
+}
+
+#boundTb tr td select.ib-sell{
+	width:105px;
+}
+
+#boundTb tr td select.ib-sales{
+	width:80px;
+}
+
+
+#boundTb tr td select.ob-storage{
+	width:120px;
+}
+
+#boundTb tr td input.ob-count{
+	width:40px;
+}
+
+#boundTb tr td input.ob-price{
+	width:44px;
+	margin-right:2px;
+}
+
+#boundTb tr td input.ob-paid-price{
+	width:56px;
+	margin-right:2px;
+}
+
+#boundTb tr td select.ib-type{
+	width:56px;
+}
+
+#boundTb tr td select.ib-supplier{
+	width:120px;
+}
+
+input.ib-date{
+	width:75px;
+	text-align:center;
+}
+
+.list hr{
+	margin-top:0px;
+	border:1px double #CCCCCC;
+}
+
+.float-left{
+	float:left;
+	width:150px;
+	height:150px;
+	overFlow-x: hidden;
+    overFlow-y: scroll;
+    scrollbar-face-color: #9EBFE8; 
+	scrollbar-shadow-color: #FFFFFF; 
+	scrollbar-highlight-color: #FFFFFF; 
+	scrollbar-3dlight-color: #9EBFE8; 
+	scrollbar-darkshadow-color: #9EBFE8; 
+	scrollbar-track-color: #FFFFFF; 
+	scrollbar-arrow-color: #FFFFFF;
+	border: 1 solid #d9d9d9;
+}
+.float-right{
+	float:left;
+	width:70px;
+	height:150px;
+}
+.table_div_data tr{
+	background-color:expression((this.sectionRowIndex%2==0)?"":"#F7F8FA");
+	border:#c8c8e7 1px solid;
+}
+.table_div_data td{
+	border: 1px solid #CECECE;
+    height: 22px;
+    font-size:12;
+}
+.div_data_scroll {
+	overflow-x: scroll;
+	overflow-y: scroll;
+	border: 1px solid #c8c8e7;
+}
+.div_width_830 {
+	width:830px;
+	height:280px;
+}
+table.list-info-detial {
+    width: 2400px;
+}
+
+table。width_2400 {
+    width: 2400px;
+}
+
+table。width_1000 {
+    width: 1000px;
+}
+
+table.list-info-detial th {
+    background: url(../image/bg-x.png) repeat-x 0px -49px;
+    border: 1px solid #CECECE;
+    height: 26px;
+    font-weight: bold;
+    font-size:14px;
+}
+
+table.list-info-detial td {
+    border: 1px solid #CECECE;
+    height: 22px;
+    padding: 1px 7px;
+    text-align: left;
+    font-size:14px;
+}
+
+table.list-info-detial td.txt_center {
+    text-align: center;
+}
+.select-info{
+	width:100px;
+}
+
+.stress{
+	font-weight:bold;
+	color:red;
+}
+.error-row{
+	background-color:#FFF00F;
+}
+.div_data_info{
+	width:500px;
+	height:250px;
+	overFlow-x: hidden;
+    overFlow-y: scroll;
+    scrollbar-face-color: #9EBFE8; 
+	scrollbar-shadow-color: #FFFFFF; 
+	scrollbar-highlight-color: #FFFFFF; 
+	scrollbar-3dlight-color: #9EBFE8; 
+	scrollbar-darkshadow-color: #9EBFE8; 
+	scrollbar-track-color: #FFFFFF; 
+	scrollbar-arrow-color: #FFFFFF;
+	border: 1 solid #d9d9d9;
+}
+
+.right-close-btn{
+	float:right;
+	margin-right:10px;
+	background: #FFDAC1;
+	border:1px solid #F5A35F;
+	padding:1px;
+}
+.rol{
+   height:125px;
+   overflow-y:scroll;
+   width:100%;
+}
+
+table.col tr{ 
+   background:#CDEDFA;
+   border:1px solid #CCCCCC;
+   padding:3px;
+}
+
+table.col th{
+   font-size:12px; 
+   font-weight:bold;
+}
+

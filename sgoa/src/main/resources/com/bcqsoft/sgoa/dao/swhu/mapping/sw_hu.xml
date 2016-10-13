@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息表SQL映射文件, TABLE: SCOA_TB_DOCIN -->
+<sqlMap namespace="swHu">
+
+	<typeAlias alias="swHu"
+		type="com.bcqsoft.sgoa.dao.swhu.dataobject.SwHu" />
+
+	<!-- 插入一条信息至信息表 -->
+	<insert id="addSwInfo" parameterClass="swHu">
+		INSERT INTO
+		SCOA_TB_SW_HU
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		DOCIN_ID,
+		RECEIVER_ID,
+		ENABLED,
+		STITUATION,
+		STATUS,
+		BLJG,
+		ISQS
+		)
+		VALUES(
+		now(),
+		now(),
+		#docinId#,
+		#receiverId#,
+		'Y',
+		#stituation#,
+		#status#,
+		#bljg#,
+		#isqs#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="getAllSwBoxList" parameterClass="swHu"
+		resultClass="swHu">
+		SELECT
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.RECEIVER_ID receiverId,
+			t.DOCIN_ID docinId,
+			t.STITUATION stituation,
+			t.STATUS status,
+			t.ENABLED enabled,
+			t.BLJG bljg,
+			t.ISQS isqs
+		FROM
+			SCOA_TB_SW_HU t
+		WHERE
+			t.DOCIN_ID =#docinId#
+		AND
+			t.RECEIVER_ID=#receiverId#
+		AND 
+			t.STATUS=#status#
+			ORDER BY t.UPDATE_DATE
+		DESC
+	</select>
+
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="getAllSwBoxListAll" parameterClass="long"
+		resultClass="swHu">
+		SELECT
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.RECEIVER_ID receiverId,
+			(SELECT USER_NAME FROM SCOA_TB_USER d WHERE d.LOGIN_ID=t.RECEIVER_ID) loginName,
+			t.DOCIN_ID docinId,
+			t.STITUATION stituation,
+			t.STATUS status,
+			t.ENABLED enabled,
+			t.BLJG bljg,
+			t.ISQS isqs
+		FROM
+			SCOA_TB_SW_HU t
+		WHERE
+			t.DOCIN_ID =#id#
+		AND t.STATUS='1'
+		ORDER BY
+			t.UPDATE_DATE
+		DESC
+	</select>
+	<!-- 根据用户ID更新用户信息 -->
+	<update id="updateSwInfo" parameterClass="swHu">
+		UPDATE
+			SCOA_TB_SW_HU t
+		SET
+			t.UPDATE_DATE = now(),
+			t.STATUS =#status#,
+			t.STITUATION=#stituation#,
+			t.BLJG= #bljg#,
+			t.ISQS= #isqs#
+		WHERE
+			t.DOCIN_ID =#docinId#
+		AND
+			t.RECEIVER_ID =#receiverId#
+	</update>
+	
+	<!-- 根据信息ID读取信息的全部记录 -->
+	<select id="findSwHuList" resultClass="swHu">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.RECEIVER_ID receiverId,
+			(SELECT USER_NAME FROM SCOA_TB_USER d WHERE d.LOGIN_ID=t.RECEIVER_ID) loginName,
+			t.BLJG bljg,
+			t.ISQS isqs
+		 FROM
+		 	SCOA_TB_SW_HU t
+		WHERE t.DOCIN_ID = #id#
+	</select>
+</sqlMap>

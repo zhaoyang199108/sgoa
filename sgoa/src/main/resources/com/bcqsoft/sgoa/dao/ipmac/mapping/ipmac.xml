@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- IP/MAC表SQL映射文件, TABLE: SCOA_TB_IPMAC -->
+<sqlMap namespace="ipmac">
+
+	<typeAlias alias="ipmac"
+		type="com.bcqsoft.sgoa.dao.ipmac.dataobject.Ipmac" />
+
+	<insert id="insertIntoIpmac" parameterClass="ipmac">
+		INSERT INTO
+		    SCOA_TB_IPMAC
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		OPT_IP,
+		OPT_MAC,
+		ENABLED
+		)
+		VALUES(
+		now(),
+		now(),
+		#optIp#,
+		#optMac#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的IP/MAC(页面分页使用) -->
+	<select id="findIpmacInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_IPMAC n
+		WHERE n.ENABLED = 'Y'
+		<isNotEmpty property="optIp" prepend="AND">
+			n.OPT_IP LIKE
+			CONCAT('%',#optIp#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="optMac" prepend="AND">
+			n.OPT_MAC
+			LIKE CONCAT('%',#optMac#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的IP/MAC -->
+	<select id="findIpmacInfoList" resultClass="ipmac">
+		SELECT
+		n.ID,
+		n.CREATE_DATE createDate,
+		n.UPDATE_DATE updateDate,
+		n.OPT_IP optIp,
+		n.OPT_MAC optMac,
+		n.ENABLED enabled
+		FROM
+		SCOA_TB_IPMAC n
+		WHERE n.ENABLED = 'Y'
+		<isNotEmpty property="optIp" prepend="AND">
+			n.OPT_IP LIKE
+			CONCAT('%',#optIp#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="optMac" prepend="AND">
+			n.OPT_MAC
+			LIKE CONCAT('%',#optMac#,'%')
+		</isNotEmpty>
+		ORDER BY n.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条IP/MAC -->
+	<select id="findIpmacInfoById" resultClass="ipmac">
+		SELECT
+		n.ID,
+		n.CREATE_DATE createDate,
+		n.UPDATE_DATE updateDate,
+		n.OPT_IP
+		optIp,
+		n.OPT_MAC optMac,
+		n.ENABLED enabled
+		FROM
+		SCOA_TB_IPMAC n
+		WHERE n.ENABLED = 'Y'
+		and n.ID=#id#
+	</select>
+
+	<!-- 根据ID更新某条IP/MAC信息 -->
+	<update id="updateIpmacInfoById" parameterClass="ipmac">
+		UPDATE
+		SCOA_TB_IPMAC n
+		SET n.UPDATE_DATE = now(),
+		n.OPT_IP =
+		#optIp#,
+		n.OPT_MAC= #optMac#
+		WHERE n.ID = #id#
+		AND n.ENABLED
+		= 'Y'
+	</update>
+
+	<!-- 根据ID删除某条公告IP/MAC(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="updateIpmacStatusToDisabled" parameterClass="long">
+		UPDATE
+		SCOA_TB_IPMAC n
+		SET n.UPDATE_DATE = now(),
+		n.ENABLED = 'N'
+		WHERE n.ID = #id#
+		AND
+		n.ENABLED = 'Y'
+	</update>
+	
+	<select id="findAllIpmacInfo" resultClass="ipmac">
+		SELECT
+		n.ID,
+		n.OPT_IP optIp
+		FROM SCOA_TB_IPMAC n
+		WHERE n.ENABLED = 'Y'
+	</select>
+
+</sqlMap>

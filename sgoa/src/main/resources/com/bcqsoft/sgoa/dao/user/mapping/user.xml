@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 人员表SQL映射文件, TABLE: SCOA_TB_USER -->
+<sqlMap namespace="user">
+
+	<typeAlias alias="user" type="com.bcqsoft.sgoa.dao.user.dataobject.User" />
+
+
+	<!-- 根据查询条件查询符合条件的用户总数量(页面分页使用) -->
+	<select id="findUserInfoCount" resultClass="int">
+		SELECT
+			COUNT(*) 
+		FROM SCOA_TB_USER stu  
+	    WHERE stu.ENABLED = 'Y'
+		<isNotEmpty property="userName" prepend="AND">
+			( stu.USER_NAME LIKE CONCAT('%',#userName#,'%')
+			OR stu.USER_NAME_PY LIKE CONCAT('%',#userName#,'%')
+			)
+		</isNotEmpty>
+		<isNotEmpty property="loginId" prepend="AND">
+			stu.LOGIN_ID LIKE
+			CONCAT('%',#loginId#,'%')
+		</isNotEmpty>
+		 <isNotNull property="deptList" prepend="AND">
+			stu.DEPT_ID IN
+			<iterate property="deptList" conjunction="," open="(" close=")">
+				#deptList[]#
+			</iterate>
+        </isNotNull>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的用户列表信息 -->
+	<select id="findUserInfoList" resultClass="user">
+		SELECT
+			stu.ID,
+			stu.CREATE_DATE createDate,
+			stu.UPDATE_DATE updateDate,
+			stu.LOGIN_ID loginId,
+			stu.PASSWORD password,
+			stu.USER_NAME userName,
+			stu.USER_NAME_PY userNamePy,
+			stu.GENDER gender,
+			stu.OFFICE_TELL officeTell,
+			stu.PHONE_NO phoneNo,		
+			stu.EMAIL email,		
+			stu.BIRTHDAY birthday,				
+			stu.ENABLED enabled,
+			stu.DEPT_ID deptId,
+			(SELECT d.DEPT_NAME FROM SCOA_TB_DEPT d WHERE d.ID=stu.DEPT_ID) deptName,
+			stu.LEVEL_NAME levelName,
+			stu.POSITION_ID positionId,
+			(SELECT g.GRPO_NAME FROM SCOA_TB_GRPO g WHERE g.ID=stu.POSITION_ID) grpoName,
+			stu.SORTING sorting,
+			stu.NC_NAME ncName
+		FROM SCOA_TB_USER stu  
+	    WHERE stu.ENABLED = 'Y' 
+	    AND stu.LOGIN_ID != 'system'
+		<isNotEmpty property="userName" prepend="AND">
+			( stu.USER_NAME LIKE CONCAT('%',#userName#,'%')
+			OR stu.USER_NAME_PY LIKE CONCAT('%',#userName#,'%')
+			)
+		</isNotEmpty>
+		<isNotEmpty property="loginId" prepend="AND">
+			stu.LOGIN_ID LIKE
+			CONCAT('%',#loginId#,'%')
+		</isNotEmpty>
+		 <isNotNull property="deptList" prepend="AND">
+			stu.DEPT_ID IN
+			<iterate property="deptList" conjunction="," open="(" close=")">
+				#deptList[]#
+			</iterate>
+        </isNotNull>	
+		ORDER BY ABS(stu.SORTING) ASC, stu.UPDATE_DATE DESC    
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 插入一条用户信息至用户表 -->
+	<insert id="insertIntoUser" parameterClass="user">
+		INSERT INTO
+		SCOA_TB_USER
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		LOGIN_ID,
+		PASSWORD,
+		USER_NAME,
+		USER_NAME_PY,
+		GENDER,
+		OFFICE_TELL,
+		PHONE_NO,
+		HOME_ADDRESS,
+		EMAIL,
+		URGENT_USER_NAME,
+		URGENT_USER_TELL,
+		BIRTHDAY,
+		ID_NUMBER,
+		CARD_NO,
+		REMARK,
+		ENABLED,
+		DEPT_ID,
+		LEVEL_NAME,
+		POSITION_ID,
+		SORTING,
+		NC_NAME
+		)
+		VALUES(
+		now(),
+		now(),
+		#loginId#,
+		#password#,
+		#userName#,
+		#userNamePy#,
+		#gender#,
+		#officeTell#,
+		#phoneNo#,
+		#homeAddress#,
+		#email#,
+		#urgentUserName#,
+		#urgentUserTell#,
+		#birthday#,
+		#idNumber#,
+		#cardNo#,
+		#remark#,
+		#enabled#,
+		#deptId#,
+		#levelName#,
+		#positionId#,
+		#sorting#,
+		#ncName#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据用户ID更新用户信息 -->
+	<update id="updateUserInfoById" parameterClass="user">
+		UPDATE
+		SCOA_TB_USER stu
+		SET
+		stu.UPDATE_DATE = now(),
+		stu.LOGIN_ID = #loginId#,
+		<isNotEmpty property="password" >
+		stu.PASSWORD = #password#,
+		</isNotEmpty>	
+		stu.USER_NAME = #userName#,
+		stu.USER_NAME_PY
+		= #userNamePy#,
+		stu.GENDER = #gender#,
+		stu.OFFICE_TELL = #officeTell#,
+		stu.PHONE_NO = #phoneNo#,
+		stu.HOME_ADDRESS = #homeAddress#,
+		stu.EMAIL = #email#,
+		stu.URGENT_USER_NAME = #urgentUserName#,
+		stu.URGENT_USER_TELL =
+		#urgentUserTell#,
+		stu.BIRTHDAY = #birthday#,
+		stu.ID_NUMBER = #idNumber#,
+		stu.CARD_NO = #cardNo#,
+		stu.REMARK = #remark#,
+		stu.ENABLED = #enabled#,
+		stu.DEPT_ID = #deptId#,
+		stu.LEVEL_NAME = #levelName#,
+		stu.POSITION_ID = #positionId#,
+		stu.SORTING = #sorting#,
+		stu.NC_NAME =#ncName#
+		WHERE stu.ID = #id#
+		AND stu.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据用户ID删除用户信息 -->
+	<delete id="deleteUserInfoById" parameterClass="long">
+		DELETE FROM 
+		SCOA_TB_USER 
+		WHERE ID = #id# 
+	</delete>
+	<!-- 根据用户ID查找该用户的详细信息 -->
+	<select id="getUserInfo" resultClass="user" parameterClass="long">
+		SELECT
+		stu.ID id,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.GENDER gender,
+		stu.OFFICE_TELL officeTell,
+		stu.PHONE_NO phoneNo,
+		stu.HOME_ADDRESS
+		homeAddress,
+		stu.EMAIL email,
+		stu.URGENT_USER_NAME urgentUserName,
+		stu.URGENT_USER_TELL urgentUserTell,
+		stu.BIRTHDAY birthday,
+		stu.ID_NUMBER idNumber,
+		stu.CARD_NO cardNo,
+		stu.REMARK remark,
+		stu.ENABLED enabled,
+		stu.DEPT_ID deptId,
+		(SELECT d.DEPT_NAME FROM SCOA_TB_DEPT d WHERE d.ID=stu.DEPT_ID) deptName,
+		stu.POSITION_ID positionId,
+		stu.LEVEL_NAME levelName,
+		(SELECT g.GRPO_NAME FROM SCOA_TB_GRPO g WHERE g.ID=stu.POSITION_ID) grpoName,
+		stu.SORTING sorting,
+		stu.NC_NAME ncName
+		FROM SCOA_TB_USER stu
+		WHERE stu.ID = #id#
+		AND
+		stu.ENABLED = 'Y'
+	</select>
+	
+	<!-- 根据用户LoginID查找该用户的详细信息 -->
+	<select id="getUserInfoByLoginId" resultClass="user" parameterClass="String">
+		SELECT
+		stu.ID id,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.GENDER gender,
+		stu.OFFICE_TELL officeTell,
+		stu.PHONE_NO phoneNo,
+		stu.HOME_ADDRESS
+		homeAddress,
+		stu.EMAIL email,
+		stu.URGENT_USER_NAME urgentUserName,
+		stu.URGENT_USER_TELL urgentUserTell,
+		stu.BIRTHDAY birthday,
+		stu.ID_NUMBER idNumber,
+		stu.CARD_NO cardNo,
+		stu.REMARK remark,
+		stu.ENABLED enabled,
+		stu.DEPT_ID deptId,
+		stu.LEVEL_NAME levelName,
+		stu.POSITION_ID positionId,
+		stu.SORTING sorting,
+		stu.NC_NAME ncName
+		FROM SCOA_TB_USER stu
+		WHERE stu.LOGIN_ID = #loginId#
+		AND
+		stu.ENABLED = 'Y'
+		LIMIT 1
+	</select>
+	
+	<!-- 根据全部的用户列表信息 -->
+	<select id="findAllUserList" resultClass="user">
+		SELECT
+		stu.ID id,
+		stu.USER_NAME userName,
+		stu.NC_NAME ncName,
+		stu.LOGIN_ID loginId
+		FROM SCOA_TB_USER stu
+		WHERE stu.ENABLED = 'Y'
+	</select>
+		<!-- 根据全部的用户列表信息 -->
+	<select id="findUserListByPy" resultClass="user" parameterClass="String">
+		SELECT
+		stu.ID id,
+		stu.USER_NAME userName,
+		stu.LEVEL_NAME levelName,
+		stu.NC_NAME ncName,
+		stu.LOGIN_ID loginId
+		FROM SCOA_TB_USER stu
+		WHERE stu.ENABLED = 'Y' 
+		AND stu.USER_NAME_PY LIKE CONCAT('%',#userNamePy#,'%')
+	</select>
+		<!-- 根据全部的用户列表信息 -->
+	<select id="findUsersByMsg"  parameterClass="map" resultClass="user">
+		SELECT
+		stu.ID id,
+		stu.USER_NAME userName,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.GENDER gender,
+		stu.OFFICE_TELL officeTell,
+		stu.PHONE_NO phoneNo,
+		stu.HOME_ADDRESS homeAddress,
+		stu.EMAIL email,
+		stu.URGENT_USER_NAME urgentUserName,
+		stu.URGENT_USER_TELL urgentUserTell,
+		stu.BIRTHDAY birthday,
+		stu.ID_NUMBER idNumber,
+		stu.CARD_NO cardNo,
+		stu.REMARK remark,
+		stu.ENABLED enabled,
+		stu.DEPT_ID deptId,
+		stu.LEVEL_NAME levelName,
+		stu.POSITION_ID positionId,
+		stu.SORTING sorting,
+		stu.NC_NAME ncName
+		FROM SCOA_TB_USER stu
+		WHERE stu.ENABLED = 'Y'
+			<isNotNull property="MsgIds">
+			AND stu.LOGIN_ID IN
+			<iterate property="MsgIds" conjunction="," open="(" close=")">
+				#MsgIds[]#
+			</iterate>
+		</isNotNull>
+	</select>
+	
+<update id="updateUserPassword" parameterClass="map">
+		UPDATE
+			SCOA_TB_USER stu
+		SET
+			stu.UPDATE_DATE = now(),
+			stu.PASSWORD = #password#
+		WHERE stu.LOGIN_ID = #loginId#
+</update>
+	<!-- 查找某一部门下的全部人员 -->
+	<select id="findUsersInfoForChoose" parameterClass="map" resultClass="user">
+		SELECT DISTINCT 
+		stu.ID id,
+		stu.LOGIN_ID loginId,
+		stu.LEVEL_NAME levelName,
+		stu.USER_NAME userName,
+		stu.SORTING sorting,
+		stu.NC_NAME ncName
+		FROM
+		SCOA_TB_USER stu 
+		WHERE 1=1 	
+		<isNotNull property="idList">
+			AND stu.LOGIN_ID IN
+			<iterate property="idList" conjunction="," open="(" close=")">
+				#idList[]#
+			</iterate>
+		</isNotNull>
+		AND stu.ENABLED = 'Y'
+	</select>
+
+	<!-- 查找某一部门下的全部人员 -->
+	<select id="findAppUsersInfoForChoose" parameterClass="map" resultClass="user">
+		SELECT  
+			stu.ID id,
+			stu.LOGIN_ID loginId,
+			stu.USER_NAME userName,
+			stu.LEVEL_NAME levelName,
+			stu.DEPT_ID deptId,
+			(SELECT ad.GRPO_NAME FROM SCOA_TB_GRPO ad WHERE ad.ID = stu.POSITION_ID) grpoName,
+			stu.SORTING sorting,
+			stu.NC_NAME ncName
+		FROM SCOA_TB_USER stu 
+		WHERE 1=1 
+		<isNotNull property="idList">
+			AND stu.POSITION_ID IN 
+			<iterate property="idList" conjunction="," open="(" close=")">
+				#idList[]#
+			</iterate>
+		</isNotNull>
+		AND stu.ENABLED = 'Y' 
+		ORDER BY stu.DEPT_ID ASC 
+	</select>
+	
+	<!-- 查找全部用户列表 -->
+	<select id="getAllUserInfo" resultClass="user">
+		SELECT 
+			u.ID id,
+			u.LOGIN_ID loginId,
+			u.LEVEL_NAME levelName,
+			u.USER_NAME userName,
+			u.NC_NAME ncName 
+	      FROM 
+	        SCOA_TB_USER u
+	     WHERE u.ENABLED = 'Y'
+	</select>
+
+	
+	<!-- 查找某一部门下的全部人员 -->
+	<select id="findUsersInfoForDeptId" parameterClass="map" resultClass="user">
+		SELECT
+			distinct
+			stu.ID id,
+			stu.CREATE_DATE createDate,
+			stu.UPDATE_DATE updateDate,
+			stu.LOGIN_ID loginId,
+			stu.USER_NAME userName,
+			stu.PASSWORD password,
+			stu.USER_NAME_PY userNamePy,
+			stu.GENDER gender,
+			stu.DEPT_ID deptId,
+			d.DEPT_NAME deptName,
+			stu.LEVEL_NAME levelName,
+			stu.ENABLED enabled,
+			stu.SORTING sorting,
+			stu.NC_NAME ncName
+		FROM
+			SCOA_TB_USER stu ,
+			SCOA_TB_DEPT d
+		WHERE stu.ENABLED = 'Y' 
+		<isNotNull property="idList">
+			AND stu.DEPT_ID IN
+			<iterate property="idList" conjunction="," open="(" close=")">
+				#idList[]#
+			</iterate>
+		</isNotNull>
+		AND stu.DEPT_ID = d.ID
+		AND stu.LOGIN_ID != 'system' AND stu.LOGIN_ID != 'zl' 
+		ORDER BY ABS(stu.SORTING) ASC
+	</select>
+	
+	<!-- 查找某一部门下的全部人员 -->
+	<select id="findUsersInfoForDeptIdLogin" parameterClass="map" resultClass="user">
+		SELECT
+			stu.ID id,
+			stu.CREATE_DATE createDate,
+			stu.UPDATE_DATE updateDate,
+			stu.LOGIN_ID loginId,
+			stu.USER_NAME userName,
+			stu.PASSWORD password,
+			stu.USER_NAME_PY userNamePy,
+			stu.GENDER gender,
+			stu.DEPT_ID deptId,
+			d.DEPT_NAME deptName,
+			stu.LEVEL_NAME levelName,
+			stu.ENABLED enabled,
+			stu.SORTING sorting,
+			stu.NC_NAME ncName
+		FROM
+			SCOA_TB_USER stu ,
+			SCOA_TB_DEPT d
+		WHERE stu.ENABLED = 'Y' 
+		<isNotNull property="loginId">
+			AND stu.LOGIN_ID != #loginId# 
+		</isNotNull>
+		<isNotNull property="idList">
+			AND stu.DEPT_ID IN
+			<iterate property="idList" conjunction="," open="(" close=")">
+				#idList[]#
+			</iterate>
+		</isNotNull>
+		AND stu.DEPT_ID = d.ID
+	</select>
+	
+	    <!-- 根据部门ID删除用户信息 -->
+	<delete id="deleteUserInfoByIds" parameterClass="map">
+		UPDATE 
+			SCOA_TB_USER u
+		SET u.UPDATE_DATE = now(),
+			u.ENABLED = 'N'
+		WHERE  u.ENABLED = 'Y'
+			<isNotNull property="idList">
+			AND u.DEPT_ID IN
+			<iterate property="idList" conjunction="," open="(" close=")">
+				#idList[]#
+			</iterate>
+		</isNotNull>
+	</delete>
+	<!-- 查找某一部门下的全部人员 -->
+	<select id="findCarForDeptId" parameterClass="map" resultClass="user">
+		SELECT
+			stu.ID id,
+			stu.CREATE_DATE createDate,
+			stu.UPDATE_DATE updateDate,
+			stu.LOGIN_ID loginId,
+			stu.USER_NAME userName,
+			stu.PASSWORD password,
+			stu.USER_NAME_PY userNamePy,
+			stu.GENDER gender,
+			stu.DEPT_ID deptId,
+			d.DEPT_NAME deptName,
+			stu.LEVEL_NAME levelName,
+			stu.ENABLED enabled,
+			stu.SORTING sorting,
+			stu.NC_NAME ncName 
+		FROM
+			SCOA_TB_USER stu ,
+			SCOA_TB_DEPT d
+          
+		WHERE stu.ENABLED = 'Y' 
+		AND stu.LOGIN_ID != 'admin' 
+		<isNotNull property="idList">
+			AND stu.DEPT_ID IN
+			<iterate property="idList" conjunction="," open="(" close=")">
+				#idList[]#
+			</iterate>
+		</isNotNull>
+		AND stu.DEPT_ID = d.ID
+	</select>
+	<!-- 根据全部的用户列表信息 -->
+	<select id="findUsersByRfile"  parameterClass="map" resultClass="user">
+		SELECT
+		stu.ID id,
+		stu.USER_NAME userName,
+		stu.LOGIN_ID loginId,
+		stu.PASSWORD password,
+		stu.USER_NAME userName,
+		stu.USER_NAME_PY userNamePy,
+		stu.GENDER gender,
+		stu.OFFICE_TELL officeTell,
+		stu.PHONE_NO phoneNo,
+		stu.HOME_ADDRESS homeAddress,
+		stu.EMAIL email,
+		stu.URGENT_USER_NAME urgentUserName,
+		stu.URGENT_USER_TELL urgentUserTell,
+		stu.BIRTHDAY birthday,
+		stu.ID_NUMBER idNumber,
+		stu.CARD_NO cardNo,
+		stu.REMARK remark,
+		stu.LEVEL_NAME levelName,
+		stu.ENABLED enabled,
+		stu.SORTING sorting,
+		stu.NC_NAME ncName
+		FROM SCOA_TB_USER stu
+		WHERE stu.ENABLED = 'Y'
+			<isNotNull property="RfileIds">
+			AND stu.LOGIN_ID IN
+			<iterate property="RfileIds" conjunction="," open="(" close=")">
+				#RfileIds[]#
+			</iterate>
+		</isNotNull>
+	</select>
+	
+	<!-- 根据全部的用户列表信息 -->
+	<select id="findSchedulerUserInfoList"  parameterClass="long" resultClass="user">
+		SELECT
+			stu.ID id,
+			stu.USER_NAME userName,
+			stu.LOGIN_ID loginId,
+			stu.PASSWORD password,
+			stu.USER_NAME userName,
+			stu.USER_NAME_PY userNamePy,
+			stu.GENDER gender,
+			stu.OFFICE_TELL officeTell,
+			stu.PHONE_NO phoneNo,
+			stu.HOME_ADDRESS homeAddress,
+			stu.EMAIL email,
+			stu.URGENT_USER_NAME urgentUserName,
+			stu.URGENT_USER_TELL urgentUserTell,
+			stu.BIRTHDAY birthday,
+			stu.ID_NUMBER idNumber,
+			stu.CARD_NO cardNo,
+			stu.REMARK remark,
+			stu.LEVEL_NAME levelName,
+			stu.ENABLED enabled,
+			stu.SORTING sorting,
+			stu.NC_NAME ncName
+		FROM SCOA_TB_USER stu
+		WHERE stu.ENABLED = 'Y'
+			AND stu.DEPT_ID IN (SELECT d.DEPT_ID FROM SCOA_TB_DUTY d WHERE d.POSITION_ID = #positionId#) 
+	</select>
+	
+	<!-- 根据查询条件查询符合条件的用户列表信息 -->
+	<select id="findUserInfoListByDeptId" parameterClass="long" resultClass="user">
+		SELECT
+			stu.ID,
+			stu.CREATE_DATE createDate,
+			stu.UPDATE_DATE updateDate,
+			stu.LOGIN_ID loginId,
+			stu.PASSWORD password,
+			stu.USER_NAME userName,
+			stu.USER_NAME_PY userNamePy,
+			stu.GENDER gender,
+			stu.OFFICE_TELL officeTell,
+			stu.PHONE_NO phoneNo,		
+			stu.EMAIL email,		
+			stu.BIRTHDAY birthday,				
+			stu.ENABLED enabled,
+			stu.DEPT_ID deptId,
+			(SELECT d.DEPT_NAME FROM SCOA_TB_DEPT d WHERE d.ID=stu.DEPT_ID) deptName,
+			stu.LEVEL_NAME levelName,
+			stu.POSITION_ID positionId,
+			(SELECT g.GRPO_NAME FROM SCOA_TB_GRPO g WHERE g.ID=stu.POSITION_ID) grpoName,
+			stu.SORTING sorting,
+			stu.NC_NAME ncName
+		FROM SCOA_TB_USER stu  
+	    WHERE stu.ENABLED = 'Y' 
+		 AND stu.DEPT_ID=#deptId#
+		ORDER BY stu.UPDATE_DATE DESC
+	</select>
+	
+	<!-- 根据用户ID更新用户信息 -->
+	<update id="editSoUserInfoById" parameterClass="user">
+		UPDATE
+		SCOA_TB_USER stu
+		SET
+		stu.SORTING = #sorting#
+		WHERE stu.ID = #id#
+		AND stu.ENABLED = 'Y'
+	</update>
+	
+	<!-- 根据用户名称查询用户LoginID -->
+	<select id="findLoginIdByUserName" resultClass="user" parameterClass="String">
+		SELECT
+		stu.ID id,
+		stu.USER_NAME userName,
+		stu.LEVEL_NAME levelName,
+		stu.NC_NAME ncName,
+		stu.LOGIN_ID loginId
+		FROM SCOA_TB_USER stu
+		WHERE stu.ENABLED = 'Y' 
+		AND stu.USER_NAME = #userName# 
+		LIMIT 1 
+	</select>
+	
+	<!-- 根据 局长秘书loginId查找该用户的详细信息 -->
+	<select id="getUserLoginIdjzms" resultClass="user" >
+		SELECT
+		stu.ID id,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.ENABLED enabled,
+		stu.LEVEL_NAME levelName,
+		stu.NC_NAME ncName,
+		stu.POSITION_ID positionId
+		FROM SCOA_TB_USER stu
+		WHERE stu.POSITION_ID = 39
+		AND stu.ENABLED = 'Y'
+		ORDER BY stu.UPDATE_DATE DESC
+		LIMIT 1
+	</select>
+	
+	<!-- 根据 机要员loginId查找该用户的详细信息 -->
+	<select id="getUserLoginIdjyyd" resultClass="user" >
+		SELECT
+		stu.ID id,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.ENABLED enabled,
+		stu.LEVEL_NAME levelName,
+		stu.NC_NAME ncName,
+		stu.POSITION_ID positionId
+		FROM SCOA_TB_USER stu
+		WHERE stu.POSITION_ID = 15
+		AND stu.ENABLED = 'Y'
+		ORDER BY stu.UPDATE_DATE DESC
+		LIMIT 1
+	</select>
+	
+	<!-- 根据 取得当前登录人LONGIN_ID的职务ID -->
+	<select id="getUserLoginIdjyy" resultClass="user" >
+		SELECT
+		stu.ID id,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.ENABLED enabled,
+		stu.LEVEL_NAME levelName,
+		stu.NC_NAME ncName,
+		stu.POSITION_ID positionId,
+		stu.DEPT_ID deptId
+		FROM SCOA_TB_USER stu
+		WHERE stu.LOGIN_ID=#loginId#
+	</select>
+	
+	<!-- 根据 办公室主任loginId查找该用户的详细信息 -->
+	<select id="getUserLoginIdByPByD" resultClass="user" >
+		SELECT
+		stu.ID id,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.USER_NAME userName,
+		stu.ENABLED enabled,
+		stu.LEVEL_NAME levelName,
+		stu.NC_NAME ncName,
+		stu.POSITION_ID positionId
+		FROM SCOA_TB_USER stu
+		WHERE stu.POSITION_ID=#positionId#
+		AND stu.DEPT_ID=#deptId#
+	</select>
+	
+	<!-- 根据 根据部门ID和职务Id查找该用户的详细信息 -->
+	<select id="getUserListByDP" resultClass="user" >
+		SELECT
+		stu.ID id,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.USER_NAME userName,
+		stu.ENABLED enabled,
+		stu.LEVEL_NAME levelName,
+		stu.NC_NAME ncName,
+		stu.POSITION_ID positionId
+		FROM SCOA_TB_USER stu
+		WHERE stu.POSITION_ID=#positionId#
+		AND stu.DEPT_ID=#deptId#
+	</select>
+	
+	<!-- 根据 根据职务Id查找该用户的详细信息 -->
+	<select id="getUserListByPositionId" resultClass="user" >
+		SELECT
+		stu.ID id,
+		stu.CREATE_DATE createDate,
+		stu.UPDATE_DATE updateDate,
+		stu.LOGIN_ID loginId,
+		stu.USER_NAME userName,
+		stu.ENABLED enabled,
+		stu.LEVEL_NAME levelName,
+		stu.NC_NAME ncName,
+		stu.POSITION_ID positionId
+		FROM SCOA_TB_USER stu
+		WHERE stu.POSITION_ID=#positionId#
+	</select>
+	
+</sqlMap>

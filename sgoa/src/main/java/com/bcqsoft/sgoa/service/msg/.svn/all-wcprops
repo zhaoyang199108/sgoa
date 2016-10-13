@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/bcqSoft/!svn/ver/7943/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/service/msg
+END
+MsgInboxService.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/bcqSoft/!svn/ver/6092/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/service/msg/MsgInboxService.java
+END
+MsgOutboxService.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/bcqSoft/!svn/ver/7836/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/service/msg/MsgOutboxService.java
+END

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+			http://www.springframework.org/schema/aop 
+			http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+			http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+			
+	<!-- Database Connection Configuration -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${database.mysql.driver}" />
+		<property name="url" value="${database.mysql.url}" />
+		<property name="username" value="${database.mysql.username}" />
+		<property name="password" value="${database.mysql.password}" />
+		<property name="initialSize" value="5" />
+        <property name="maxActive" value="100" />
+        <property name="maxIdle" value="30" />
+        <property name="maxWait" value="1000" />
+        <property name="poolPreparedStatements" value="true" />
+        <property name="defaultAutoCommit" value="true" />
+	</bean>
+
+	<!-- Transaction Manager Configuration -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		abstract="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+
+	<!-- Ibatis Config -->
+	<bean id="daoConfigBase" abstract="true">
+		<property name="sqlMapClient">
+			<ref bean="sqlMapClient" />
+		</property>
+	</bean>
+
+	<!-- Ibatis SQL-Map Configuration -->
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="classpath:/app/dao/sqlmap-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	
+	<!-- Database Connection Configuration -->
+	<bean id="dataSourceSql" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${database.sql.driver}" />
+		<property name="url" value="${database.sql.url}" />
+		<property name="username" value="${database.sql.username}" />
+		<property name="password" value="${database.sql.password}" />
+	</bean>
+
+	<!-- Transaction Manager Configuration -->
+	<bean id="transactionManagerSql"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		abstract="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="dataSource">
+			<ref bean="dataSourceSql" />
+		</property>
+	</bean>
+
+	<!-- Ibatis Config -->
+	<bean id="daoConfigBaseSql" abstract="true">
+		<property name="sqlMapClient">
+			<ref bean="sqlMapClientSql" />
+		</property>
+	</bean>
+
+	<!-- Ibatis SQL-Map Configuration -->
+	<bean id="sqlMapClientSql" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="classpath:/app/dao/sqlmap-config.xml" />
+		<property name="dataSource" ref="dataSourceSql" />
+	</bean>
+</beans>  

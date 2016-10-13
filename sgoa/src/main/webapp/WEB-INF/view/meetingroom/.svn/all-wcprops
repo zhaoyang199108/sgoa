@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/bcqSoft/!svn/ver/6769/source/sgoa/trunk/src/main/webapp/WEB-INF/view/meetingroom
+END
+add_meetingroom.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/bcqSoft/!svn/ver/6702/source/sgoa/trunk/src/main/webapp/WEB-INF/view/meetingroom/add_meetingroom.ftl
+END
+meetingroom_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/bcqSoft/!svn/ver/6769/source/sgoa/trunk/src/main/webapp/WEB-INF/view/meetingroom/meetingroom_list.ftl
+END
+detail_meetingroom.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/bcqSoft/!svn/ver/6702/source/sgoa/trunk/src/main/webapp/WEB-INF/view/meetingroom/detail_meetingroom.ftl
+END
+edit_meetingroom.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/bcqSoft/!svn/ver/6702/source/sgoa/trunk/src/main/webapp/WEB-INF/view/meetingroom/edit_meetingroom.ftl
+END

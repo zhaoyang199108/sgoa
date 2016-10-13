@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 物资设备申领表SQL映射文件, TABLE: sgoa_TB_APPLY_GET -->
+<sqlMap namespace="approval">
+
+	<typeAlias alias="approval"
+		type="com.bcqsoft.sgoa.dao.approval.dataobject.Approval" />
+
+	<!-- 插入入库批次记录 -->
+	<insert id="insertIntoApproval" parameterClass="approval">
+		INSERT INTO
+		SCOA_TB_APPROVAL
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		APPROVAL_NAME,
+		APPROVAL_TYPE,
+		ENABLED
+		)
+		VALUES(
+		now(),
+		now(),
+		#approvalName#,
+		#approvalType#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的物资设备申领表(页面分页使用) -->
+	<select id="findApprovalInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_APPROVAL g
+		WHERE g.ENABLED='Y'
+		<isNotEmpty property="approvalName" prepend="AND">
+			g.APPROVAL_NAME LIKE
+			CONCAT('%',#approvalName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="approvalType" prepend="AND">
+			g.APPROVAL_TYPE =#approvalType#
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的物资设备申领表 -->
+	<select id="findApprovalInfoList" resultClass="approval">
+		SELECT g.ID,
+		g.CREATE_DATE createDate,
+		g.UPDATE_DATE updateDate,
+		g.APPROVAL_NAME approvalName,
+		g.APPROVAL_TYPE approvalType,
+		g.ENABLED enabled
+		FROM SCOA_TB_APPROVAL g
+		WHERE g.ENABLED='Y'
+		<isNotEmpty property="approvalName" prepend="AND">
+			g.APPROVAL_NAME LIKE
+			CONCAT('%',#approvalName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="approvalType" prepend="AND">
+			g.APPROVAL_TYPE =#approvalType#
+		</isNotEmpty>
+		ORDER BY g.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询符合条件的物资设备申领表 -->
+	<select id="getApprovalInfo" resultClass="approval" parameterClass="long">
+		SELECT g.ID,
+		g.CREATE_DATE createDate,
+		g.UPDATE_DATE updateDate,
+		g.APPROVAL_NAME approvalName,
+		g.APPROVAL_TYPE approvalType,
+		g.ENABLED enabled
+		FROM SCOA_TB_APPROVAL g
+		WHERE g.ID=#id# AND g.ENABLED='Y'
+
+	</select>
+	<!-- 根据办公用品ID更新办公用品信息 -->
+	<update id="updateApprovalInfoById" parameterClass="approval">
+		UPDATE
+		SCOA_TB_APPROVAL g
+		SET
+		g.UPDATE_DATE =now(),
+		g.APPROVAL_NAME=#approvalName#,
+		g.APPROVAL_TYPE=#approvalType#
+		WHERE g.ID = #id#
+		AND g.ENABLED = 'Y'
+	</update>
+
+<!-- 根据办公用品ID删除办公用品信息 -->
+	<delete id="deleteApprovalInfoById" parameterClass="long">
+		UPDATE
+		SCOA_TB_APPROVAL g
+		SET
+		g.ENABLED = 'N'
+		WHERE ID = #id#
+	</delete>
+	
+	<select id="findAllApprovalInfo" resultClass="approval">
+		SELECT
+		g.ID,
+		g.APPROVAL_NAME approvalName
+		FROM SCOA_TB_APPROVAL g
+		WHERE g.ENABLED = 'Y'
+		AND g.APPROVAL_TYPE = 'U'
+	</select>
+	
+</sqlMap>

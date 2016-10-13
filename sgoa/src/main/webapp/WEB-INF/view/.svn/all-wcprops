@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/bcqSoft/!svn/ver/11795/source/sgoa/trunk/src/main/webapp/WEB-INF/view
+END
+noshow.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/bcqSoft/!svn/ver/7776/source/sgoa/trunk/src/main/webapp/WEB-INF/view/noshow.ftl
+END
+login_index.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/bcqSoft/!svn/ver/7758/source/sgoa/trunk/src/main/webapp/WEB-INF/view/login_index.ftl
+END
+login_key.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/bcqSoft/!svn/ver/11235/source/sgoa/trunk/src/main/webapp/WEB-INF/view/login_key.ftl
+END
+main.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/bcqSoft/!svn/ver/7776/source/sgoa/trunk/src/main/webapp/WEB-INF/view/main.ftl
+END
+video.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/webapp/WEB-INF/view/video.ftl
+END
+index.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/bcqSoft/!svn/ver/10846/source/sgoa/trunk/src/main/webapp/WEB-INF/view/index.ftl
+END
+login.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/bcqSoft/!svn/ver/11235/source/sgoa/trunk/src/main/webapp/WEB-INF/view/login.ftl
+END

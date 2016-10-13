@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/7967/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/mvc/controller/msg
+END
+MsgInboxController.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/bcqSoft/!svn/ver/7967/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/mvc/controller/msg/MsgInboxController.java
+END
+MsgOutboxController.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/bcqSoft/!svn/ver/7967/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/mvc/controller/msg/MsgOutboxController.java
+END

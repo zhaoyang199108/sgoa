@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息表SQL映射文件, TABLE: SCOA_TB_NEWS -->
+<sqlMap namespace="newsLook">
+
+	<typeAlias alias="newsLook"
+		type="com.bcqsoft.sgoa.dao.newslook.dataobject.NewsLook" />
+
+	<!-- 插入一条信息至信息表 -->
+	<insert id="addNewsInfo" parameterClass="newsLook">
+		INSERT INTO
+		SCOA_TB_NEWS_LOOK
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		NEWS_ID,
+		LOGIN_ID,
+		STATUS
+		)
+		VALUES(
+		now(),
+		now(),
+		#newsId#,
+		#loginId#,
+		'1'
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="getAllNewsLookList" parameterClass="newsLook"
+		resultClass="newsLook">
+		SELECT
+		t.ID id,
+		t.CREATE_DATE createDate,
+		t.UPDATE_DATE
+		updateDate,
+		t.LOGIN_ID loginId,
+		t.NEWS_ID newsId,
+		t.STATUS status
+		FROM
+		SCOA_TB_NEWS_LOOK t
+		WHERE
+		t.NEWS_ID =#newsId#
+		AND
+		t.LOGIN_ID=#loginId#
+		ORDER BY t.UPDATE_DATE
+		DESC
+	</select>
+
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="getAllNewsLookListAll" parameterClass="long"
+		resultClass="newsLook">
+		SELECT
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.LOGIN_ID loginId,
+			d.DEPT_NAME deptName,
+			(SELECT USER_NAME FROM SCOA_TB_USER d WHERE d.LOGIN_ID=t.LOGIN_ID) loginName,
+			t.NEWS_ID newsId,
+			t.STATUS status
+		FROM SCOA_TB_NEWS_LOOK t,SCOA_TB_USER u,SCOA_TB_DEPT d
+		WHERE t.NEWS_ID =#id#
+		AND t.LOGIN_ID=u.LOGIN_ID        
+        AND u.DEPT_ID=d.ID
+		ORDER BY t.UPDATE_DATE DESC			
+	</select>
+</sqlMap>

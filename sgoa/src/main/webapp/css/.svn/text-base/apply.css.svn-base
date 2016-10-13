@@ -1,0 +1,11 @@
+.list{ width:92%; border-color:#F3F3F3;	margin: 10px auto; background:#CDEDFA;
+}
+.list td{line-height:20px; padding-left:6px; padding-top:3px; padding-bottom:3px;border:1px solid #CCCCCC;}
+.list td input.datatype{ border:0px; background-color:#CDEDFA;;}
+.list td h2{ font-size:18px; font-weight:bold; background: url(images/logo02.jpg) no-repeat left; padding-left:125px; line-height:30px;text-align:left;}
+.list tr{ border:1px solid #CCCCCC;}
+.list th{ font-size:12px; width:120px; border:1px solid #CCCCCC; background:#B6E4F4}
+.list td input.iso{line-height:25px; float:left; width:68%}
+.list td input.sew{line-height:25px; float:left; height:60px; width:86%;}
+.list td span{ width:140px; float:right; text-align:left;height:25px;}
+.list td input.fr{float:left;}

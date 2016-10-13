@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 站内信详细内容表SQL映射文件, TABLE: SCOA_TB_MSGONE_TEXT -->
+<sqlMap namespace="msgoneText">
+	
+	<typeAlias alias="msgoneText"
+		type="com.bcqsoft.sgoa.dao.msgonetext.dataobject.MsgoneText" />
+		
+<!-- 插入一封信至messageText表 -->
+	<insert id="insterMsgoneText" parameterClass="msgoneText">
+	INSERT INTO
+		SCOA_TB_MSGONE_TEXT
+		(     
+		CREATE_DATE,
+		UPDATE_DATE,
+		D_RECORDID,
+		PHONE_TEXT,
+		SRC_FILE_NAME,
+		FILE_DIR
+		)
+		VALUES(    
+		now(),
+		now(),
+		#dRecordid#,
+		#phoneText#,
+		#srcFileName#,
+		#fileDir#		
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+	<!-- 根据ID更新某条发信 -->
+	<update id="updateMsgoneTextInfoById" parameterClass="msgoneText">
+		UPDATE
+		SCOA_TB_MSGONE_TEXT mt
+		SET
+		mt.UPDATE_DATE = now(),
+		mt.D_RECORDID =#dRecordid#,
+		mt.PHONE_TEXT=#phoneText#
+		WHERE mt.ID = #id#
+	</update>
+	
+	<!-- 根据ID更新某条发信 -->
+	<update id="editMsgoneText" parameterClass="msgoneText">
+		UPDATE
+		SCOA_TB_MSGONE_TEXT mt
+		SET
+		mt.UPDATE_DATE = now(),
+		mt.SRC_FILE_NAME =#srcFileName#,
+		mt.FILE_DIR =#fileDir#,
+		mt.PHONE_TEXT=#phoneText#
+		WHERE mt.ID = #id#
+	</update>
+	
+</sqlMap>

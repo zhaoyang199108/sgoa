@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/core/base
+END
+BasePage.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/core/base/BasePage.java
+END
+BaseService.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/core/base/BaseService.java
+END
+BaseDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/core/base/BaseDAO.java
+END
+BaseForm.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/core/base/BaseForm.java
+END
+BaseSqlDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bcqSoft/!svn/ver/5963/source/sgoa/trunk/src/main/java/com/bcqsoft/sgoa/core/base/BaseSqlDAO.java
+END

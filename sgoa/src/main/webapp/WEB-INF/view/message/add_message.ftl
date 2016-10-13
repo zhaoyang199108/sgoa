@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Untitled Document</title>
+        <link href="${cssDomain}/css/style.css" rel="stylesheet" type="text/css">
+        <link href="${cssDomain}/css/iframe.css" type="text/css" rel="stylesheet">
+        <script type="text/javascript" src="${jsDomain}/js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="${jsDomain}/js/validator.js"></script>
+        <script type="text/javascript" src="${jsDomain}/js/commons.js"></script>
+        <script type="text/javascript" src="${jsDomain}/js/date/WdatePicker.js" defer="defer"></script>
+       	<script type="text/javascript" src="${jsDomain}/js/eWebOffice/eWebOffice.js"></script>
+       	<script type="text/javascript" src="${jsDomain}/js/upload/ajaxfileupload.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+            // 设置日期默认值
+			$("#textTime").val(getNowYmdHmDate());
+			// 日期控件
+			$("input[name=textTime]").click(function(){
+				WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'});
+			});
+                
+                $("#draftBtn").click(function(){
+                	// 提示用户确认信息
+                    if(!confirm("确定保存为草稿?")){
+                    	return false;
+                    }
+                	// 添加校验
+                	$('form').attr("action", "${appDomain}/message/draft_message.htm");
+                	 if(DoCheckSubmitForNg())
+                    {
+                    	$('form').submit();
+                    } 
+                });
+                
+                $("#submitBtn").click(function(){
+	                 // 标题非空校验
+					if(!isEmpty($("input[name=title]"),"标题不允许为空！")){
+						return;
+					}
+                    if(!confirm("请选择审批人!")){
+                    	return false;
+                    }
+                    // 添加校验
+                    // 选择提交审核人
+                    var url = "${appDomain}/common/choose_approval_user.htm?step="+$("#step").val()+"&approvalId=" + $("#approvalId").val()+"&r=" + Math.random();
+                    var param = 'dialogWidth=380px;dialogHeight=380px;status=no;center=yes;scroll=no';
+                    
+                    var value = window.showModalDialog(url, '', param);
+                    if(value==undefined)
+		        	{
+		        		  return false;
+		     	    }
+                    if (value.length == 0) {
+                        alert("未选择提交人,请重新提交!是否现在选择审批人?");
+                        return false;
+                    }
+                    if(value[0].indexOf(",") > -1){
+                    	alert("提交审核人只能选择一个!");
+                        return false;
+                    }
+                    $("#nextOptId").val(value[0]);
+                    $("#status").val(1);
+                    if(!confirm("是否确定提交?")){
+                    	return false;
+                    }
+                    if(DoCheckSubmit())
+                    {
+                    	$('form').submit();
+                    } 
+		    	
+			    });
+			});
+			
+		// 文件上传控件
+		function ajaxFileUpload() {
+			$("#loading").ajaxStart(function(){
+				$(this).show();
+			})//开始上传文件时显示一个图片
+			.ajaxComplete(function(){
+				$(this).hide();
+			});//文件上传完成将图片隐藏起来
+			$.ajaxFileUpload
+			(
+				{
+					url:'${appDomain}/common/file_upload.htm',//用于文件上传的服务器端请求地址
+					secureuri:false,//一般设置为false
+					fileElementId:'srcUploadFile',//文件上传空间的id属性  <input type="file" id="file" name="file" />
+					dataType: 'json',//返回值类型 一般设置为json
+					success: function (data, status)  //服务器成功响应处理函数
+					{
+					alert(data.fileDir);
+						if (data.fileDir != "undefined" && data.fileDir != undefined){
+							var htmlUrl = "<span id=\"div"+ data.fileDir +"\">";
+							htmlUrl = htmlUrl + data.message;
+							htmlUrl = htmlUrl + "<input type=\"hidden\" name=\"srcFileName\" value=\"" + data.fileDir + "\" />";
+							htmlUrl = htmlUrl + "<input type=\"hidden\" name=\"fileDir\" value=\"" + data.message + "\" />";
+							htmlUrl = htmlUrl + "<a href=\"#\" class=\"cancel\" onclick=\"removeOldFile(event,'" + data.fileDir + "')\"></a>";
+							htmlUrl = htmlUrl + "</span>";
+							$('#fileDirDiv').html(htmlUrl);
+						}
+					},
+					error: function (data, status, e)//服务器响应失败处理函数
+					{
+						alert(e);
+					}
+				}
+			)
+			return false;
+		}
+		
+		function removeOldFile(evt, id){
+		
+			$.ajax({
+	            type: 'GET',
+	            contentType: 'application/json',
+	            url: '/common/file_delete.htm',
+	            dataType: 'json',
+	            data: 'fileNameDel=' + encodeURI(id) + '&r=' + Math.random(),
+	            success: function(data){
+	            },
+	            error: function(){
+		            // 失败
+		            return false;
+	            }
+	        });
+	        // 成功
+         	var el = evt.target == null ? evt.srcElement : evt.target;
+		    var div = el.parentNode;
+		    var cont = document.getElementById('fileDirDiv');    
+		    if(cont.removeChild(div) == null){
+		        return false;
+		    }
+		    return true;
+		}
+        </script>
+	<script type="text/javascript">
+		function DoCheckSubmit(){
+		  try{    	
+		  	eWebOffice1.WebSaveVersion("版本描述", false)
+		    return eWebOffice1.WebSave();
+		}catch(e){
+		    alert("请选安装eWebOffice控件，再操作！");
+		    return false;
+		}
+		}
+	
+		function DoCheckSubmitForNg(){
+		  try{    	
+		    return eWebOffice1.WebSave();
+		}catch(e){
+		    alert("请选安装eWebOffice控件，再操作！");
+		    return false;
+		}
+		}
+	</script>
+<script type="text/javascript" for="eWebOffice1" event="OnInit()">
+    eWebOffice1.QuickBarCommentVisible = false;
+</script>
+<script type="text/javascript" for="eWebOffice1" event="OnLoad()">
+	eWebOffice1.WebUrl = "${jsDomain}/js/eWebOffice/eWebMessageAction.jsp";
+	eWebOffice1.RecordID = "${d_recordId}";
+	eWebOffice1.UserName = "${d_userName}";
+	eWebOffice1.FileType = "${d_fileType}";
+	eWebOffice1.SetTitleIcon ("${appDomain}/images/rr.gif");
+	eWebOffice1.TitleCaption="四川省新闻出版广电局政务系统";
+	eWebOffice1.WebNew();
+</script>
+    </head>
+    <body>
+		<div id="main">
+          <div class="main_nav">
+            <#include "message/menu.ftl">
+            <div id="content">
+		        <form class="f0" action="${appDomain}/message/add_message.htm" enctype="multipart/form-data" method="POST">
+		        	<input type="hidden" id="currentOptId" name="currentOptId" value="" />
+		        	<input type="hidden" id="nextOptId" name="nextOptId" value="" />
+		        	<input type="hidden" id="status" name="status" value="" />
+		        	<input type="hidden" id="dRecordid" name="dRecordid" value="${d_recordId}" />
+		        	<input class="text" type="hidden" id="step"  name="step" value="1"  />
+		            <table class="ftb">
+		                <tr>
+		                    <th>
+		                    	 标题：
+		                    </th>
+		                    <td colspan="3">
+		                        <input class="title" type="text" name="title" value="" />
+		                    </td>
+		                </tr>
+		                 <tr>
+		                    <th> 主题词:</th>
+		                    <td>
+		                        <input class="txt" type="text" name="subject" value="" />
+		                    </td>
+		                    <th>
+		                      	  拟稿人：
+		                    </th>
+		                    <td>
+		                        <input type="text" id="draftsId" value="${user.userName}" readonly="readonly"/>
+		                    </td>
+		                </tr>
+		                <tr>
+		                     <th>
+		                      	  发布时间：
+		                    </th>
+		                    <td>
+		                        <input class="txt" type="text" name="textTime" id="textTime" value="" />
+		                    </td>
+		                    <th> 拟稿部门:</th>
+		                    <td>
+		                        <input class="text" type="hidden" name="draftsDeptId" value="${dept.id}"  />
+							    <input class="text" type="text"  value="${dept.deptName}" readonly="readonly"/>
+							    <input type="hidden" id="draftsId" name="draftsId" value="${user.loginId}" />
+		                    </td>
+		                </tr>
+		               <tr>
+		                     <th>
+		                      	  流程名称：
+		                    </th>
+		                    <td colspan="3">
+		                      <select id="approvalId" name="approvalId">
+						         <#list approvalList as approval>
+	                             <option value="${approval.id}">${approval.approvalName}</option>
+	                             </#list>
+                              </select>
+		                    </td>
+		                </tr>
+		                <tr>
+				     	<th rowspan="2">附件:</th>
+						<td colspan="3">
+						<input type="file" class=" " name="srcUploadFile" id="srcUploadFile">
+                    	<input type="button" id="uploadBtn" class="btn" onclick="return ajaxFileUpload();" value="上传"/>
+                    	<img src="${jsDomain}/js/upload/loading.gif" id="loading" style="display: none;">
+						</td>
+					  </tr>
+  					  <tr>
+						<td colspan="3">
+	                    	<div id="fileDirDiv" style="height:30px;border: 2px solid green;overflow-y:scroll;overflow-x:hidden;"></div>
+	                    </td>
+					  </tr>	
+		                <tr>
+				     	<th>备注:</th>
+						<td colspan="3">
+						<textarea class="woe" name="remark"></textarea>
+						</td>
+					    </tr>
+		                <tr class="act">
+		                    <td colspan="4">
+		                        <input id="draftBtn" class="btn" name="draftBtn" type="button" value="保存草稿" />
+		                        <input id="submitBtn" class="btn" name="draftBtn" type="button" value="确认发布" />
+		                        <input id="cancelBtn" class="btn" name="draftBtn" type="reset" value="取消按钮" />
+		                    </td>
+		                </tr>
+		            </table>
+		        </form>
+		        <!--创建eWebOffice实例-->
+			<script type="text/javascript">
+			eWebOfficeJS.Create("eWebOffice1", "85%", "700px");
+			</script>
+			</div>
+		   </div>
+		</div>	
+    </body>
+</html>

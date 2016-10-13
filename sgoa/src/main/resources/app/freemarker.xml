@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+	
+	<!-- Freemarker View Resolver Configuration -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="suffix" value=".ftl" />
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+		<property name="contentType" value="text/html;charset=utf-8" />
+		<property name="attributesMap" ref="functionsMap" />
+		<property name="attributes" ref="modulesMap" />
+	</bean>
+
+	<!-- Freemarker Default Configuration -->
+	<bean id="freemarkerConfigurer"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/view/" />
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="template_update_delay">0</prop>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<prop key="date_format">yyyy-MM-dd</prop>
+				<prop key="time_format">yyyy-MM-dd hh:mm:ss</prop>
+				<prop key="number_format">#</prop>
+				<prop key="auto_import">/macro/macros.ftl as sgoa</prop>
+				<prop key="classic_compatible">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Freemarker Needfull Function  -->
+	<bean id="functionsMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="screenResolver" value-ref="screenResolver" />
+				<entry key="userAuth" value-ref="userAuthFunction" />
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<!-- Freemarker Needfull Parameter -->
+	<bean id="modulesMap" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="appDomain" value="${webapp.server.host}:${webapp.server.port}" />
+				<entry key="imageDomain" value="${image.server.host}:${image.server.port}" />
+				<entry key="cssDomain" value="${css.server.host}:${css.server.port}" />
+				<entry key="jsDomain" value="${js.server.host}:${js.server.port}" />
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<!-- Self-defining Screen Resolver-->
+	<bean id="screenResolver"
+		class="com.bcqsoft.sgoa.core.freemarker.screen.ScreenResolver">
+		<property name="suffix" value=".ftl" />
+		<property name="freemarkerConfigurer" ref="freemarkerConfigurer" />
+		<property name="attributes" ref="modulesMap" />
+		<property name="attributesMap">
+			<map>
+			</map>
+		</property>
+	</bean>
+
+
+	<!-- Self-defining Freemaker Function -->
+	<bean id="userAuthFunction"
+		class="com.bcqsoft.sgoa.core.freemarker.function.UserAuthFunction">
+	</bean>
+	
+</beans>

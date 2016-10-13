@@ -1,0 +1,179 @@
+.preview-btn{
+	margin-top: 10px;
+	position: absolute;
+	right:80px;
+	top:6px;
+}
+.preview-btn input{
+	margin-right: 10px;
+}
+
+hr {
+    border: 1px solid red;
+}
+
+#macro {
+    width: 600px;
+    height: 1000px;
+    margin: 70px auto; text-align:center;
+}
+
+.m-title {
+    position: relative;
+}
+
+.m-title h1 {
+	font-size: 52px;
+	color: red;
+	font-weight: bold;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+
+.intro {
+    height: 120px;
+}
+
+.t-01 {
+    height: 200px;
+}
+
+.t-01 h1.title-fir-01 {
+    letter-spacing: 28px;
+}
+
+.t-01 h1.title-sec-01 {
+    top: 80px;
+    letter-spacing: -8px;
+}
+
+.t-01 h1.title-right-01 {
+    right: 0;
+    top: 30px; left:460px;
+    font-size: 68px;
+}
+
+ /*****************official02*/
+
+.m-title h2 {
+    font-size: 28px;
+    color: red;
+    font-weight: bold;
+    position: absolute; left:0px;
+}
+.t-02{
+    height: 80px;
+}
+
+.t-02 h2.title-fir-01{
+    letter-spacing: -5px;
+
+}
+.t-02 h2.title-sec-01 {
+    top: 50px;
+    letter-spacing:-1px;
+}
+
+.t-02 h2.title-right-01 {
+    right: 0;
+    top: 20px; left:485px;
+    font-size: 40px;
+}
+
+
+ /*****************official03*/
+
+.m-title h3 {
+	font-size: 33px;
+	color: red;
+	font-weight: bold;
+	position: absolute;
+	left:0px;
+	width: 600px;
+}
+
+.t-02{
+    height: 80px;
+}
+
+.t-02 h3.title-fir-01{
+    letter-spacing: -7px; top:20px;
+}
+.t-02 h3.title-sec-01 {
+    top: 50px;
+    letter-spacing:-1px;
+}
+.wujiao{ width:600px; height:4px; background:red; position:relative;}
+.xing{
+	position:absolute;
+	background:url(../image/wujiao.jpg) no-repeat;
+	width:25px;
+	height:23px;
+	left: 287px;
+	top: -10px;
+}
+
+ /*****************official04*/
+.t-03{
+    height:200px;
+}
+
+.t-03 h3.title-fir-02{
+    font-size:48px;
+}
+ /*****************official05*/
+.t-03{
+    height:200px;
+}
+
+.t-03 h3.title-fir-05{
+    font-size:45px; letter-spacing:-3px;
+}
+ /*****************official06*/
+.t-02{
+    height:200px;
+}
+
+.t-02 h3.title-fir-06{
+    font-size:40px; letter-spacing:-5px; top:20px;
+}
+ /*****************official07*/
+.t-04{
+    height:250px;
+}
+
+.t-04 h3.title-fir-01{
+    font-size:35px;
+}
+.t-04 h3.title-sod-01{
+    font-size:59px; top:80px; letter-spacing:10px;
+}
+ /*****************official08*/
+.t-02 h2.title-fir-08{ font-size:41px; width:600px;}
+.t-02 h2.title-sec-08{ font-size:41px; top:80px; width:600px; letter-spacing:10px;}
+.intro3{ height:90px;}
+
+ /*****************official09*/
+ 
+.t-05{
+    height:350px;
+}
+.t-05 h2.title-fir-09{ font-size:48px; width:600px; top:180px;}
+
+ /*****************official10*/
+.t-06{
+    height:75px; border-bottom:3px solid #FF0000;
+}
+.t-06 h2.title-fir-10{ font-size:52px; width:600px;}
+
+.intro10 {
+    height: 795px;
+}
+.cu{ border-top:3px solid red;
+ }
+
+#docContent{
+	margin: 20px 0;
+    overflow: hidden;
+}

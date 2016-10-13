@@ -1,0 +1,40 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td a {
+    margin: 0;
+    padding: 0;
+}
+img {
+    border: 0;
+}
+li {
+    list-style: none;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+body {
+    font: 12px / 24px "ËÎÌו";
+	*line-height:24px;
+    color:#333333; 
+    text-align: center; background:  url(../images/log_bg.jpg) repeat-y #E0F2F6
+    ;
+}
+.calog{width:100%; background:url(../images/log_bot.png) repeat; overflow:hidden;}
+#login_top{ height:100px; margin:0 auto; width:1003px;}
+#login_top img{ padding-top:14px; float:left;}
+#login_main{ background:url(../images/log_con.jpg) no-repeat; width:960px; margin:103px auto; height:488px; position:relative;}
+.login_nav{
+	width:300px;
+ background-position: bottom; position: absolute; right:35px; top:123px;
+}
+.nav01{ background:url(../images/login_pic.png) no-repeat 0px 0px; width:293px; float:left; height:56px;}
+ul.login-form{ float:left; padding-left:14px;}
+ul.login-form li{  float:left; margin-top:10px; padding-left:10px;}
+ul.login-form li label{ font-size:14px; color:#333333; font-weight:bold;}
+ul.login-form li input{ padding-left:8px; background:url(../images/login_pic.png) no-repeat -79px -78px; width:204px; height:33px; line-height:35px; border:0px; }
+ul.login-form li input.key{ background-position:-77px -121px;}
+ul.login-form li.login-sub{ background:url(../images/login_pic.png) no-repeat -4px -219px; height:58px; padding-top:10px;}
+ul.login-form li input.sub{ background:url(../images/login_pic.png) no-repeat -90px -182px; width:113px; height:36px; margin-left:75px; display:inline;cursor:pointer;}
+ul.login-form li input.reset{ background:url(../images/login_pic.png) no-repeat -166px -307px; width:91px; height:32px; margin-left:45px; display:inline;cursor:pointer;}
+#login_bottom{ background:url(../images/log_bot.jpg) repeat-x; height:90px;}
+#login_bottom p{ line-height:90px; color:#064A9F;}
+.yokie{width:401px; height:166px; margin:260px auto; background:url(../images/noshow.jpg); }

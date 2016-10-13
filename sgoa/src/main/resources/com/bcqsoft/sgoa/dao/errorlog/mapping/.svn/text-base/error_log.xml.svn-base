@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 错误日志表SQL映射文件, TABLE: SCOA_TB_ERROR_LOG -->
+<sqlMap namespace="errorlog">
+	
+	<typeAlias alias="errorlog"
+		type="com.bcqsoft.sgoa.dao.errorlog.dataobject.Errorlog" />
+		
+
+	
+</sqlMap>

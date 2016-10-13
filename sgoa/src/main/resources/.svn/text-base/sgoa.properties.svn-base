@@ -1,0 +1,35 @@
+#Created by zbq - www.myzbq.com
+#Wed Dec 29 16:39:28 CST 2010
+
+## MySQL Configuration
+database.mysql.driver=com.mysql.jdbc.Driver
+database.mysql.url=jdbc\:mysql\://192.168.1.10/sgoa?useUnicode\=true&characterEncoding\=UTF-8&autoReconnect\=true
+#database.mysql.url=jdbc\:mysql\://localhost/scoa?useUnicode\=true&characterEncoding\=UTF-8
+database.mysql.username=root
+database.mysql.password=cq123
+#database.mysql.password=123
+
+## SQLSERVER Configuration
+database.sql.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+database.sql.url=jdbc:sqlserver://192.168.1.12:1433;databasename=DataForOA
+database.sql.username=sa
+database.sql.password=Sa123
+
+## Site Domain Configuration
+webapp.server.host=http://localhost
+webapp.server.port=8080
+image.server.host=http://localhost
+image.server.port=8080
+css.server.host=http://localhost
+css.server.port=8080
+js.server.host=http://localhost
+js.server.port=8080
+## file upload or download dir
+file.upload.domain=http://localhost:8080/upload
+file.upload.dir=D:\\Dev\\Workspace\\sgoa\\src\\main\\webapp\\upload
+## FTP Configuration
+ftp.serverip=192.168.1.10
+ftp.username=sgoa
+ftp.password=cq123
+ftp.encoding=GBK
+## Other Configuration

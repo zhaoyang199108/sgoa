@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 资源(文件)共享表SQL映射文件, TABLE: SCOA_TB_RES_SHARE -->
+<sqlMap namespace="resshare">
+	
+	<typeAlias alias="resShare"
+		type="com.bcqsoft.sgoa.dao.resshare.dataobject.ResShare" />
+		
+<insert id="insertIntoResShare" parameterClass="resShare">
+		INSERT INTO
+		SCOA_TB_RES_SHARE
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		RES_ID,
+		TO_SHARE_ID,
+		STATUS
+		
+		)
+		VALUES(
+		now(),
+		now(),
+		#resId#,
+		#toShareId#,
+		#status#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+	<delete id="deleteResShareToDisabled"   parameterClass="long">
+  Delete FROM SCOA_TB_RES_SHARE where RES_ID=#id# 
+	 
+	</delete>
+	<delete id="deleteMyResShareToDisabled"   parameterClass="resShare">
+  Delete FROM SCOA_TB_RES_SHARE where RES_ID=#resId# and TO_SHARE_ID=#toShareId#
+  and STATUS=#status#
+	 
+	</delete>
+	<select id="findResShareInfoList" resultClass="resShare">
+		SELECT
+		n.TO_SHARE_ID toShareId,
+        u.USER_NAME  toShareName
+        FROM SCOA_TB_RES_SHARE n,SCOA_TB_USER u
+		WHERE n.RES_ID=#resId# and STATUS=#status# and n.TO_SHARE_ID=u.LOGIN_ID 
+		
+	</select>
+	
+	
+	
+</sqlMap>

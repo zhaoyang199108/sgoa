@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息审核表SQL映射文件, TABLE: SCOA_TB_NEWS_HISTORY -->
+<sqlMap namespace="newshistory">
+	
+	<typeAlias alias="newsHistory"
+		type="com.bcqsoft.sgoa.dao.newshistory.dataobject.NewsHistory" />
+		
+	<!-- 插入一条信息至信息审核表 -->
+	<insert id="insertIntoNewsHistory" parameterClass="newsHistory">
+		INSERT INTO	
+			SCOA_TB_NEWS_HISTORY
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			NEWS_ID,
+			CURRENT_OPT_ID,
+			NEXT_OPT_ID,
+			D_RECORDID,
+			REMARK
+		) 
+		VALUES(
+			now(),
+			now(),
+			#newsId#,
+			#currentOptId#,
+			#nextOptId#,
+			#recordID#,
+			#remark#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+	<!-- 根据信息ID读取信息的全部审核记录 -->
+	<select id="findAllNewsHistoryById" resultClass="newsHistory">
+		SELECT 
+			r.ID id,
+			r.CREATE_DATE createDate,
+			r.NEWS_ID newsId,
+			(SELECT TITLE FROM SCOA_TB_NEWS m WHERE m.ID=r.NEWS_ID) title,
+			r.CURRENT_OPT_ID currentOptId,
+			(SELECT USER_NAME FROM SCOA_TB_USER tu WHERE tu.LOGIN_ID=r.CURRENT_OPT_ID) currentOptName,
+			r.NEXT_OPT_ID nextOptId,
+			(SELECT USER_NAME FROM SCOA_TB_USER tu WHERE tu.LOGIN_ID=r.NEXT_OPT_ID) nextOptName,
+			r.D_RECORDID recordID,
+			r.REMARK remark
+		 FROM
+		 	SCOA_TB_NEWS_HISTORY r
+		WHERE r.NEWS_ID = #id#
+		  
+	</select>
+	<!-- 根据公共通讯录ID删除公共通讯录信息 -->
+	<delete id="deleteNewsHistoryById" parameterClass="long">
+		DELETE 
+		FROM
+			SCOA_TB_NEWS_HISTORY 	
+		WHERE NEWS_ID = #newsId#
+	</delete>
+</sqlMap>

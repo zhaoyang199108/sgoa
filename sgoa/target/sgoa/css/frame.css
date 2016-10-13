@@ -1,0 +1,170 @@
+/** 框架头部 Start */
+#header {
+    background: url(../image/header_bg.jpg) repeat-x;
+    width: 100%;
+    overflow: hidden;
+}
+
+#header .header-top {
+    height: 56px;
+    position: relative;
+    overflow: hidden;
+}
+
+#logo {
+    background: url(../image/logo.jpg) no-repeat;
+    float: left;
+    width: 316px;
+    height: 41px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.header-top .top-banner {
+    background: url(../image/header_banner.jpg) no-repeat;
+    float: right;
+    width: 632px;
+    height: 56px;
+}
+
+.header-top .top-right {
+    background: url(../image/top_right.jpg) no-repeat;
+    width: 164px;
+    height: 24px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.header-top .top-right a {
+    font-weight: bold;
+    margin: auto 6px auto 14px;
+}
+
+#header .header-main {
+    height: 35px;
+    overflow: hidden;
+}
+
+#navigation {
+    float: left;
+    overflow: hidden;
+    margin-top: 1px;
+    margin-left: 6px;
+}
+
+#navigation li {
+    float: left;
+}
+
+#navigation li a {
+    background: url(../image/tab_bg_l.jpg) no-repeat;
+    display: block;
+    width: 80px;
+    height: 30px;
+    font: 14px / 32px 微软雅黑;
+    *line-height: 33px;
+}
+
+#navigation li a:hover {
+    background: url(../image/tab_hover_l.jpg) no-repeat;
+    line-height: 34px;
+    *line-height: 35px;
+}
+
+#navigation li a.short {
+    background: url(../image/tab_bg_s.jpg) no-repeat;
+    width: 70px;
+}
+
+#navigation li a.short:hover {
+    background: url(../image/tab_hover_s.jpg) no-repeat;
+}
+
+.header-main .top-msg {
+    float: right;
+    margin-right: 106px;
+    margin-top: 8px;
+}
+
+.header-main .top-msg a {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.header-main .top-msg a span {
+    font-weight: bold;
+    color: red;
+}
+
+.header-main .top-userinfo {
+    float: right;
+    margin-right: 12px;
+    margin-top: 8px;
+}
+
+.header-main .top-userinfo span {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.header-main .top-userinfo span.u-name {
+    margin-left: 1px;
+    margin-right: 8px;
+}
+
+.header-main .top-userinfo a {
+    color: #FFFFFF;
+    margin: 0 1px;
+}
+
+#alert {
+    background: url(../image/alert_bg.jpg) repeat-x;
+    height: 18px;
+    overflow: hidden;
+}
+
+#alert p {
+    text-align: left;
+    margin-left: 16px;
+    color: #38383A;
+    line-height: 24px\9;
+    float:left;
+    width: 260px;
+}
+
+#alert #newTxt {
+    float:left;
+    width:660px;
+    overflow: hidden;
+}
+#alert #loadTxt {
+    float:left;
+    text-align: left;
+    display: none;
+}
+#alert #loadTxt h6 {
+    color: red;
+}
+
+#newTxt ul {
+    overflow: hidden;
+}
+
+#newTxt ul li {
+    float:left;
+    margin:0 20px;
+    width:180px;
+    hight:18px;
+    line-hight:18px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#footer {
+    background: url(../image/footer_bg.jpg) repeat-x;
+    height: 20px;
+}
+#bottom{ overflow: hidden;}
+#bottom p{ height:20px; color:#064A9F; background:url(../images/bot_bg.jpg) repeat-x; margin-top:0px; line-height:20px;}

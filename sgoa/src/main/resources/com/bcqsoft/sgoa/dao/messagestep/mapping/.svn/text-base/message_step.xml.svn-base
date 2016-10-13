@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息审核表SQL映射文件, TABLE: SCOA_TB_MESSAGE_STEP -->
+<sqlMap namespace="messagestep">
+	
+	<typeAlias alias="messageStep"
+		type="com.bcqsoft.sgoa.dao.messagestep.dataobject.MessageStep" />
+		
+	<!-- 插入一条信息至信息审核表 -->
+	<insert id="insertIntoMessageStep" parameterClass="messageStep">
+		INSERT INTO	
+			SCOA_TB_MESSAGE_STEP
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			MESSAGE_ID,
+			CURRENT_OPT_ID,
+			STEP,
+			REMARK
+		) 
+		VALUES(
+			now(),
+			now(),
+			#messageId#,
+			#currentOptId#,
+			#step#,
+			#remark#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+	<!-- 根据信息ID读取信息的全部审核记录 -->
+	<select id="findAllMessageStepById" resultClass="messageStep">
+		SELECT 
+			r.ID id,
+			r.CREATE_DATE createDate,
+			r.MESSAGE_ID messageId,
+			r.CURRENT_OPT_ID currentOptId,
+			(SELECT USER_NAME FROM SCOA_TB_USER tu  WHERE tu.LOGIN_ID=r.CURRENT_OPT_ID) currentOptName,
+			r.STEP step,
+			r.REMARK remark
+		 FROM
+		 	SCOA_TB_MESSAGE_STEP r
+		WHERE r.MESSAGE_ID = #messageId#
+	</select>
+		<!-- 根据公共通讯录ID删除公共通讯录信息 -->
+	<delete id="delectIntoMessageStep" parameterClass="messageStep">
+		DELETE 
+		FROM
+			SCOA_TB_MESSAGE_STEP 		
+		WHERE MESSAGE_ID = #messageId#
+			AND STEP &gt;=#step#
+	</delete>
+		<!-- 根据公共通讯录ID删除公共通讯录信息 -->
+	<delete id="delectIntoMessageStepById" parameterClass="Long">
+		DELETE 
+		FROM
+			SCOA_TB_MESSAGE_STEP 	
+		WHERE MESSAGE_ID =#id#
+	</delete>
+</sqlMap>

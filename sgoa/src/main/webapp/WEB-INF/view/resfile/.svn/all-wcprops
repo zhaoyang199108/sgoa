@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/bcqSoft/!svn/ver/7968/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile
+END
+detail_resfile.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/detail_resfile.ftl
+END
+resfile_down_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/resfile_down_list.ftl
+END
+detailresfile.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/detailresfile.ftl
+END
+finddetail_resfile.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/finddetail_resfile.ftl
+END
+edit_resfile.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/edit_resfile.ftl
+END
+menu_folder.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bcqSoft/!svn/ver/7110/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/menu_folder.ftl
+END
+search_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/search_list.ftl
+END
+add_resfile.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/add_resfile.ftl
+END
+menu_folder_system.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/menu_folder_system.ftl
+END
+menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bcqSoft/!svn/ver/7968/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/menu.ftl
+END
+resfile_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/resfile_list.ftl
+END
+resfile_share_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bcqSoft/!svn/ver/6068/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/resfile_share_list.ftl
+END
+menu_folder_all.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bcqSoft/!svn/ver/7107/source/sgoa/trunk/src/main/webapp/WEB-INF/view/resfile/menu_folder_all.ftl
+END

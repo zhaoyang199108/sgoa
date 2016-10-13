@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/bcqSoft/!svn/ver/7879/source/sgoa/trunk/src/main/webapp/WEB-INF/view/grpo
+END
+grpo_edit.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bcqSoft/!svn/ver/5986/source/sgoa/trunk/src/main/webapp/WEB-INF/view/grpo/grpo_edit.ftl
+END
+add_grpo.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/bcqSoft/!svn/ver/6173/source/sgoa/trunk/src/main/webapp/WEB-INF/view/grpo/add_grpo.ftl
+END
+menu_group.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bcqSoft/!svn/ver/7879/source/sgoa/trunk/src/main/webapp/WEB-INF/view/grpo/menu_group.ftl
+END
+grpo_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bcqSoft/!svn/ver/7107/source/sgoa/trunk/src/main/webapp/WEB-INF/view/grpo/grpo_list.ftl
+END
+grpo_role.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bcqSoft/!svn/ver/7870/source/sgoa/trunk/src/main/webapp/WEB-INF/view/grpo/grpo_role.ftl
+END
+grpo_detail.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/5986/source/sgoa/trunk/src/main/webapp/WEB-INF/view/grpo/grpo_detail.ftl
+END

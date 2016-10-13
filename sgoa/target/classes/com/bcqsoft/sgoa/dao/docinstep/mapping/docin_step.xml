@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息审核表SQL映射文件, TABLE: SCOA_TB_DOCIN_STEP -->
+<sqlMap namespace="docinstep">
+	
+	<typeAlias alias="docinStep"
+		type="com.bcqsoft.sgoa.dao.docinstep.dataobject.DocinStep" />
+		
+	<!-- 插入一条信息至信息审核表 -->
+	<insert id="insertIntoDocinStep" parameterClass="docinStep">
+		INSERT INTO	
+			SCOA_TB_DOCIN_STEP
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			DOCIN_ID,
+			CURRENT_OPT_ID,
+			STEP,
+			REMARK
+		) 
+		VALUES(
+			now(),
+			now(),
+			#docinId#,
+			#currentOptId#,
+			#step#,
+			#remark#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	<!-- 插入一条信息至信息审核表 -->
+	<insert id="insertIntoDocinStepByDo" parameterClass="docinStep">
+		INSERT INTO	
+			SCOA_TB_DOINOUT_STEP
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			DOCIN_ID,
+			CURRENT_OPT_ID,
+			STEP,
+			REMARK
+		) 
+		VALUES(
+			now(),
+			now(),
+			#docinId#,
+			#currentOptId#,
+			#step#,
+			#remark#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	<!-- 根据信息ID读取信息的全部审核记录 -->
+	<select id="findAllDocinStepById" resultClass="docinStep">
+		SELECT 
+			r.ID id,
+			r.CREATE_DATE createDate,
+			r.DOCIN_ID docinId,
+			r.CURRENT_OPT_ID currentOptId,
+			(SELECT USER_NAME FROM SCOA_TB_USER tu  WHERE tu.LOGIN_ID=r.CURRENT_OPT_ID) currentOptName,
+			r.STEP step,
+			r.REMARK remark
+		 FROM
+		 	SCOA_TB_DOCIN_STEP r
+		WHERE r.DOCIN_ID = #docinId#
+	</select>
+		<!-- 根据公共通讯录ID删除公共通讯录信息 -->
+	<delete id="delectIntoDocinStep" parameterClass="docinStep">
+		DELETE 
+		FROM
+			SCOA_TB_DOCIN_STEP 		
+		WHERE DOCIN_ID = #docinId#
+			AND STEP &gt;=#step#
+	</delete>
+		<!-- 根据公共通讯录ID删除公共通讯录信息 -->
+	<delete id="delectIntoDocinStepById" parameterClass="long">
+		DELETE 
+		FROM
+			SCOA_TB_DOCIN_STEP 	
+		WHERE DOCIN_ID =#id#
+	</delete>
+</sqlMap>

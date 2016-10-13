@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/bcqSoft/!svn/ver/11639/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout
+END
+content_history.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/bcqSoft/!svn/ver/7873/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/content_history.ftl
+END
+my_docout_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/bcqSoft/!svn/ver/11639/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/my_docout_list.ftl
+END
+work_docout.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bcqSoft/!svn/ver/7859/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/work_docout.ftl
+END
+my_draft_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bcqSoft/!svn/ver/6492/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/my_draft_list.ftl
+END
+edit_docout.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bcqSoft/!svn/ver/7795/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/edit_docout.ftl
+END
+docout_isduban.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcqSoft/!svn/ver/6737/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/docout_isduban.ftl
+END
+docout_received.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bcqSoft/!svn/ver/11639/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/docout_received.ftl
+END
+docout_look_detail.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/bcqSoft/!svn/ver/8771/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/docout_look_detail.ftl
+END
+menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/bcqSoft/!svn/ver/7963/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/menu.ftl
+END
+docout_detail_qf.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bcqSoft/!svn/ver/7862/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/docout_detail_qf.ftl
+END
+add_docout.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/bcqSoft/!svn/ver/7795/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/add_docout.ftl
+END
+docout_review_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bcqSoft/!svn/ver/11639/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/docout_review_list.ftl
+END
+work_success.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bcqSoft/!svn/ver/6472/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/work_success.ftl
+END
+docout_search_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/bcqSoft/!svn/ver/6689/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/docout_search_list.ftl
+END
+docout_history.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcqSoft/!svn/ver/6405/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/docout_history.ftl
+END
+review_docout.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcqSoft/!svn/ver/11293/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/review_docout.ftl
+END
+docout_detail.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bcqSoft/!svn/ver/7862/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/docout_detail.ftl
+END
+add_success.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bcqSoft/!svn/ver/6406/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/add_success.ftl
+END
+content_docout.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcqSoft/!svn/ver/7873/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/content_docout.ftl
+END
+draft_success.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bcqSoft/!svn/ver/6405/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/draft_success.ftl
+END
+docout_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bcqSoft/!svn/ver/6415/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/docout_list.ftl
+END
+docout_doinout_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bcqSoft/!svn/ver/7776/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/docout_doinout_list.ftl
+END
+review_success.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcqSoft/!svn/ver/6405/source/sgoa/trunk/src/main/webapp/WEB-INF/view/docout/review_success.ftl
+END

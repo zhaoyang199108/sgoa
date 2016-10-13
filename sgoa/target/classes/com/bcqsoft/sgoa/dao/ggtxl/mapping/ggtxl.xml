@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 物资设备申领表SQL映射文件, TABLE: sgoa_TB_APPLY_GET -->
+<sqlMap namespace="ggtxl">
+
+	<typeAlias alias="ggtxl"
+		type="com.bcqsoft.sgoa.dao.ggtxl.dataobject.Ggtxl" />
+
+	<!-- 插入入库批次记录 -->
+	<insert id="insertIntoGgtxl" parameterClass="ggtxl">
+	INSERT INTO	
+			SCOA_TB_GGTXL
+			
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			LOGIN_ID,
+			TYPE_ID,
+			SORTING,
+			PHOTO,
+			ADD_NAME,
+			GENDER,
+			BIRTHDAY,
+			NICK_NAME,
+			DUTIES,
+			SPOUSE,
+			CHILDREN,
+			UNIT_NAME,
+			UNIT_ADDRESS,
+			UNIT_CODE,
+			UNIT_TEL,
+			UNIT_FAX,
+			HOME_ADDRESS,
+			HOME_CODE,
+			HOME_TEL,
+			CELL_PHONE,
+			HOME_PHS,
+			EMAIL,
+			QQ,
+			MSN,
+			REMARK,
+			ENABLED,
+			ISMM,
+			AGE
+		) 
+		VALUES(
+			now(),
+			now(),
+			#loginId#,
+			#typeId#,
+			#sorting#,
+			#photo#,
+            #addName#,
+			#gender#,
+			#birthday#,
+			#nickName#,
+			#duties#,
+			#spouse#,
+			#children#,
+			#unitName#,
+			#unitAddress#,
+			#unitCode#,
+			#unitTel#,
+			#unitFax#,
+			#homeAddress#,
+			#homeCode#,
+			#homeTel#,
+			#cellPhone#,
+			#homePhs#,
+			#email#,
+			#qq#,
+			#msn#,
+			#remark#,
+			#enabled#,
+			#ismm#,
+			#age#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的物资设备申领表(页面分页使用) -->
+	<select id="findGgtxlInfoCount" resultClass="int">
+	SELECT COUNT(*)
+		FROM SCOA_TB_GGTXL ab
+		WHERE ab.ENABLED='Y'
+	    AND ab.LOGIN_ID= #loginId#
+		<isNotEmpty property="addName" prepend="AND">
+			ab.ADD_NAME LIKE
+			CONCAT('%',#addName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="ismm" prepend="AND">
+			ab.ISMM=#ismm#
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的物资设备申领表 -->
+	<select id="findGgtxlInfoList" resultClass="ggtxl">
+		SELECT ab.ID,
+		       ab.CREATE_DATE createDate,
+		       ab.UPDATE_DATE updateDate,
+		       ab.LOGIN_ID loginId,
+		       ab.TYPE_ID typeId,
+		       (SELECT abt.DEPT_NAME FROM SCOA_TB_DEPT abt  WHERE abt.ID = ab.TYPE_ID ) typeName,  
+		       ab.AGE age,
+			   ab.GENDER gender, 
+			   ab.DUTIES duties, 
+			   ab.UNIT_TEL unitTel,      
+		       ab.ADD_NAME addName,  
+		       ab.ISMM ismm,     
+		       ab.Photo photo
+		FROM SCOA_TB_GGTXL ab
+		WHERE ab.ENABLED='Y'
+		AND ab.LOGIN_ID= #loginId#
+		<isNotEmpty property="addName" prepend="AND">
+			ab.ADD_NAME LIKE
+			CONCAT('%',#addName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="ismm" prepend="AND">
+			ab.ISMM=#ismm#
+		</isNotEmpty>
+		ORDER BY ab.SORTING ASC,ab.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询符合条件的物资设备申领表 -->
+	<select id="getGgtxlInfo" resultClass="ggtxl" parameterClass="long">
+			SELECT ab.ID,
+		       ab.CREATE_DATE createDate,
+		       ab.UPDATE_DATE updateDate,
+		       ab.LOGIN_ID loginId,   
+		       ab.TYPE_ID typeId,
+		       (SELECT abt.DEPT_NAME FROM SCOA_TB_DEPT abt  WHERE abt.ID = ab.TYPE_ID ) typeName,  
+		       ab.SORTING sorting,   
+		       ab.PHOTO photo, 
+		       ab.ADD_NAME addName,       
+		       ab.GENDER gender,       
+		       ab.BIRTHDAY birthday, 
+		       ab.AGE age,       
+               ab.NICK_NAME nickName,
+               ab.DUTIES duties,
+               ab.SPOUSE spouse,
+               ab.CHILDREN children,
+               ab.UNIT_NAME unitName,
+               ab.UNIT_ADDRESS unitAddress,
+               ab.UNIT_CODE unitCode,
+               ab.UNIT_TEL unitTel,
+               ab.UNIT_FAX unitFax,
+               ab.HOME_ADDRESS homeAddress,
+               ab.HOME_CODE homeCode,
+               ab.HOME_TEL homeTel,
+               ab.CELL_PHONE cellPhone,
+               ab.HOME_PHS homePhs,
+               ab.EMAIL email,
+               ab.QQ qq,
+               ab.MSN msn,
+               ab.ISMM ismm,
+		       ab.REMARK remark       
+		FROM SCOA_TB_GGTXL ab
+		WHERE ab.ID = #id#
+
+	</select>
+	<!-- 根据公共通讯录ID更新公共通讯录信息 -->
+	<update id="updateGgtxlInfoById" parameterClass="ggtxl">
+	UPDATE 
+			SCOA_TB_GGTXL ab
+		SET 
+			ab.UPDATE_DATE = now(),
+			ab.LOGIN_ID = #loginId#,
+            ab.TYPE_ID = #typeId#,
+            ab.SORTING = #sorting#,   
+            ab.PHOTO = #photo#,  
+			ab.ADD_NAME = #addName#,             
+			ab.GENDER = #gender#,  
+			ab.AGE = #age#,       
+			ab.BIRTHDAY = #birthday#,                  
+			ab.NICK_NAME = #nickName#,                   
+			ab.DUTIES = #duties#,                  
+			ab.SPOUSE = #spouse#,                   
+			ab.CHILDREN = #children#,                   
+			ab.UNIT_NAME = #unitName#,                   
+			ab.UNIT_ADDRESS = #unitAddress#,       
+			ab.UNIT_CODE = #unitCode#,                  
+			ab.UNIT_TEL = #unitTel#,      
+        	ab.UNIT_FAX = #unitFax#,       
+			ab.HOME_ADDRESS = #homeAddress#,                  
+			ab.HOME_CODE = #homeCode#,                               
+			ab.HOME_TEL = #homeTel#,                  
+			ab.CELL_PHONE = #cellPhone#,                               
+			ab.HOME_PHS = #homePhs#,                   
+			ab.EMAIL = #email#,                   
+			ab.QQ = #qq#,       
+			ab.MSN = #msn#, 
+			ab.ISMM = #ismm#,                    			                                     
+			ab.REMARK = #remark#       
+		WHERE ab.ID = #id#
+		  AND ab.ENABLED = 'Y'
+	</update>
+
+<!-- 根据公共通讯录ID删除公共通讯录信息 -->
+	<delete id="deleteGgtxlInfoById" parameterClass="long">
+	UPDATE
+		SCOA_TB_GGTXL ab
+		SET ab.UPDATE_DATE = now(),
+		ab.ENABLED = 'N'
+		WHERE ab.ID = #id#
+		AND
+		ab.ENABLED = 'Y'
+	</delete>
+	
+	<!-- 根据查询条件查询符合条件的物资设备申领表 -->
+	<select id="findGgtxlInfoAllList" resultClass="ggtxl">
+	SELECT ab.ID,
+		       ab.CREATE_DATE createDate,
+		       ab.UPDATE_DATE updateDate,
+		       ab.LOGIN_ID loginId,   
+		       ab.PHOTO photo, 
+		       ab.ADD_NAME addName      
+		FROM SCOA_TB_GGTXL ab
+		WHERE ab.TYPE_ID = #id#
+		ORDER BY ab.SORTING ASC
+	</select>
+	
+	<!-- 根据查询条件查询符合条件的物资设备申领表(页面分页使用) -->
+	<select id="findGgtxlAllCount" resultClass="int">
+	SELECT COUNT(*)
+		FROM SCOA_TB_GGTXL ab
+		WHERE ab.ENABLED='Y'
+		<isNotEmpty property="addName" prepend="AND">
+			ab.ADD_NAME LIKE
+			CONCAT('%',#addName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="ismm" prepend="AND">
+			ab.ISMM=#ismm#
+		</isNotEmpty>
+		<isNotEmpty property="typeId" prepend="AND">
+			ab.TYPE_ID=#typeId#
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的物资设备申领表 -->
+	<select id="findGgtxlAllList" resultClass="ggtxl">
+		SELECT ab.ID,
+		       ab.CREATE_DATE createDate,
+		       ab.UPDATE_DATE updateDate,
+		       ab.LOGIN_ID loginId,
+		       ab.TYPE_ID typeId,
+		       (SELECT abt.DEPT_NAME FROM SCOA_TB_DEPT abt  WHERE abt.ID = ab.TYPE_ID ) typeName,  
+		       ab.AGE age,
+			   ab.GENDER gender, 
+			   ab.DUTIES duties, 
+			   ab.UNIT_TEL unitTel,      
+		       ab.ADD_NAME addName,
+		       ab.CELL_PHONE cellPhone,   
+		       ab.ISMM ismm,     
+		       ab.Photo photo
+		FROM SCOA_TB_GGTXL ab
+		WHERE ab.ENABLED='Y'
+		<isNotEmpty property="addName" prepend="AND">
+			ab.ADD_NAME LIKE
+			CONCAT('%',#addName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="ismm" prepend="AND">
+			ab.ISMM=#ismm#
+		</isNotEmpty>
+		<isNotEmpty property="typeId" prepend="AND">
+			ab.TYPE_ID=#typeId#
+		</isNotEmpty>
+		ORDER BY ab.SORTING ASC,ab.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据查询条件查询符合条件的物资设备申领表(页面分页使用) -->
+	<select id="findGgtxlInfoSearchCount" resultClass="int">
+	SELECT COUNT(*)
+		FROM SCOA_TB_GGTXL ab
+		WHERE ab.ENABLED='Y'
+	    AND ab.ISMM ='Y'
+		<isNotEmpty property="addName" prepend="AND">
+			ab.ADD_NAME LIKE
+			CONCAT('%',#addName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="unitTel" prepend="AND">
+			ab.UNIT_TEL LIKE
+			CONCAT('%',#unitTel#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的物资设备申领表 -->
+	<select id="findGgtxlInfoSearchList" resultClass="ggtxl">
+		SELECT ab.ID,
+		       ab.CREATE_DATE createDate,
+		       ab.UPDATE_DATE updateDate,
+		       ab.TYPE_ID typeId,
+		       (SELECT abt.DEPT_NAME FROM SCOA_TB_DEPT abt  WHERE abt.ID = ab.TYPE_ID ) typeName,  
+			   ab.UNIT_TEL unitTel,      
+		       ab.ADD_NAME addName,  
+		       ab.ISMM ismm,     
+		       ab.CELL_PHONE cellPhone
+		FROM SCOA_TB_GGTXL ab
+		WHERE ab.ENABLED='Y'
+		 AND ab.ISMM ='Y'
+		<isNotEmpty property="addName" prepend="AND">
+			ab.ADD_NAME LIKE
+			CONCAT('%',#addName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="unitTel" prepend="AND">
+			ab.UNIT_TEL LIKE
+			CONCAT('%',#unitTel#,'%')
+		</isNotEmpty>
+		ORDER BY ab.SORTING ASC,ab.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+</sqlMap>

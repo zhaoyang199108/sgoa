@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 部门科室表SQL映射文件, TABLE: SCOA_TB_DEPT -->
+<sqlMap namespace="dept">
+
+	<typeAlias alias="dept" type="com.bcqsoft.sgoa.dao.dept.dataobject.Dept" />
+	<!-- 查找直属部门列表 -->
+	<select id="findUnitImmediateDept" resultClass="dept">
+		SELECT 
+			d.ID id,
+			d.DEPT_NAME deptName
+	      FROM 
+	        SCOA_TB_DEPT d,
+	        SCOA_TB_UNIT u
+	     WHERE d.UNIT_ID = u.ID
+	       AND u.RANK = 0
+	       AND d.ENABLED = 'Y'
+	</select>
+
+	<!-- 查找全部部门列表 -->
+	<select id="findAllDeptInfo" resultClass="dept">
+		SELECT
+		d.ID id,
+		d.UNIT_ID unitId,
+		d.DEPT_NAME deptName
+		FROM
+		SCOA_TB_DEPT d
+		WHERE d.ENABLED ='Y'
+	</select>
+
+<!-- 查找全部部门列表 -->
+	<select id="findAllDeptLogin"  parameterClass="map"  resultClass="dept">
+		SELECT
+		d.ID id,
+		d.UNIT_ID unitId,
+		d.DEPT_NAME deptName
+		FROM
+		SCOA_TB_DEPT d
+		WHERE d.ENABLED ='Y'
+		<isNotNull property="idList">
+			AND d.ID IN
+			<iterate property="idList" conjunction="," open="(" close=")">
+				#idList[]#
+			</iterate>
+		</isNotNull>
+	</select>
+	<!-- 插入部门信息 -->
+	<insert id="insertIntoDept" parameterClass="dept">
+		INSERT INTO
+		SCOA_TB_DEPT
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		DEPT_NAME,
+		UNIT_ID,
+		DEPT_ROLE,
+		ENABLED
+		)
+		VALUES(
+		now(),
+		now(),
+		#deptName#,
+		#unitId#,
+		#deptRole#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的公告通知(页面分页使用) -->
+	<select id="findDeptInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_DEPT d
+		WHERE d.ENABLED = 'Y'
+		<isNotEmpty property="deptName" prepend="AND">
+			d.DEPT_NAME LIKE
+			CONCAT('%',#deptName#,'%')
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的公告通知 -->
+	<select id="findDeptInfoList" resultClass="dept">
+		SELECT
+		d.ID,
+		d.CREATE_DATE createDate,
+		d.UPDATE_DATE updateDate,
+		d.DEPT_NAME deptName,
+		d.DEPT_ROLE deptRole,
+		d.UNIT_ID unitId
+		FROM SCOA_TB_DEPT d
+		WHERE d.ENABLED = 'Y'
+		<isNotEmpty property="deptName" prepend="AND">
+			d.DEPT_NAME LIKE
+			CONCAT('%',#deptName#,'%')
+		</isNotEmpty>
+		ORDER BY d.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询某一条通告通知 -->
+	<select id="findDeptInfoById" resultClass="dept">
+		SELECT
+		d.ID,
+		d.CREATE_DATE createDate,
+		d.UPDATE_DATE updateDate,
+		d.DEPT_NAME deptName,
+		d.DEPT_ROLE deptRole,
+		d.UNIT_ID unitId
+		FROM SCOA_TB_DEPT d
+		WHERE d.ENABLED = 'Y'
+		and d.ID=#id#
+	</select>
+
+	<!-- 根据ID更新某条公告通知信息 -->
+	<update id="updateDeptInfoById" parameterClass="dept">
+		UPDATE
+		SCOA_TB_DEPT d
+		SET d.UPDATE_DATE = now(),
+		d.DEPT_NAME = #deptName#,
+		d.DEPT_ROLE = #deptRole#
+		WHERE d.ID = #id#
+		AND d.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据ID删除某条公告通知信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="updateDeptStatusToDisabled" parameterClass="map">
+		UPDATE
+		SCOA_TB_DEPT d
+		SET d.UPDATE_DATE = now(),
+		d.ENABLED = 'N'
+		WHERE d.ENABLED = 'Y'
+		<isNotNull property="idList">
+			AND d.ID IN
+			<iterate property="idList" conjunction="," open="(" close=")">
+				#idList[]#
+			</iterate>
+		</isNotNull>
+	</update>
+
+
+	<!-- 根据用户登录Id查找部门信息 -->
+	<select id="findDeptInfoByLoginId" resultClass="dept"
+		parameterClass="String">
+		SELECT d.ID id,
+		d.DEPT_NAME deptName,
+		d.UNIT_ID unitId
+		FROM SCOA_TB_DEPT
+		d,SCOA_TB_USER u
+		WHERE d.ID = u.DEPT_ID
+		AND u.LOGIN_ID =
+		#loginId#
+		LIMIT 1
+	</select>
+</sqlMap>

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/bcqSoft/!svn/ver/7962/source/sgoa/trunk/src/main/webapp/WEB-INF/view/workscheduler
+END
+workscheduler_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/bcqSoft/!svn/ver/7814/source/sgoa/trunk/src/main/webapp/WEB-INF/view/workscheduler/workscheduler_list.ftl
+END
+work_scheduler_check.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/bcqSoft/!svn/ver/7814/source/sgoa/trunk/src/main/webapp/WEB-INF/view/workscheduler/work_scheduler_check.ftl
+END
+work_scheduler.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/bcqSoft/!svn/ver/6583/source/sgoa/trunk/src/main/webapp/WEB-INF/view/workscheduler/work_scheduler.ftl
+END
+menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bcqSoft/!svn/ver/7962/source/sgoa/trunk/src/main/webapp/WEB-INF/view/workscheduler/menu.ftl
+END
+edit_workscheduler.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/bcqSoft/!svn/ver/7947/source/sgoa/trunk/src/main/webapp/WEB-INF/view/workscheduler/edit_workscheduler.ftl
+END

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+	http://www.springframework.org/schema/security   
+	http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+	
+	<!-- Url Auth -->
+	<security:http>
+		<security:form-login login-page="/login.htm"
+			login-processing-url="/login" 
+  			authentication-success-handler-ref="loginSuccessHandler"
+  			default-target-url="/main.htm"
+  			authentication-failure-url="/login.htm" />
+		<security:logout logout-url="/logout"
+			invalidate-session="true" logout-success-url="/login.htm" />
+			
+		<security:form-login  login-page="/login_mobile.htm"
+			login-processing-url="/login?isMobile=1" 
+  			authentication-success-handler-ref="loginSuccessHandler"
+  			default-target-url="/main_mobile.htm"
+  			authentication-failure-url="/login_mobile.htm" />
+		<security:logout logout-url="/logout_mobile"
+			invalidate-session="true" logout-success-url="/login_mobile.htm" />
+	</security:http>
+
+	<!-- User Roles -->
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:password-encoder ref="md5Encoder" />
+			<security:jdbc-user-service
+				data-source-ref="dataSource"
+				users-by-username-query="SELECT login_id username, password, 'true' enabled FROM SCOA_TB_USER WHERE login_id = ? AND enabled = 'Y'"
+				authorities-by-username-query="SELECT ur.login_id username,
+												(SELECT r.ROLE_CODE FROM SCOA_TB_ROLE r WHERE r.id = gr.role_id) authorities 
+												FROM SCOA_TB_USER_ROLE ur,SCOA_TB_GRPO_ROLE gr 
+												WHERE gr.GROUP_ID = ur.GRPO_ID 
+												AND ur.login_id = ?" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	<bean id="md5Encoder" class="com.bcqsoft.sgoa.core.security.MD5Encoder" />
+
+	<bean id="accessDecisionManager"
+		class="org.springframework.security.access.vote.AffirmativeBased">
+		<property name="decisionVoters">
+			<list>
+				<bean class="org.springframework.security.access.vote.RoleVoter" />
+				<bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

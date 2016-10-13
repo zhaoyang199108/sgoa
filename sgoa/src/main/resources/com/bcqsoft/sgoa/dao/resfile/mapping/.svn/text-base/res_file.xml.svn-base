@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 资源(文件)表SQL映射文件, TABLE: SCOA_TB_RES_FILE -->
+<sqlMap namespace="resfile">
+
+	<typeAlias alias="resFile"
+		type="com.bcqsoft.sgoa.dao.resfile.dataobject.ResFile" />
+	<insert id="insertIntoResFile" parameterClass="resFile">
+		INSERT INTO
+
+		SCOA_TB_RES_FILE
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		LOGIN_ID,
+		FOLDER_ID,
+		TITLE,
+		CONTENT,
+		SRC_FILE_NAME,
+		FILE_DIR,
+		IS_SHORE
+		)
+		VALUES(
+		now(),
+		now(),
+		#loginId#,
+		#folderId#,
+		#title#,
+		#content#,
+		#srcFileName#,
+		#fileDir#,
+		#isShore#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+	<select id="findResFileInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_RES_FILE n
+		WHERE n.LOGIN_ID = #loginId#
+
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="updateDate" prepend="AND">
+			n.UPDATE_DATE LIKE
+			CONCAT('%',#updateDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="srcFileName" prepend="AND">
+			n.SRC_FILE_NAME LIKE
+			CONCAT('%',#srcFileName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="isShore" prepend="AND">
+			n.IS_SHORE LIKE
+			CONCAT('%',#isShore#,'%')
+		</isNotEmpty>
+	</select>
+	<select id="findResFileInfoList" resultClass="resFile">
+		SELECT
+		n.ID,
+		n.UPDATE_DATE updateDate,
+		n.TITLE title,
+		n.CONTENT conTent,
+		n.SRC_FILE_NAME srcFileName,
+		n.FILE_DIR fileDir,
+		n.IS_SHORE isShore
+		
+
+		FROM SCOA_TB_RES_FILE n
+		WHERE n.LOGIN_ID = #loginId#
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="updateDate" prepend="AND">
+			n.UPDATE_DATE LIKE
+			CONCAT('%',#updateDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="srcFileName" prepend="AND">
+			n.SRC_FILE_NAME LIKE
+			CONCAT('%',#srcFileName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="isShore" prepend="AND">
+			n.IS_SHORE LIKE
+			CONCAT('%',#isShore#,'%')
+		</isNotEmpty>
+		
+		ORDER BY n.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	<select id="findResFileInfoById" resultClass="resFile">
+		SELECT
+		n.ID,
+		n.UPDATE_DATE updateDate,
+		n.TITLE title,
+		n.CONTENT conTent,
+		n.SRC_FILE_NAME srcFileName,
+		n.FILE_DIR fileDir,
+		n.IS_SHORE isShore
+		FROM SCOA_TB_RES_FILE n
+		WHERE
+		n.ID=#id#
+	</select>
+	<delete id="deleteResFileToDisabled" parameterClass="long">
+		Delete FROM SCOA_TB_RES_FILE where ID=#id#
+
+	</delete>
+	<update id="updateResFileInfoById" parameterClass="resFile">
+		UPDATE
+		SCOA_TB_RES_FILE n
+		SET n.UPDATE_DATE = now(),
+		n.IS_SHORE=#isShore#
+
+
+		WHERE n.ID = #id#
+
+	</update>
+	<update id="editResFileInfoById" parameterClass="resFile">
+		UPDATE
+		SCOA_TB_RES_FILE n
+		SET n.UPDATE_DATE = now(),
+		    n.CONTENT = #content#,
+		    n.TITLE=#title#
+		    WHERE n.ID = #id#
+
+	</update>
+	<select id="findResFileShareInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_RES_FILE n
+		where n.id in(
+		select m.RES_ID
+		from SCOA_TB_RES_SHARE m
+		where m.TO_SHARE_ID=#loginId#
+		and m.STATUS='1'
+		)
+
+
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="updateDate" prepend="AND">
+			n.UPDATE_DATE LIKE
+			CONCAT('%',#updateDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="srcFileName" prepend="AND">
+			n.SRC_FILE_NAME LIKE
+			CONCAT('%',#srcFileName#,'%')
+		</isNotEmpty>
+		
+	</select>
+	<select id="findResFileShareInfoList" resultClass="resFile">
+		SELECT
+		n.ID,
+		n.UPDATE_DATE updateDate,
+		n.TITLE title,
+		n.CONTENT conTent,
+		n.SRC_FILE_NAME srcFileName,
+		n.FILE_DIR fileDir
+
+		FROM SCOA_TB_RES_FILE n
+		where n.id in(
+		select m.RES_ID
+		from SCOA_TB_RES_SHARE m
+		where m.TO_SHARE_ID=#loginId#
+		and m.STATUS='1'
+		)
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="updateDate" prepend="AND">
+			n.UPDATE_DATE LIKE
+			CONCAT('%',#updateDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="srcFileName" prepend="AND">
+			n.SRC_FILE_NAME LIKE
+			CONCAT('%',#srcFileName#,'%')
+		</isNotEmpty>
+		
+		ORDER BY n.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+
+	<select id="findResFileDownShareInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_RES_FILE n
+		where n.id in(
+		select m.RES_ID
+		from SCOA_TB_RES_SHARE m
+		where m.TO_SHARE_ID=#loginId#
+		and m.STATUS='2'
+		)
+
+
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="updateDate" prepend="AND">
+			n.UPDATE_DATE LIKE
+			CONCAT('%',#updateDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="srcFileName" prepend="AND">
+			n.SRC_FILE_NAME LIKE
+			CONCAT('%',#srcFileName#,'%')
+		</isNotEmpty>
+		
+	</select>
+	<select id="findResFileDownShareInfoList" resultClass="resFile">
+		SELECT
+		n.ID,
+		n.UPDATE_DATE updateDate,
+		n.TITLE title,
+		n.CONTENT conTent,
+		n.SRC_FILE_NAME srcFileName,
+		n.FILE_DIR fileDir
+
+		FROM SCOA_TB_RES_FILE n
+		where n.id in(
+		select m.RES_ID
+		from SCOA_TB_RES_SHARE m
+		where m.TO_SHARE_ID=#loginId#
+		and m.STATUS='2'
+		)
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="updateDate" prepend="AND">
+			n.UPDATE_DATE LIKE
+			CONCAT('%',#updateDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="srcFileName" prepend="AND">
+			n.SRC_FILE_NAME LIKE
+			CONCAT('%',#srcFileName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="isShore" prepend="AND">
+			n.IS_SHORE LIKE
+			CONCAT('%',#isShore#,'%')
+		</isNotEmpty>
+		ORDER BY n.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	<update id="updateResFileShareToDisabled" parameterClass="long">
+		UPDATE
+		SCOA_TB_RES_FILE n
+		SET n.UPDATE_DATE = now(),
+		n.IS_SHORE='N'
+
+
+		WHERE n.ID = #id#
+
+	</update>
+	
+	<select id="findSearchResFileInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_RES_FILE n
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="updateDate" prepend="AND">
+			n.UPDATE_DATE LIKE
+			CONCAT('%',#updateDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="srcFileName" prepend="AND">
+			n.SRC_FILE_NAME LIKE
+			CONCAT('%',#srcFileName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="isShore" prepend="AND">
+			n.IS_SHORE LIKE
+			CONCAT('%',#isShore#,'%')
+		</isNotEmpty>
+	</select>
+	<select id="findSearchResFileInfoList" resultClass="resFile">
+		SELECT
+		n.ID,
+		n.UPDATE_DATE updateDate,
+		n.TITLE title,
+		n.CONTENT conTent,
+		n.SRC_FILE_NAME srcFileName,
+		n.FILE_DIR fileDir,
+		n.IS_SHORE isShore
+		FROM SCOA_TB_RES_FILE n
+		<isNotEmpty property="title" prepend="AND">
+			n.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="updateDate" prepend="AND">
+			n.UPDATE_DATE LIKE
+			CONCAT('%',#updateDate#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="srcFileName" prepend="AND">
+			n.SRC_FILE_NAME LIKE
+			CONCAT('%',#srcFileName#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="isShore" prepend="AND">
+			n.IS_SHORE LIKE
+			CONCAT('%',#isShore#,'%')
+		</isNotEmpty>
+		
+		ORDER BY n.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据文件夹ID查找文件夹下的所有文件 -->
+	<select id="findResFileInfoListByFolder" resultClass="resFile">
+		SELECT
+		n.ID,
+		n.UPDATE_DATE updateDate,
+		n.TITLE title,
+		n.FOLDER_ID folderId,
+		n.CONTENT conTent,
+		n.SRC_FILE_NAME srcFileName,
+		n.FILE_DIR fileDir,
+		n.IS_SHORE isShore
+		FROM SCOA_TB_RES_FILE n
+		WHERE n.FOLDER_ID = #folderId#
+		ORDER BY n.UPDATE_DATE DESC
+	</select>
+</sqlMap>

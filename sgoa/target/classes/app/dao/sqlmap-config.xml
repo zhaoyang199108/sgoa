@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE sqlMapConfig    
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"         
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<!-- ORMapping Configuration -->
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" enhancementEnabled="true"
+		lazyLoadingEnabled="true" maxRequests="32" maxSessions="10"
+		maxTransactions="5" useStatementNamespaces="true" />
+
+	<sqlMap resource="com/bcqsoft/sgoa/dao/dept/mapping/dept.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/errorlog/mapping/error_log.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/optlog/mapping/opt_log.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/role/mapping/role.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/unit/mapping/unit.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/user/mapping/user.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/userrole/mapping/user_role.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/grpo/mapping/grpo.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/grporole/mapping/grpo_role.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/addressbook/mapping/address_book.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/addressbooktype/mapping/address_book_type.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/scheduler/mapping/scheduler.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/schedulerbak/mapping/scheduler_bak.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/netfile/mapping/net_file.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/netshare/mapping/net_share.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/resfolder/mapping/res_folder.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/resfile/mapping/res_file.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/resshare/mapping/res_share.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/msginbox/mapping/msg_inbox.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/msgoutbox/mapping/msg_outbox.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/msgtext/mapping/msg_text.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/ggtxl/mapping/ggtxl.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/approval/mapping/approval.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/approvaldetail/mapping/approvaldetail.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/seal/mapping/seal.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/template/mapping/template.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/message/mapping/message.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/messagelook/mapping/messagelook.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/messagereview/mapping/message_review.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/messagehistory/mapping/message_history.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/messagestep/mapping/message_step.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docout/mapping/docout.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docoutlook/mapping/docoutlook.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docoutreview/mapping/docout_review.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docouthistory/mapping/docout_history.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docoutstep/mapping/docout_step.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docoutbox/mapping/docoutbox.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/dooutinstep/mapping/dooutin_step.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docin/mapping/docin.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docinreview/mapping/docin_review.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docinhistory/mapping/docin_history.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docinstep/mapping/docin_step.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docinbox/mapping/docinbox.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/doinoutstep/mapping/doinout_step.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/docinfj/mapping/docin_fj.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/buttonname/mapping/button_name.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/workscheduler/mapping/work_scheduler.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/meetingroom/mapping/meeting_room.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/meetingyy/mapping/meeting_yy.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/meetingyyreview/mapping/meeting_yy_review.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/ipmac/mapping/ipmac.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/ipset/mapping/ip_set.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/alert/mapping/alert.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/leaderscheduler/mapping/leader_scheduler.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/remind/mapping/remind.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/msgoneinbox/mapping/msgone_inbox.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/msgoneoutbox/mapping/msgone_outbox.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/msgonetext/mapping/msgone_text.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/sw/mapping/sw.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/swhu/mapping/sw_hu.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/cyd/mapping/cyd.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/cyddetail/mapping/cyddetail.xml" />
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/news/mapping/news.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/newslook/mapping/newslook.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/newsreview/mapping/news_review.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/newshistory/mapping/news_history.xml" />
+	<sqlMap resource="com/bcqsoft/sgoa/dao/newsstep/mapping/news_step.xml" />
+	
+	
+	<sqlMap resource="com/bcqsoft/sgoa/dao/userkey/mapping/user_key.xml" />
+</sqlMapConfig>  

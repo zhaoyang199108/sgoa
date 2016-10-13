@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 人员角色关系表SQL映射文件, TABLE: SCOA_TB_USER_ROLE -->
+<sqlMap namespace="userKey">
+	
+	<typeAlias alias="userKey"
+		type="com.bcqsoft.sgoa.dao.userkey.dataobject.UserKey" />
+		
+	<!-- 查询所有的用户角色列表信息 -->
+	<select id="findUserKeyInfo" resultClass="userKey" parameterClass="String">
+	SELECT 
+		ur.ID id,
+		ur.CREATE_DATE createDate,
+		ur.UPDATE_DATE updateDate,
+		ur.LOGIN_ID loginId,
+		ur.SERVER_IAGUID serverIaguid,
+		ur.SERVER_SEED serverSeed,
+		ur.TRIDESKEY tridesKey
+	 FROM SCOA_TB_USER_KEY ur 
+	 WHERE ur.SERVER_IAGUID = #serverIaguid#
+	 LIMIT 1 
+	</select>
+	
+	<!-- 插入一条用户角色信息至用户角色表 -->
+	<insert id="insertIntoUserKey" parameterClass="userKey">
+		INSERT INTO	
+			SCOA_TB_USER_KEY
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			LOGIN_ID,
+			SERVER_IAGUID,
+			SERVER_SEED,
+			TRIDESKEY
+		) 
+		VALUES(
+			now(),
+			now(),
+			#loginId#,
+			#serverIaguid#,
+			#serverSeed#,
+			#tridesKey#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+	<!-- 根据用户ID删除用户角色信息 -->
+	<delete id="deleteUserKeyInfoById" parameterClass="userKey">
+		DELETE FROM 
+			SCOA_TB_USER_KEY
+		WHERE SERVER_IAGUID = #serverIaguid#
+	</delete>
+		<!-- 根据用户ID更新用户信息 -->
+	<update id="updateUserKey" parameterClass="userKey">
+		UPDATE
+			SCOA_TB_USER_KEY stu
+		SET
+			stu.UPDATE_DATE = now(),
+			stu.LOGIN_ID = #loginId#,
+			stu.SERVER_IAGUID = #serverIaguid#,
+			stu.SERVER_SEED = #serverSeed#,
+			stu.TRIDESKEY = #tridesKey#
+		WHERE stu.SERVER_IAGUID = #serverIaguid# 
+	</update>
+	
+</sqlMap>

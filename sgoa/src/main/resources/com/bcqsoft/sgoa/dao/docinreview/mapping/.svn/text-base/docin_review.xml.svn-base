@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息审核表SQL映射文件, TABLE: SCOA_TB_DOCIN_REVIEW -->
+<sqlMap namespace="docinreview">
+	
+	<typeAlias alias="docinReview"
+		type="com.bcqsoft.sgoa.dao.docinreview.dataobject.DocinReview" />
+		
+	<!-- 插入一条信息至信息审核表 -->
+	<insert id="insertIntoDocinReview" parameterClass="docinReview">
+		INSERT INTO	
+			SCOA_TB_DOCIN_REVIEW
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			DOCIN_ID,
+			CURRENT_OPT_ID,
+			OPINION,
+			REMARK,
+			DO_ACTION,
+			STEP_ID,
+			SEAT
+		) 
+		VALUES(
+			now(),
+			now(),
+			#docinId#,
+			#currentOptId#,
+			#opinion#,
+			#remark#,
+			#doAction#,
+			#stepId#,
+			#seat#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+	<!-- 根据信息ID读取信息的全部审核记录 -->
+	<select id="findAllDocinReviewById" resultClass="docinReview">
+		SELECT 
+			r.ID id,
+			r.CREATE_DATE createDate,
+			r.DOCIN_ID docinId,
+			r.OPINION opinion,
+			r.REMARK remark,
+			u0.USER_NAME optName,
+			u1.USER_NAME nextOptName,
+			r.SEAT seat
+		 FROM
+		 	SCOA_TB_DOCIN_REVIEW r,
+		 	SCOA_TB_USER u0,
+		 	SCOA_TB_USER u1
+		WHERE r.DOCIN_ID = #msgId#
+		  AND r.OPT_ID = u0.LOGIN_ID
+		  AND r.NEXT_OPT_ID = u1.LOGIN_ID
+	</select>
+	
+	<!-- 根据信息ID读取信息的全部审核记录 -->
+	<select id="findDocinReviewList" resultClass="docinReview">
+		SELECT 
+			r.ID id,
+			r.CREATE_DATE createDate,
+			r.CURRENT_OPT_ID currentOptId,
+			u0.USER_NAME currentOptName,
+			r.OPINION opinion,
+			r.DO_ACTION doAction,
+			u0.LEVEL_NAME levelName,
+			r.STEP_ID stepId,
+			r.SEAT seat 
+		 FROM
+		 	SCOA_TB_DOCIN_REVIEW r,
+		 	SCOA_TB_USER u0
+		WHERE r.DOCIN_ID = #id#
+		  AND r.CURRENT_OPT_ID = u0.LOGIN_ID
+	</select>
+	
+	<!-- 根据信息ID读取信息的一条审核记录 -->
+	<select id="findDocinReviewListByOne" resultClass="docinReview">
+		SELECT 
+			r.ID id,
+			r.CREATE_DATE createDate,
+			r.CURRENT_OPT_ID currentOptId,
+			u0.USER_NAME currentOptName,
+			r.OPINION opinion,
+			r.DO_ACTION doAction,
+			u0.LEVEL_NAME levelName,
+			r.STEP_ID stepId,
+			r.SEAT seat 
+		 FROM
+		 	SCOA_TB_DOCIN_REVIEW r,
+		 	SCOA_TB_USER u0
+		WHERE r.DOCIN_ID = #id#
+		  AND r.CURRENT_OPT_ID = u0.LOGIN_ID
+		  ORDER BY r.CREATE_DATE desc
+	</select>
+	
+	<!-- 根据信息ID读取信息的全部审核记录 -->
+	<select id="findDocinReviewListQf" resultClass="docinReview">
+		SELECT 
+			r.ID id,
+			r.CREATE_DATE createDate,
+			r.CURRENT_OPT_ID currentOptId,
+			u0.USER_NAME currentOptName,
+			u0.LEVEL_NAME levelName,
+			r.OPINION opinion,
+			r.SEAT seat 
+		 FROM
+		 	SCOA_TB_DOCIN_REVIEW r,
+		 	SCOA_TB_USER u0
+		WHERE r.DOCIN_ID = #id#
+		  AND r.CURRENT_OPT_ID = u0.LOGIN_ID
+		  AND r.DO_ACTION = 4
+		ORDER BY r.CREATE_DATE desc
+	</select>
+	
+	<!-- 根据信息ID读取信息的一条审核记录 -->
+	<select id="findDocinReviewListByStep" resultClass="docinReview">
+		SELECT 
+			r.ID id,
+			r.CREATE_DATE createDate,
+			r.CURRENT_OPT_ID currentOptId,
+			u0.USER_NAME currentOptName,
+			r.OPINION opinion,
+			r.DO_ACTION doAction,
+			u0.LEVEL_NAME levelName,
+			r.STEP_ID stepId,
+			r.SEAT seat 
+		 FROM
+		 	SCOA_TB_DOCIN_REVIEW r,
+		 	SCOA_TB_USER u0
+		WHERE r.DOCIN_ID = #docinId#
+		  AND r.CURRENT_OPT_ID = u0.LOGIN_ID
+		  AND r.STEP_ID = #stepId#  
+		  <isNotEmpty property="currentOptId" prepend="AND">
+	  			r.CURRENT_OPT_ID = #currentOptId# 
+	  		</isNotEmpty>
+		  ORDER BY r.CREATE_DATE desc
+	</select>
+	
+	<select id="getDocinReviewByDocinIdByMax" resultClass="docinReview" parameterClass="long">
+		SELECT
+		MAX(STEP_ID) stepId
+		FROM SCOA_TB_DOCIN_REVIEW 
+		WHERE DOCIN_ID = #docinId#
+	</select>
+	<update id="deleteOpinion" parameterClass="docinReview">
+		DELETE FROM SCOA_TB_DOCIN_REVIEW  
+		WHERE DOCIN_ID = #docinId#
+		AND CURRENT_OPT_ID = #currentOptId#
+		AND STEP_ID = #stepId#
+	</update>
+</sqlMap>

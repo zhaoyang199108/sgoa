@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/bcqSoft/!svn/ver/10798/source/sgoa/trunk/src/main/webapp/WEB-INF/view/cyd
+END
+edit_success.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/9826/source/sgoa/trunk/src/main/webapp/WEB-INF/view/cyd/edit_success.ftl
+END
+add_success.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bcqSoft/!svn/ver/9826/source/sgoa/trunk/src/main/webapp/WEB-INF/view/cyd/add_success.ftl
+END
+cyd_detail.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bcqSoft/!svn/ver/10798/source/sgoa/trunk/src/main/webapp/WEB-INF/view/cyd/cyd_detail.ftl
+END
+edit_cyd.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bcqSoft/!svn/ver/9826/source/sgoa/trunk/src/main/webapp/WEB-INF/view/cyd/edit_cyd.ftl
+END
+menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/bcqSoft/!svn/ver/9826/source/sgoa/trunk/src/main/webapp/WEB-INF/view/cyd/menu.ftl
+END
+add_cyd.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/bcqSoft/!svn/ver/9826/source/sgoa/trunk/src/main/webapp/WEB-INF/view/cyd/add_cyd.ftl
+END
+cyd_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bcqSoft/!svn/ver/9826/source/sgoa/trunk/src/main/webapp/WEB-INF/view/cyd/cyd_list.ftl
+END

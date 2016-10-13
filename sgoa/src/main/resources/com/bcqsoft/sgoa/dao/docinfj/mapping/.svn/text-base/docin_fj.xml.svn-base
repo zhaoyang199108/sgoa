@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息审核表SQL映射文件, TABLE: SCOA_TB_DOCIN_REVIEW -->
+<sqlMap namespace="docinfj">
+	
+	<typeAlias alias="docinFj"
+		type="com.bcqsoft.sgoa.dao.docinfj.dataobject.DocinFj" />
+		
+	<!-- 插入一条信息至信息审核表 -->
+	<insert id="insertIntoDocinFj" parameterClass="docinFj">
+		INSERT INTO	
+			SCOA_TB_DOCIN_FJ
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			DOCIN_ID,
+			SRC_FILE_NAME,
+			FILE_DIR
+		) 
+		VALUES(
+			now(),
+			now(),
+			#docinId#,
+			#srcFileName#,
+			#fileDir#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+	<select id="findDocinFjInfoByDocinId" resultClass="docinFj" parameterClass="long">
+		SELECT
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.DOCIN_ID docinId,
+			t.SRC_FILE_NAME srcFileName,
+			t.FILE_DIR fileDir
+		FROM SCOA_TB_DOCIN_FJ t 
+		WHERE t.DOCIN_ID = #docinId#
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/bcqSoft/!svn/ver/7968/source/sgoa/trunk/src/main/webapp/WEB-INF/view/scheduler
+END
+scheduler.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bcqSoft/!svn/ver/6051/source/sgoa/trunk/src/main/webapp/WEB-INF/view/scheduler/scheduler.ftl
+END
+edit_scheduler.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/bcqSoft/!svn/ver/7947/source/sgoa/trunk/src/main/webapp/WEB-INF/view/scheduler/edit_scheduler.ftl
+END
+menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bcqSoft/!svn/ver/7968/source/sgoa/trunk/src/main/webapp/WEB-INF/view/scheduler/menu.ftl
+END
+scheduler_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/bcqSoft/!svn/ver/7814/source/sgoa/trunk/src/main/webapp/WEB-INF/view/scheduler/scheduler_list.ftl
+END

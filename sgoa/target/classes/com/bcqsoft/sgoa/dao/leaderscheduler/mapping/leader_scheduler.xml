@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 日程表SQL映射文件, TABLE: SCOA_TB_LEADER_SCHEDULER -->
+<sqlMap namespace="leaderScheduler">
+
+	<typeAlias alias="leaderScheduler"
+		type="com.bcqsoft.sgoa.dao.leaderscheduler.dataobject.LeaderScheduler" />
+
+	<!-- 根据查询条件查询符合条件的日程管理 -->
+	<select id="findLeaderSchedulerList" resultClass="leaderScheduler">
+		SELECT
+		sts.ID id,
+		sts.CREATE_DATE createDate,
+		sts.UPDATE_DATE updateDate,
+		sts.LOGIN_ID loginId,
+		sts.START_TIME startTime,
+		sts.END_TIME endTime,
+		sts.CONTENT content,
+		sts.START_REMIND_TIME startRemindTime,
+		sts.IS_REMIND isRemind,
+		sts.ENABLED enabled
+		FROM SCOA_TB_LEADER_SCHEDULER sts
+		WHERE sts.ENABLED = 'Y'
+		AND sts.LOGIN_ID = #loginId#
+		<isNotEmpty property="selectTime" prepend="AND">
+			substring(sts.start_time,1,7) = substring(#selectTime#,1,7)
+		</isNotEmpty>
+		
+	</select>
+	
+	<!-- 根据查询条件查询符合条件的日程管理 -->
+	<select id="findLeaderSchedulerCheckList" resultClass="leaderScheduler">
+		SELECT
+		sts.ID id,
+		sts.CREATE_DATE createDate,
+		sts.UPDATE_DATE updateDate,
+		sts.LOGIN_ID loginId,
+		(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = sts.LOGIN_ID LIMIT 1) userName,
+		sts.START_TIME startTime,
+		sts.END_TIME endTime,
+		sts.CONTENT content,
+		sts.START_REMIND_TIME startRemindTime,
+		sts.IS_REMIND isRemind,
+		sts.ENABLED enabled
+		FROM SCOA_TB_LEADER_SCHEDULER sts
+		WHERE sts.ENABLED = 'Y'
+		<isNotEmpty property="loginId" prepend="AND">
+			sts.LOGIN_ID = #loginId#
+		</isNotEmpty>
+		<isNotEmpty property="selectTime" prepend="AND">
+			substring(sts.start_time,1,7) = substring(#selectTime#,1,7)
+		</isNotEmpty>
+		
+	</select>
+	
+	<!-- 查询当天的日程符合条件的日程管理 -->
+	<select id="findLeaderSchedulerListForDay" resultClass="leaderScheduler">
+		SELECT
+		sts.ID id,
+		sts.CREATE_DATE createDate,
+		sts.UPDATE_DATE updateDate,
+		sts.LOGIN_ID loginId,
+		(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = sts.LOGIN_ID LIMIT 1) userName,
+		sts.START_TIME startTime,
+		sts.END_TIME endTime,
+		sts.CONTENT content,
+		sts.START_REMIND_TIME startRemindTime,
+		sts.IS_REMIND isRemind,
+		sts.ENABLED enabled
+		FROM SCOA_TB_LEADER_SCHEDULER sts
+		WHERE sts.ENABLED = 'Y'
+		AND sts.LOGIN_ID = #loginId#
+		<isNotEmpty property="selectTime" prepend="AND">
+			substring(sts.start_time,1,10) = substring(#selectTime#,1,10)
+		</isNotEmpty>
+		ORDER BY sts.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 插入一条信息至日程管理 -->
+	<insert id="insertIntoLeaderScheduler" parameterClass="leaderScheduler">
+		INSERT INTO
+		SCOA_TB_LEADER_SCHEDULER
+		(
+		ID,
+		CREATE_DATE,
+		UPDATE_DATE,
+		LOGIN_ID,
+		START_TIME,
+		END_TIME,
+		CONTENT,
+		START_REMIND_TIME,
+		IS_REMIND,
+		CURRENT_OPT_ID,
+		ENABLED
+		)
+		VALUES(
+		#id#,
+		now(),
+		now(),
+		#loginId#,
+		#startTime#,
+		#endTime#,
+		#content#,
+		#startRemindTime#,
+		#isRemind#,
+		#currentOptId#,
+		#enabled#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据ID更新某条公告通知信息 -->
+	<update id="updateLeaderSchedulerInfoById" parameterClass="leaderScheduler">
+		UPDATE
+		SCOA_TB_LEADER_SCHEDULER sts
+		SET sts.UPDATE_DATE = now(),
+		sts.LOGIN_ID = #loginId#,
+		sts.START_TIME = #startTime#,
+		sts.END_TIME= #endTime#,
+		sts.CONTENT= #content#,
+		sts.START_REMIND_TIME= #startRemindTime#,
+		sts.IS_REMIND = #isRemind#,
+		sts.ENABLED= #enabled#
+		WHERE sts.ID = #id#
+		AND sts.ENABLED = 'Y'
+	</update>
+
+	<!-- 根据ID删除某条日程信息(逻辑删除,将该条信息状态变为不可用) -->
+	<update id="updateLeaderSchedulerStatusToDisabled" parameterClass="long">
+		UPDATE
+		SCOA_TB_LEADER_SCHEDULER sts
+		SET sts.UPDATE_DATE = now(),
+		sts.ENABLED = 'N'
+		WHERE sts.ID = #id#
+		AND sts.ENABLED = 'Y'
+
+	</update>
+
+	<!-- 查询符合提醒时间的日程信息-->
+	<select id="findLeaderSchedulerListForAlert" resultClass="int">
+		SELECT
+		COUNT(*) 
+		FROM SCOA_TB_LEADER_SCHEDULER sts
+		WHERE sts.ENABLED = 'Y' 
+		AND	(sts.LOGIN_ID = #loginId# OR sts.CURRENT_OPT_ID = #loginId#)
+		AND	sts.IS_REMIND = 'Y' 
+		AND sts.START_REMIND_TIME &lt;= NOW() 
+		AND sts.START_TIME &gt;= NOW() 
+	</select>
+	
+	<!-- 根据查询条件查询符合条件的日程提醒总数量(页面分页使用) -->
+	<select id="findLeaderSchedulerInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_LEADER_SCHEDULER sts	
+		WHERE sts.ENABLED = 'Y' 
+			<isNotEmpty property="startTime" prepend="AND">
+			sts.START_TIME LIKE
+			CONCAT('%',#startTime#,'%')
+		</isNotEmpty>
+        <isNotEmpty property="endTime" prepend="AND">
+			sts.END_TIME LIKE
+			CONCAT('%',#endTime#,'%')
+		</isNotEmpty>
+         <isNotEmpty property="isRemind" prepend="AND">
+			sts.IS_REMIND=#isRemind#
+        </isNotEmpty>
+        <isNotEmpty property="loginId" prepend="AND">
+			sts.LOGIN_ID = #loginId#
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的日程提醒列表信息 -->
+	<select id="findLeaderSchedulerInfoList" resultClass="leaderScheduler">
+		SELECT
+	    sts.ID,
+		sts.CREATE_DATE createDate,
+		sts.UPDATE_DATE updateDate,
+		sts.LOGIN_ID loginId,
+		(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = sts.LOGIN_ID LIMIT 1) userName,
+		sts.START_TIME startTime,
+		sts.END_TIME endTime,
+		sts.CONTENT content,
+		sts.START_REMIND_TIME startRemindTime,
+		sts.IS_REMIND isRemind,
+		sts.ENABLED enabled
+		FROM SCOA_TB_LEADER_SCHEDULER sts	
+		WHERE sts.ENABLED = 'Y' 
+		<isNotEmpty property="startTime" prepend="AND">
+			sts.START_TIME LIKE
+			CONCAT('%',#startTime#,'%')
+		</isNotEmpty>
+        <isNotEmpty property="endTime" prepend="AND">
+			sts.END_TIME LIKE
+			CONCAT('%',#endTime#,'%')
+		</isNotEmpty>
+          <isNotEmpty property="isRemind" prepend="AND">
+			sts.IS_REMIND=#isRemind#
+        </isNotEmpty>
+        <isNotEmpty property="loginId" prepend="AND">
+			sts.LOGIN_ID = #loginId#
+		</isNotEmpty>
+		ORDER BY sts.START_TIME DESC,sts.LOGIN_ID ASC,sts.CURRENT_OPT_ID ASC 
+		LIMIT #startRow#, #pageSize#
+	</select>
+	<!-- 根据ID查询日程提醒信息 -->
+	<select id="selectLeaderSchedulerById" parameterClass="long" resultClass="leaderScheduler">
+		SELECT
+	    sts.ID id,
+		sts.CREATE_DATE createDate,
+		sts.UPDATE_DATE updateDate,
+		sts.LOGIN_ID loginId,
+		(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = sts.LOGIN_ID LIMIT 1) userName,
+		sts.START_TIME startTime,
+		sts.END_TIME endTime,
+		sts.CONTENT content,
+		sts.START_REMIND_TIME startRemindTime,
+		sts.IS_REMIND isRemind,
+		sts.ENABLED enabled
+		FROM SCOA_TB_LEADER_SCHEDULER sts	
+		WHERE sts.ENABLED = 'Y'
+			  AND sts.ID=#id#		
+	</select>
+		<!-- 根据ID设置日程提醒 -->
+	<update id="updateLeaderSchedulerById" parameterClass="leaderScheduler">
+	UPDATE
+		SCOA_TB_LEADER_SCHEDULER sts
+	SET sts.UPDATE_DATE = now(),
+		sts.START_REMIND_TIME=#startRemindTime#,
+		sts.IS_REMIND = #isRemind#
+		WHERE sts.ID = #id#
+		AND sts.ENABLED = 'Y'
+
+	</update>
+</sqlMap>

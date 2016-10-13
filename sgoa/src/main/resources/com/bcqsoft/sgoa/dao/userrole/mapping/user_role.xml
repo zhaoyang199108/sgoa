@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 人员角色关系表SQL映射文件, TABLE: SCOA_TB_USER_ROLE -->
+<sqlMap namespace="userrole">
+	
+	<typeAlias alias="userRole"
+		type="com.bcqsoft.sgoa.dao.userrole.dataobject.UserRole" />
+		
+	<!-- 查询所有的用户角色列表信息 -->
+	<select id="findUserRoleInfoList" resultClass="userRole" parameterClass="String">
+	SELECT 
+		ur.ID id,
+		ur.CREATE_DATE createDate,
+		ur.UPDATE_DATE updateDate,
+		ur.LOGIN_ID loginId,
+		ur.GRPO_ID grpoId,
+		(SELECT rn.GRPO_NAME FROM SCOA_TB_GRPO rn WHERE rn.id = ur.GRPO_ID) grpoName
+	 FROM SCOA_TB_USER_ROLE ur 
+	 WHERE ur.LOGIN_ID = #loginId#
+	ORDER BY ur.ID ASC
+	</select>
+	
+	<!-- 插入一条用户角色信息至用户角色表 -->
+	<insert id="insertIntoUserRole" parameterClass="userRole">
+		INSERT INTO	
+			SCOA_TB_USER_ROLE
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			LOGIN_ID,
+			GRPO_ID,
+			GRPO_TYPE
+		) 
+		VALUES(
+			now(),
+			now(),
+			#loginId#,
+			#grpoId#,
+			#grpoType#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+	<!-- 根据用户ID删除用户角色信息 -->
+	<delete id="deleteUserRoleInfoById" parameterClass="userRole">
+		DELETE FROM 
+			SCOA_TB_USER_ROLE
+		WHERE LOGIN_ID = #loginId#
+		AND  GRPO_TYPE=#grpoType#
+	</delete>
+		<!-- 根据用户ID更新用户信息 -->
+	<update id="updateUserRole" parameterClass="userRole">
+		UPDATE
+			SCOA_TB_USER_ROLE stu
+		SET
+			stu.UPDATE_DATE = now(),
+			stu.LOGIN_ID = #loginId#,
+			stu.GRPO_ID = #grpoId#
+		WHERE stu.LOGIN_ID = #loginId#
+		AND stu.GRPO_ID = #oldGrpoId#
+	</update>
+	
+</sqlMap>

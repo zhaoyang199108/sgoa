@@ -1,0 +1,8 @@
+.sel{}
+.sio{ width:598px; border:1px solid #3F744F; height:265px;overflow-y:scroll;}
+.sio ul{ }
+.sio ul li{ padding:5px 0; width:168px;background:#ECF4F0; border-right:2px solid #FFFFFF; float:left;}
+.sio ul li span{  padding-left:5px; width:75px;}
+.bit{ border:2px solid #95C6A4; background:#498454; height:28px; text-align:right;color:#FFFFFF; font-size:12px; font-weight:bold; padding-right:35px;}
+.caz{ padding-top:10px; height:25px; text-align:center; border-top:1px solid #D8E7DF;}
+.sele_sub{ border:0px; width:51px; height:23px; background:url(../image/an.jpg) no-repeat; color:#FFFFFF; line-height:23px; padding-left:30px; display:inline;}

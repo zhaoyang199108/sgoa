@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 信息表SQL映射文件, TABLE: SCOA_TB_DOCOUT -->
+<sqlMap namespace="docout">
+	
+	<typeAlias alias="docout"
+		type="com.bcqsoft.sgoa.dao.docout.dataobject.Docout" />
+		
+	<!-- 插入一条信息至信息表 -->
+	<insert id="insertIntoDocout" parameterClass="docout">
+		INSERT INTO	
+			SCOA_TB_DOCOUT
+		(
+			CREATE_DATE,
+			UPDATE_DATE,
+			TITLE,
+			SUBJECT,
+			TEXT_TIME,
+			DOCOUT_NUM,
+			URGENT,
+			SECURITY,
+			MAIN_SEND,
+			COPY_SEND,
+			APPROVAL_IDS,
+			STEPS,
+			REVIEW_ID,
+			PROOFREAD,
+			PRINTING,
+			COPIES,
+		    REMARK,
+			D_RECORDID,
+			APPROVAL_ID,
+			STEP,
+			SORT,
+			DRAFTS_DEPT_ID,
+			DRAFTS_ID,
+			CURRENT_OPT_ID,
+			NEXT_OPT_ID,
+			STATUS,
+			ENABLED,
+			SUPERVISE,
+			OPEN
+		) 
+		VALUES(
+			now(),
+			now(),
+			#title#,
+			#subject#,
+			#textTime#,
+			#docoutNum#,
+			#urgent#,
+			#security#,
+			#mainSend#,
+			#copySend#,
+			#approvalIds#,
+			#steps#,
+			#reviewId#,
+			#proofread#,
+			#printing#,
+			#copies#,
+		    #remark#,
+			#dRecordid#,
+			#approvalId#,
+			#step#,
+			#sort#,
+			#draftsDeptId#,
+			#draftsId#,
+			#currentOptId#,
+			#nextOptId#,
+			#status#,
+			#enabled#,
+			#supervise#,
+			#open#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS id 
+		</selectKey>
+	</insert>
+	
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findMyDraftDocoutCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.DRAFTS_ID = #draftsId#
+		  AND t.ENABLED = 2
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findMyDraftDocoutList" resultClass="docout">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.DOCOUT_NUM docoutNum
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.DRAFTS_ID = #draftsId#
+		  AND t.ENABLED = 2
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findMyDocoutCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.ID in (SELECT DOCOUT_ID FROM SCOA_TB_DOCOUT_BOX b WHERE b.RECEIVER_ID=#receivedId#)
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findMyDocoutList" resultClass="docout">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.DOCOUT_NUM docoutNum
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.ID in (SELECT DOCOUT_ID FROM SCOA_TB_DOCOUT_BOX b WHERE b.RECEIVER_ID=#receivedId#)
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据条件查找该用户我的申请信息数量 -->
+	<select id="findApprovedDocoutCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.DRAFTS_ID = #draftsId#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户我的申请的信息集合 -->
+	<select id="findApprovedDocoutList" resultClass="docout">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.DOCOUT_NUM docoutNum,
+			t.STATUS status,
+			t.DRAFTS_ID draftsId,
+			t.CURRENT_OPT_ID currentOptId
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.DRAFTS_ID = #draftsId#
+		 AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据条件查找该用户待审核信息数量 -->
+	<select id="findDocoutReviewCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.NEXT_OPT_ID = #draftsId#
+		  AND (t.STATUS = 1 || t.STATUS = 2)
+		  AND t.ENABLED = 1
+		  AND t.SORT = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户待审核的信息集合 -->
+	<select id="findDocoutReviewList" resultClass="docout">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.DOCOUT_NUM docoutNum,
+			t.STATUS status
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.NEXT_OPT_ID = #draftsId#
+		  AND (t.STATUS = 1 || t.STATUS = 2)
+		  AND t.ENABLED = 1
+		  AND t.SORT = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+		<!-- 根据条件查找该用户待审核信息数量 -->
+	<select id="findDocoutDoinoutCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.NEXT_OPT_ID = #draftsId#
+		  AND t.STATUS = 4
+		  AND t.SORT =2
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户待审核的信息集合 -->
+	<select id="findDocoutDoinoutList" resultClass="docout">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.DOCOUT_NUM docoutNum,
+			t.STATUS status
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.NEXT_OPT_ID = #draftsId#
+		  AND t.STATUS = 4
+		  AND t.SORT =2
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+		<!-- 根据条件查找该用户经我审核信息数量 -->
+	<select id="getMyDocoutReviewCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		 WHERE t.ID in (
+			SELECT r.DOCOUT_ID
+			FROM SCOA_TB_DOCOUT_REVIEW r
+			WHERE r.CURRENT_OPT_ID = #draftsId#	 
+		 )
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户经我审核的信息集合 -->
+	<select id="getMyDocoutReviewList" resultClass="docout">
+	SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.DOCOUT_NUM docoutNum,
+			t.STATUS status
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		 WHERE t.ID in (
+			SELECT r.DOCOUT_ID
+			FROM SCOA_TB_DOCOUT_REVIEW r
+			WHERE r.CURRENT_OPT_ID = #draftsId#	 
+		 )
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据信息ID更新该条信息记录状态为已删除 -->
+	<update id="updateDocoutStatusToEnabled" parameterClass="long">
+		UPDATE 
+			SCOA_TB_DOCOUT t
+		   SET t.UPDATE_DATE = now(),
+		   	   t.ENABLED = 3
+		 WHERE t.ID = #id#
+	</update>
+	
+		<!-- 根据ID取得信息草稿数据 -->
+	<select id="findDocoutDetailInfoById" resultClass="docout">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.SORT sort,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.DRAFTS_DEPT_ID draftsDeptId,
+			d.DEPT_NAME draftsDeptName,
+			t.DRAFTS_ID draftsId,
+			u0.USER_NAME draftsName,
+			t.REMARK remark,
+			t.D_RECORDID dRecordid,
+			(SELECT D_FileBody FROM  EWEBDOCOUT_T_DOCUMENTFILE e WHERE e.D_RecordID=t.D_RECORDID) content,
+			t.APPROVAL_ID approvalId,
+			t.STEP step,
+			t.CURRENT_OPT_ID currentOptId,
+			t.NEXT_OPT_ID nextOptId,
+			(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = t.NEXT_OPT_ID LIMIT 1) nextOptName,
+			t.STATUS status,
+			t.ENABLED enabled,
+			t.DOCOUT_NUM docoutNum,
+			t.URGENT urgent,
+			t.SECURITY security,
+			t.MAIN_SEND mainSend,
+			(SELECT u2.USER_NAME FROM SCOA_TB_USER u2 WHERE u2.LOGIN_ID = t.MAIN_SEND LIMIT 1) mainSendName,
+			t.COPY_SEND copySend,
+			(SELECT u3.USER_NAME FROM SCOA_TB_USER u3 WHERE u3.LOGIN_ID = t.COPY_SEND LIMIT 1) copySendName,
+			t.APPROVAL_IDS approvalIds,
+			t.STEPS steps,
+			t.REVIEW_ID reviewId,
+			(SELECT u4.USER_NAME FROM SCOA_TB_USER u4 WHERE u4.LOGIN_ID = t.REVIEW_ID LIMIT 1) reviewName,
+			t.PROOFREAD proofread,
+			(SELECT u5.USER_NAME FROM SCOA_TB_USER u5 WHERE u5.LOGIN_ID = t.PROOFREAD LIMIT 1) proofreadName,
+			t.PRINTING printing,
+			t.COPIES copies,
+			t.SUPERVISE supervise,
+			t.OPEN open
+		 FROM
+		 	SCOA_TB_DOCOUT t,
+		 	SCOA_TB_USER u0,
+		 	SCOA_TB_DEPT d
+		WHERE t.ID = #id#
+		  AND t.DRAFTS_ID = u0.LOGIN_ID
+		  AND t.DRAFTS_DEPT_ID = d.ID
+	</select>
+	
+	<!-- 根据信息ID更新该条信息 -->
+	<update id="updateDocoutInfoById" parameterClass="docout">
+		UPDATE 
+			SCOA_TB_DOCOUT t
+		   SET t.UPDATE_DATE = now(),
+			   t.TITLE = #title#,
+			   t.SUBJECT = #subject#,
+			   t.TEXT_TIME = #textTime#,
+			   t.APPROVAL_ID = #approvalId#,
+			   t.REMARK = #remark#,
+			   t.STATUS = #status#,
+			   t.ENABLED = #enabled#,
+			   t.D_RECORDID = #dRecordid#,
+			   t.NEXT_OPT_ID = #nextOptId#,
+			   t.DOCOUT_NUM = #docoutNum#,
+			   t.URGENT = #urgent#,
+			   t.SECURITY = #security#,
+			   t.MAIN_SEND = #mainSend#,
+			   t.COPY_SEND = #copySend#,
+			   t.APPROVAL_IDS = #approvalIds#,
+			   t.STEPS = #steps#,
+			   t.REVIEW_ID = #reviewId#,
+			   t.PROOFREAD = #proofread#,
+			   t.PRINTING = #printing#,
+			   t.COPIES = #copies#,
+			   t.SUPERVISE = #supervise#,
+			   t.OPEN = #open#
+		 WHERE t.ID = #id#
+	</update>
+	
+	<!-- 根据信息ID更新该条信息 -->
+	<update id="updateOneDocoutInfo" parameterClass="Long">
+		UPDATE 
+			SCOA_TB_DOCOUT t
+		   SET t.UPDATE_DATE = now(),
+			   t.NEXT_OPT_ID = '',
+			   t.ENABLED = 2
+		 WHERE t.ID = #id#
+	</update>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateDocoutById" parameterClass="docout">
+		UPDATE
+		SCOA_TB_DOCOUT t
+		SET
+		t.UPDATE_DATE=now(),
+		t.STEP = #step#,
+		t.CURRENT_OPT_ID = #currentOptId#,
+		t.SORT=#sort#,
+		t.APPROVAL_IDS = #approvalIds#,
+		t.STEPS = #steps#,
+		t.NEXT_OPT_ID = #nextOptId#,
+		t.STATUS = #status#,
+		t.REVIEW_ID = #reviewId#,
+		t.ENABLED = #enabled#,
+		t.SUPERVISE = #supervise#,
+		t.OPEN = #open#
+		WHERE t.ID = #id#
+	</update>
+		<!-- 根据条件查找该用户拟稿的信息数量 -->
+	<select id="findDocoutSeacheCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.STATUS = #status#
+		  AND  t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="draftsDeptId" prepend="AND">
+	  			t.DRAFTS_DEPT_ID = #draftsDeptId#
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户拟稿的信息集合 -->
+	<select id="findDocoutSeacheList" resultClass="docout">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.DOCOUT_NUM docoutNum
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.STATUS = #status#
+		  AND t.ENABLED = 1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateDocoutWorkById" parameterClass="docout">
+		UPDATE
+		SCOA_TB_DOCOUT t
+		SET
+		t.UPDATE_DATE=now(),
+		t.CURRENT_OPT_ID = #currentOptId#,
+		t.STEPS = #steps#,
+		t.NEXT_OPT_ID = #nextOptId#,
+		t.ENABLED = #enabled#,
+		t.STATUS = #status#,
+		t.SUPERVISE = #supervise#,
+		t.OPEN = #open#
+		WHERE t.ID = #id#
+	</update>
+	
+		<!-- 根据条件查找该用户督办的信息数量 -->
+	<select id="findDocoutDubanCount" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE (t.STATUS = 4||t.STATUS = 5)
+		  AND  t.ENABLED = 1
+		  AND t.SUPERVISE=1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+	</select>
+	
+	<!-- 根据条件查找该用户督办信息集合 -->
+	<select id="findDocoutDubanList" resultClass="docout">
+		SELECT 
+			t.ID id,
+			t.CREATE_DATE createDate,
+			t.UPDATE_DATE updateDate,
+			t.TITLE title,
+			t.SUBJECT subject,
+			t.TEXT_TIME textTime,
+			t.DOCOUT_NUM docoutNum,
+			t.STATUS status
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE (t.STATUS = 4||t.STATUS = 5)
+		  AND  t.ENABLED = 1
+		  AND t.SUPERVISE=1
+			<isNotEmpty property="title" prepend="AND">
+	  			t.TITLE LIKE CONCAT('%',#title#,'%')
+	  		</isNotEmpty>
+	  		<isNotNull property="docoutNum" prepend="AND">
+	  			t.DOCOUT_NUM LIKE CONCAT('%',#docoutNum#,'%')
+	  		</isNotNull>
+		ORDER BY t.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+	
+	<!-- 根据条件查找该用户待审核信息数量 -->
+	<select id="findDocoutReviewCountForIndex" resultClass="int">
+		SELECT 
+			COUNT(*)
+		 FROM
+		 	SCOA_TB_DOCOUT t
+		WHERE t.NEXT_OPT_ID = #draftsId#
+		  AND t.STATUS = #status#
+		  AND t.ENABLED = 1 
+		  AND t.SORT = 1 
+	</select>
+	
+	<!-- 根据通知公告ID更新通知公告信息 -->
+	<update id="updateDocoutStatusById" parameterClass="docout">
+		UPDATE
+		SCOA_TB_DOCOUT t
+		SET
+		t.UPDATE_DATE=now(),
+		t.STATUS = #status# 
+		WHERE t.ID = #id#
+	</update>
+</sqlMap>

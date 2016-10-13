@@ -1,0 +1,61 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td a {
+    margin: 0;
+    padding: 0;
+}
+img {
+    border: 0;
+}
+li {
+    list-style: none;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+#smsbox_panel{
+   width:800px;
+   height:500px !important;
+   height:500px;
+}
+#smsbox_panel .head-title{
+   overflow: hidden;
+   background:url('../images/bot_bg02.jpg') repeat-y center #3D93E0;
+   font-size:18px;height:30px;
+   font-weight:bold;
+   text-align:center;
+}
+ .center{
+   padding-top:5px;
+   height:500px !important;
+   height:500px;
+   overflow:hidden;
+   position:relative;
+}
+.center-left{
+   display:inline;
+   width:200px;
+   height:500px;
+   position:relative;
+   padding-left:10px; float:left;
+}
+.new_noc_list{
+   height:260px;
+   width:200px;
+   _width:200px;
+   background-color:#FFFFFF;
+   text-align:center;
+   overflow:auto;
+   scrollbar-arrow-color:#A8792B;
+}
+.noc_iterm_data li{list-style:none;background:#f7f7f7;border-bottom:1px solid #dbdbdb;border-top:1px solid #FFFFFF;padding:10px;font:normal normal 12px/1.6em Lucida Console,consolas,"Arial";cursor:pointer;}
+.noc_iterm_content{color:#807e7e;cursor:pointer;}
+.center-right{
+   float:none;
+   display:inline;
+   width:500px !important;
+   height:470px !important;
+   width:500px;
+   _width:500px; margin-left:20px;
+   height:470px;
+   background:#fff; float:left;
+   border:1px #bbd1de solid;
+}

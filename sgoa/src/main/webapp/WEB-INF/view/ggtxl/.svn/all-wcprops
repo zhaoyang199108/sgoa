@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/bcqSoft/!svn/ver/8777/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ggtxl
+END
+add_ggtxl.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/bcqSoft/!svn/ver/8657/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ggtxl/add_ggtxl.ftl
+END
+jjlxr_menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/8658/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ggtxl/jjlxr_menu.ftl
+END
+ggtxl_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/7899/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ggtxl/ggtxl_list.ftl
+END
+menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/bcqSoft/!svn/ver/8777/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ggtxl/menu.ftl
+END
+ggtxl_search_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/bcqSoft/!svn/ver/8777/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ggtxl/ggtxl_search_list.ftl
+END
+ggtxl_detail.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bcqSoft/!svn/ver/8659/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ggtxl/ggtxl_detail.ftl
+END
+ggtxl_menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/8770/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ggtxl/ggtxl_menu.ftl
+END
+ggtxl_edit.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/7899/source/sgoa/trunk/src/main/webapp/WEB-INF/view/ggtxl/ggtxl_edit.ftl
+END

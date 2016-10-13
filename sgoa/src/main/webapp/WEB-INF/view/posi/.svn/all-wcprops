@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/bcqSoft/!svn/ver/7108/source/sgoa/trunk/src/main/webapp/WEB-INF/view/posi
+END
+posi_detail.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/bcqSoft/!svn/ver/6536/source/sgoa/trunk/src/main/webapp/WEB-INF/view/posi/posi_detail.ftl
+END
+posi_edit.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bcqSoft/!svn/ver/6536/source/sgoa/trunk/src/main/webapp/WEB-INF/view/posi/posi_edit.ftl
+END
+add_posi.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/bcqSoft/!svn/ver/6536/source/sgoa/trunk/src/main/webapp/WEB-INF/view/posi/add_posi.ftl
+END
+posi_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/bcqSoft/!svn/ver/7108/source/sgoa/trunk/src/main/webapp/WEB-INF/view/posi/posi_list.ftl
+END

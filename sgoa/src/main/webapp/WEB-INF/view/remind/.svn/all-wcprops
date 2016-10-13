@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/bcqSoft/!svn/ver/10843/source/sgoa/trunk/src/main/webapp/WEB-INF/view/remind
+END
+remind_detail.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/bcqSoft/!svn/ver/9491/source/sgoa/trunk/src/main/webapp/WEB-INF/view/remind/remind_detail.ftl
+END
+remind_edit.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/bcqSoft/!svn/ver/7931/source/sgoa/trunk/src/main/webapp/WEB-INF/view/remind/remind_edit.ftl
+END
+menu.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/bcqSoft/!svn/ver/7968/source/sgoa/trunk/src/main/webapp/WEB-INF/view/remind/menu.ftl
+END
+remind_list.ftl
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/bcqSoft/!svn/ver/10843/source/sgoa/trunk/src/main/webapp/WEB-INF/view/remind/remind_list.ftl
+END

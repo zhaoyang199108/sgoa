@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<!-- 消息提醒表SQL映射文件, TABLE: sgoa_TB_ALERT -->
+<sqlMap namespace="alert">
+
+	<typeAlias alias="alert"
+		type="com.bcqsoft.sgoa.dao.alert.dataobject.Alert" />
+
+	<!-- 插入消息提醒记录 -->
+	<insert id="insertIntoAlert" parameterClass="alert">
+		INSERT INTO
+		SCOA_TB_ALERT
+		(
+		CREATE_DATE,
+		UPDATE_DATE,
+		LOGIN_ID,
+		BUS_ID,
+		MODE_NAME,
+		TITLE,
+		ALERT_TIME,
+		REMARK,
+		STATUS
+		)
+		VALUES(
+		now(),
+		now(),
+		#loginId#,
+		#busId#,
+		#modeName#,
+		#title#,
+		#alertTime#,
+		#remark#,
+		#status#
+		)
+		<selectKey keyProperty="id" resultClass="long">
+			select @@IDENTITY AS
+			id
+		</selectKey>
+	</insert>
+
+	<!-- 根据查询条件查询符合条件的消息提醒表(页面分页使用) -->
+	<select id="findAlertInfoCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_ALERT g
+		WHERE 1 = 1 
+		<isNotEmpty property="title" prepend="AND">
+			g.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="loginId" prepend="AND">
+			g.LOGIN_ID =#loginId#
+		</isNotEmpty>
+		<isNotEmpty property="alertTime" prepend="AND">
+			g.ALERT_TIME =#alertTime#
+		</isNotEmpty>
+		<isNotEmpty property="status" prepend="AND">
+			g.STATUS =#status#
+		</isNotEmpty>
+	</select>
+
+	<!-- 根据查询条件查询符合条件的消息提醒表 -->
+	<select id="findAlertInfoList" resultClass="alert">
+		SELECT g.ID,
+		g.CREATE_DATE createDate,
+		g.UPDATE_DATE updateDate,
+		g.LOGIN_ID loginId,
+		(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = g.LOGIN_ID LIMIT 1) userName,
+		g.BUS_ID busId,
+		g.MODE_NAME modeName,
+		g.TITLE title,
+		g.ALERT_TIME alertTime,
+		g.REMARK remark,
+		g.STATUS status 
+		FROM SCOA_TB_ALERT g
+		WHERE 1 = 1 
+		<isNotEmpty property="title" prepend="AND">
+			g.TITLE LIKE
+			CONCAT('%',#title#,'%')
+		</isNotEmpty>
+		<isNotEmpty property="loginId" prepend="AND">
+			g.LOGIN_ID =#loginId#
+		</isNotEmpty>
+		<isNotEmpty property="alertTime" prepend="AND">
+			g.ALERT_TIME =#alertTime#
+		</isNotEmpty>
+		<isNotEmpty property="status" prepend="AND">
+			g.STATUS =#status#
+		</isNotEmpty>
+		ORDER BY g.BUS_ID ASC, g.UPDATE_DATE DESC
+		LIMIT #startRow#, #pageSize#
+	</select>
+
+	<!-- 根据ID查询符合条件的消息提醒表 -->
+	<select id="getAlertInfo" resultClass="alert" parameterClass="long">
+		SELECT g.ID,
+			g.CREATE_DATE createDate,
+			g.UPDATE_DATE updateDate,
+			g.LOGIN_ID loginId,
+			(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = g.LOGIN_ID LIMIT 1) userName,
+			g.BUS_ID busId,
+			g.MODE_NAME modeName,
+			g.TITLE title,
+			g.ALERT_TIME alertTime,
+			g.REMARK remark,
+			g.STATUS status 
+		FROM SCOA_TB_ALERT g
+		WHERE 1 = 1 
+		AND g.ID=#id# 
+
+	</select>
+	<!-- 根据消息提醒ID更新消息提醒信息 -->
+	<update id="updateAlertInfoById" parameterClass="alert">
+		UPDATE
+		SCOA_TB_ALERT g
+		SET
+		g.UPDATE_DATE =now(),
+		g.ALERT_TIME = #alertTime#,
+		g.REMARK = #remark#,
+		g.STATUS = #status# 
+		WHERE g.ID = #id#
+	</update>
+
+<!-- 根据消息提醒ID删除消息提醒信息 -->
+	<delete id="deleteAlertInfoById" parameterClass="long">
+		DELETE FROM 
+		SCOA_TB_ALERT 
+		WHERE ID = #id# 
+	</delete>
+	
+	<select id="findAllAlertInfo" resultClass="alert">
+		SELECT g.ID,
+			g.CREATE_DATE createDate,
+			g.UPDATE_DATE updateDate,
+			g.LOGIN_ID loginId,
+			(SELECT u1.USER_NAME FROM SCOA_TB_USER u1 WHERE u1.LOGIN_ID = g.LOGIN_ID LIMIT 1) userName,
+			g.BUS_ID busId,
+			g.MODE_NAME modeName,
+			g.TITLE title,
+			g.ALERT_TIME alertTime,
+			g.REMARK remark,
+			g.STATUS status 
+		FROM SCOA_TB_ALERT g 
+		ORDER BY g.BUS_ID ASC, g.UPDATE_DATE DESC
+	</select>
+	
+	<!-- 根据查询条件查询符合条件的消息提醒表(页面分页使用) -->
+	<select id="findAlertInfoForIndex" resultClass="int">
+		SELECT COUNT(*)
+		FROM SCOA_TB_ALERT g
+		WHERE 1 = 1 
+		<isNotEmpty property="loginId" prepend="AND">
+			g.LOGIN_ID =#loginId#
+		</isNotEmpty>
+		<isNotEmpty property="alertTime" prepend="AND">
+			g.ALERT_TIME =#alertTime#
+		</isNotEmpty>
+		<isNotEmpty property="status" prepend="AND">
+			g.STATUS =#status#
+		</isNotEmpty>
+	</select>
+</sqlMap>
