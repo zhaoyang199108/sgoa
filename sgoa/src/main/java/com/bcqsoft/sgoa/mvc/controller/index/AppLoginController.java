@@ -59,12 +59,19 @@ public class AppLoginController {
 		String pswMd5 = MD5Util.toMd5(psw);
 		
 		User user = userService.getUserInfoByLoginId(loginId);
-		if (pswMd5.equals(user.getPassword())) {
+		
+		if ((user != null) && pswMd5.equals(user.getPassword())) {
 			resultMap.put("loginId", loginId);
 			resultMap.put("code", "0");
 			resultMap.put("token", loginId);
 			resultMap.put("message", "登录成功！");
 			resultMap.put("data", user);
+		}else{
+			resultMap.put("loginId", loginId);
+			resultMap.put("code", "1");
+			resultMap.put("token", loginId);
+			resultMap.put("message", "用户名密码不正确，请重新输入！");
+			resultMap.put("data", null);
 		}
 
 		return resultMap;
