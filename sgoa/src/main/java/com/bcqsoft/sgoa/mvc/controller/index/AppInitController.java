@@ -61,13 +61,13 @@ public class AppInitController {
 			resultMap.put("token", loginId);
 			resultMap.put("message", "密码修改成功！");
 			resultMap.put("data", user);
-		}else{
+		}
+		 if(!user.getPassword().equals(MD5Util.toMd5(psw))){
 				resultMap.put("message", "用户名密码不正确！");
 				resultMap.put("code", "1");
 				resultMap.put("token", loginId);
 				resultMap.put("data", null);
 		}
-		
 		return resultMap;
 	}
 
