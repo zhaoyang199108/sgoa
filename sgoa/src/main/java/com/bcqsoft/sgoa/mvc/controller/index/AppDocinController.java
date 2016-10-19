@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bcqsoft.sgoa.common.charactor.CommonChar;
@@ -22,7 +20,6 @@ import com.bcqsoft.sgoa.service.docin.DocinService;
 
 /**
  * App收文控制器
- * 
  * Author zy
  */
 @Controller
@@ -31,12 +28,10 @@ public class AppDocinController {
 	@Autowired private DocinService docinService;
 	/**
 	 * 通知查询列表
-	 * 
 	 * @param map
 	 * @return 信息页面模板
-	 * 
-	 * @Author Bcqsoft.com zbq
-	 * @Date 2011-12-22
+	 * @Author zy
+	 * @Date 2016-10-17
 	 */
 	@ResponseBody
 	@RequestMapping("/home/docin_search.htm")
@@ -71,12 +66,10 @@ public class AppDocinController {
 	}
 	/**
 	 * 我的拟稿列表页面设置查询条件
-	 * 
 	 * @param form
 	 * @param goodsPage
-	 * 
-	 * @Author zbq
-	 * @Date 2011-8-25
+	 * @Author zy
+	 * @Date 2016-10-17
 	 */
 	private void setSearchKey(DocinForm form, DocinPage docinPage) {
 		// 设置查询条件
