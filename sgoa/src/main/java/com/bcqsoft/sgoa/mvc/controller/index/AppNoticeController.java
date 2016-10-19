@@ -64,7 +64,7 @@ public class AppNoticeController {
 		message = list==null?"取得失败":"取得成功";
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("message", message);
-		map.put(retCode, retCode);
+		map.put("retCode", retCode);
 		map.put("data", list);
 		return map;
 	}

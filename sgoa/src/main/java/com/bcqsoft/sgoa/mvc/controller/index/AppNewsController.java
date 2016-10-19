@@ -61,7 +61,7 @@ public class AppNewsController {
 		message = list==null?"取得失败":"取得成功";
 		Map<String,Object>  resMap = new HashMap<String, Object>();
 		resMap.put("message", message);
-		resMap.put(retCode, retCode);
+		resMap.put("retCode", retCode);
 		resMap.put("data", list);
 		return resMap;
 	}
