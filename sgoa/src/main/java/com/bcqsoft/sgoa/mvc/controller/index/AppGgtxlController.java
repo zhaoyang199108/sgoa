@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bcqsoft.sgoa.core.security.SecurityUtils;
 import com.bcqsoft.sgoa.dao.ggtxl.dataobject.Ggtxl;
 import com.bcqsoft.sgoa.dao.ggtxl.dataobject.GgtxlPage;
 import com.bcqsoft.sgoa.mvc.controller.index.util.GgtxlRes;
@@ -52,9 +53,20 @@ public class AppGgtxlController {
 	@ResponseBody
 	public Map<String,Object> selectGgtxlSearchList(
 			HttpServletRequest request, HttpServletResponse response) {
+		String currentPage = request.getParameter("currentPage");
+		String pageSize = request.getParameter("pageSize");
+		if (currentPage == null || "".equals(currentPage)) {
+			currentPage = "1";
+		}
+		if (pageSize == null || "".equals(pageSize)) {
+			pageSize = "1000";
+		}
 		GgtxlPage ggtxlPage = new GgtxlPage(); // 分页对象
 		String retCode = "";
 		String message = "";
+		ggtxlPage.setLoginId(SecurityUtils.getLoginId());
+		ggtxlPage.setCurrentPage(Integer.parseInt(currentPage));
+		ggtxlPage.setPageSize(Integer.parseInt(pageSize));
 		GgtxlPage page = ggtxlService.getGgtxlInfoSearchList(ggtxlPage);
 		List<Ggtxl> ggtxlList = page.getGgtxlList();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -99,22 +111,33 @@ public class AppGgtxlController {
 	@ResponseBody
 	public Map<String,Object> selectGgtxlSearchListByPerson(
 			HttpServletRequest request, HttpServletResponse response) {
+		String currentPage = request.getParameter("currentPage");
+		String pageSize = request.getParameter("pageSize");
+		if (currentPage == null || "".equals(currentPage)) {
+			currentPage = "1";
+		}
+		if (pageSize == null || "".equals(pageSize)) {
+			pageSize = "1000";
+		}
 		GgtxlPage ggtxlPage = new GgtxlPage(); // 分页对象
 		String retCode = "";
 		String message = "";
+		ggtxlPage.setLoginId(SecurityUtils.getLoginId());
+		ggtxlPage.setCurrentPage(Integer.parseInt(currentPage));
+		ggtxlPage.setPageSize(Integer.parseInt(pageSize));
 		GgtxlPage page = ggtxlService.getGgtxlInfoSearchList(ggtxlPage);
 		List<Ggtxl> ggtxlList = page.getGgtxlList();
 		Map<String, Object> map = new HashMap<String, Object>();
 		for(Ggtxl i : ggtxlList){
-			map.put(getPinYinHeadChar(i.getAddName()), null);
+			map.put(getPinYinHeadChar(i.getAddName()).charAt(0)+"", null);
 		}
 		List<GgtxlRes> ggResList = new ArrayList<GgtxlRes>();
 		for(String t : map.keySet()){
-			
+			System.out.println(t);
 			GgtxlRes ggtxlRes = new GgtxlRes();
 				List<Ggtxl> ggList = new ArrayList<Ggtxl>();
 				for(Ggtxl i:ggtxlList){
-					if(getPinYinHeadChar(i.getAddName()).equals(t)){
+					if(getPinYinHeadChar(i.getAddName().charAt(0)+"").equals(t)){
 						ggList.add(i);
 						char str = getPinYinHeadChar(i.getAddName()).charAt(0);
 						ggtxlRes.name=""+str;

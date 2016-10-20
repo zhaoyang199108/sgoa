@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bcqsoft.sgoa.common.charactor.CommonChar;
 import com.bcqsoft.sgoa.dao.docin.dataobject.Docin;
 import com.bcqsoft.sgoa.dao.docin.dataobject.DocinPage;
-import com.bcqsoft.sgoa.mvc.form.docin.DocinForm;
 import com.bcqsoft.sgoa.service.docin.DocinService;
 
 /**
@@ -64,20 +63,5 @@ public class AppDocinController {
 		map.put("data",docinList);
 		return map;
 	}
-	/**
-	 * 我的拟稿列表页面设置查询条件
-	 * @param form
-	 * @param goodsPage
-	 * @Author zy
-	 * @Date 2016-10-17
-	 */
-	private void setSearchKey(DocinForm form, DocinPage docinPage) {
-		// 设置查询条件
-		docinPage.setCurrentPage(form.getCp()); // 当前页数
-		docinPage.setTitle(form.getTitle()); // 标题
-		docinPage.setTextTime(form.getTextTime()); // 标题
-		docinPage.setSort(CommonChar.SORT_TZ); // 分类
-		docinPage.setStatus(form.getStatus()); // 当前状态
-		docinPage.setEnabled(form.getEnabled()); // 文件状态
-	}
+
 }
