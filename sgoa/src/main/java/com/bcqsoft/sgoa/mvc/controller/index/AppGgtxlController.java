@@ -1,6 +1,8 @@
 package com.bcqsoft.sgoa.mvc.controller.index;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,17 +10,17 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sourceforge.pinyin4j.PinyinHelper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bcqsoft.sgoa.core.security.SecurityUtils;
 import com.bcqsoft.sgoa.dao.ggtxl.dataobject.Ggtxl;
 import com.bcqsoft.sgoa.dao.ggtxl.dataobject.GgtxlPage;
 import com.bcqsoft.sgoa.mvc.controller.index.util.GgtxlRes;
-import com.bcqsoft.sgoa.mvc.form.ggtxl.GgtxlForm;
 import com.bcqsoft.sgoa.service.ggtxl.GgtxlService;
 
 /**
@@ -43,26 +45,22 @@ public class AppGgtxlController {
 	 * @param map
 	 * @return
 	 * 
-	 * @Author zy
-	 * @Date 2016-10-19
+	 * @Author Bcqsoft.com cql
+	 * @Date 2012-05-02
 	 */
 	@RequestMapping(value = "/home/ggtxl_search_list.htm", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String,Object> selectGgtxlSearchList(
 			HttpServletRequest request, HttpServletResponse response) {
-		List<Map<String, Object>>  result = new ArrayList<Map<String,Object>>();
 		GgtxlPage ggtxlPage = new GgtxlPage(); // 分页对象
 		String retCode = "";
 		String message = "";
 		GgtxlPage page = ggtxlService.getGgtxlInfoSearchList(ggtxlPage);
 		List<Ggtxl> ggtxlList = page.getGgtxlList();
 		Map<String, Object> map = new HashMap<String, Object>();
-		Map<String, Object> mapRes = new HashMap<String, Object>();
-		List<Ggtxl> list = new ArrayList<Ggtxl>();
 		for(Ggtxl i : ggtxlList){
 			map.put(i.getTypeId(), null);
 		}
-		List<Object> lis = new ArrayList<Object>();
 		List<GgtxlRes> ggResList = new ArrayList<GgtxlRes>();
 		for(String t : map.keySet()){
 			
@@ -87,17 +85,75 @@ public class AppGgtxlController {
 		return resMap;
 		//return ggResList;
 	}
-
 	/**
-	 * 公共通讯录申领表列表页面设置查询条件
+	 * 查询公共通讯录按人员
+	 * 
+	 * @param form
+	 * @param map
+	 * @return
+	 * 
 	 * @Author zy
-	 * @Date 2016-10-17
+	 * @Date 20161020
 	 */
-	private void setSearchKey(GgtxlForm form, GgtxlPage ggtxlPage) {
-		ggtxlPage.setLoginId(SecurityUtils.getLoginId()); // 设置登录通讯录Id
-		ggtxlPage.setAddName(form.getAddName());
-		ggtxlPage.setUnitTel(form.getUnitTel());
-		ggtxlPage.setCurrentPage(form.getCp()); // 当前页数
-
+	@RequestMapping(value = "/home/ggtxl_search_list_person.htm", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> selectGgtxlSearchListByPerson(
+			HttpServletRequest request, HttpServletResponse response) {
+		GgtxlPage ggtxlPage = new GgtxlPage(); // 分页对象
+		String retCode = "";
+		String message = "";
+		GgtxlPage page = ggtxlService.getGgtxlInfoSearchList(ggtxlPage);
+		List<Ggtxl> ggtxlList = page.getGgtxlList();
+		Map<String, Object> map = new HashMap<String, Object>();
+		for(Ggtxl i : ggtxlList){
+			map.put(getPinYinHeadChar(i.getAddName()), null);
+		}
+		List<GgtxlRes> ggResList = new ArrayList<GgtxlRes>();
+		for(String t : map.keySet()){
+			
+			GgtxlRes ggtxlRes = new GgtxlRes();
+				List<Ggtxl> ggList = new ArrayList<Ggtxl>();
+				for(Ggtxl i:ggtxlList){
+					if(getPinYinHeadChar(i.getAddName()).equals(t)){
+						ggList.add(i);
+						char str = getPinYinHeadChar(i.getAddName()).charAt(0);
+						ggtxlRes.name=""+str;
+					}
+				}
+			
+			ggtxlRes.ggtxl = ggList;
+			ggResList.add(ggtxlRes);
+		}
+		Collections.sort(ggResList, new MySort());
+		Map<String,Object> resMap = new HashMap<String, Object>();
+		retCode = ggResList == null?"1":"0";
+		message = ggResList == null?"取得失败":"取得成功";
+		resMap.put("retCode", retCode);
+		resMap.put("message", message);
+		resMap.put("data",ggResList);
+		return resMap;
+		//return ggResList;
 	}
+	 public static String getPinYinHeadChar(String str) {
+	        String convert = "";
+	        for (int j = 0; j < str.length(); j++) {
+	            char word = str.charAt(j);
+	            // 提取汉字的首字母
+	            String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
+	            if (pinyinArray != null) {
+	                convert += pinyinArray[0].charAt(0);
+	            } else {
+	                convert += word;
+	            }
+	        }
+	        return convert;
+	    }
+		
+	  class MySort implements Comparator {  
+	        public int compare(Object object1, Object object2) {// 实现接口中的方法  
+	        	GgtxlRes p1 = ((GgtxlRes) object1); // 强制转换  
+	        	GgtxlRes p2 = ((GgtxlRes) object2);  
+	            return p1.name.compareTo(p2.name);  
+	        }  
+	    }  
 }
