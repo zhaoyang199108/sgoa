@@ -1,5 +1,7 @@
 package com.bcqsoft.sgoa.mvc.controller.index;
-
+/**
+ * 
+ */
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,14 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bcqsoft.sgoa.core.security.SecurityUtils;
 import com.bcqsoft.sgoa.dao.netfile.dataobject.NetFile;
 import com.bcqsoft.sgoa.dao.netfile.dataobject.NetFilePage;
-import com.bcqsoft.sgoa.mvc.form.netfile.NetFileForm;
 import com.bcqsoft.sgoa.service.netfile.NetFileService;
 @Controller
 public class AppNetFileController {

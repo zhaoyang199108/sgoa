@@ -49,25 +49,31 @@ public class AppInitController {
 		if (user.getPassword().equals(MD5Util.toMd5(psw))) {//当前密码与数据库密码相等
 			map.put("loginId", loginId);
 			map.put("password", MD5Util.toMd5(npsw));
-			userService.modifyUserPassword(map);
-		}else{
-			map.put("message", "用户名密码不正确");
-		}
-		String pswMd5 = MD5Util.toMd5(npsw);//新密码Md5加密
-		if (pswMd5.equals(user.getPassword())) {
-			resultMap.put("loginId", loginId);
-			resultMap.put("password", npsw);
-			resultMap.put("code", "0");
-			resultMap.put("token", loginId);
-			resultMap.put("message", "密码修改成功！");
-			resultMap.put("data", user);
-		}
-		 if(!user.getPassword().equals(MD5Util.toMd5(psw))){
-				resultMap.put("message", "用户名密码不正确！");
+			Boolean bool = userService.modifyUserPassword(map);
+			if(bool){
+				resultMap.put("loginId", loginId);
+				resultMap.put("password", npsw);
+				resultMap.put("code", "0");
+				resultMap.put("token", loginId);
+				resultMap.put("message", "密码修改成功！");
+				resultMap.put("data", user);
+			}else{
+				resultMap.put("loginId", loginId);
+				resultMap.put("password", npsw);
 				resultMap.put("code", "1");
 				resultMap.put("token", loginId);
-				resultMap.put("data", null);
+				resultMap.put("message", "密码修改失败！");
+				resultMap.put("data", user);
+			}
+		}else{
+			resultMap.put("loginId", loginId);
+			resultMap.put("password", npsw);
+			resultMap.put("code", "1");
+			resultMap.put("token", loginId);
+			resultMap.put("message", "原密码输入不正确，请重新输入！");
+			resultMap.put("data", null);
 		}
+
 		return resultMap;
 	}
 
