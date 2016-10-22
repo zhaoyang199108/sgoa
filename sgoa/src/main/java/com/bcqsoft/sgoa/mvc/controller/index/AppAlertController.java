@@ -42,7 +42,6 @@ public class AppAlertController {
 		String title = request.getParameter("title") ;
 		try {
 			title = new String(title.getBytes("iso-8859-1"),"utf-8");
-			System.out.println(title);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
