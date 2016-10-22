@@ -77,5 +77,30 @@ public class AppLoginController {
 		return resultMap;
 
 	}
+	/**
+	 * 用户详细信息列表
+	 * 
+	 * @author zy
+	 * @date 2016-9-21
+	 * @return Map
+	 */
+	@RequestMapping("/home/app_getuser.htm")
+	@ResponseBody
+	public Map<String, Object> appGetUser(HttpServletRequest request, ModelMap map) {
+		String loginId = request.getParameter("loginId");
+		String retCode = "";
+		String message = "";
+		User user = userService.getUserInfoByLoginId(loginId);
+		
+
+		retCode = user==null?"0":"0";
+		message = user==null?"取得成功":"取得成功";
+		Map<String,Object>  resMap = new HashMap<String, Object>();
+		resMap.put("message", message);
+		resMap.put("retCode", retCode);
+		resMap.put("data", user);
+		return resMap;
+
+	}
 
 }
