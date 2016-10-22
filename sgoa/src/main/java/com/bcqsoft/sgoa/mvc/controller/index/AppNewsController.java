@@ -9,14 +9,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bcqsoft.sgoa.common.charactor.CommonChar;
+import com.bcqsoft.sgoa.core.security.SecurityUtils;
 import com.bcqsoft.sgoa.dao.news.dataobject.News;
 import com.bcqsoft.sgoa.dao.news.dataobject.NewsPage;
+import com.bcqsoft.sgoa.dao.newslook.dataobject.NewsLook;
+import com.bcqsoft.sgoa.dao.newsreview.dataobject.NewsReviewPage;
 import com.bcqsoft.sgoa.service.news.NewsService;
+import com.bcqsoft.sgoa.service.newslook.NewsLookService;
 
 /**
  * App要情控制器
@@ -25,6 +30,8 @@ import com.bcqsoft.sgoa.service.news.NewsService;
 public class AppNewsController {
 	
 	private @Autowired NewsService newsService;
+	
+	private @Autowired NewsLookService newsLookService;
 	/**
 	 * 通知查询列表
 	 * 
@@ -63,6 +70,57 @@ public class AppNewsController {
 		resMap.put("message", message);
 		resMap.put("retCode", retCode);
 		resMap.put("data", list);
+		return resMap;
+	}
+	/**
+	 * 点击查看通知表
+	 * 
+	 * @param id
+	 * @param map
+	 * @return 通知表详细页面
+	 * @throws Exception
+	 * 
+	 * @Author Bcqsoft.com cql
+	 * @Date 2013-05-14
+	 */
+	@RequestMapping(value = "/home/news/look_detail.htm", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> newsLookDetail(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+
+		// 获取当前登录ID
+		String loginId = request.getParameter("loginId");
+		Long id =Long.parseLong(request.getParameter("id"));
+		Map<String,Object> resMap = new HashMap<String, Object>();
+		if (loginId == null || "".equals(loginId)
+				|| "anonymousUser".equals(loginId)) {
+			return null;
+		}
+		NewsLook newsForList = new NewsLook();
+		newsForList.setLoginId(loginId);
+		newsForList.setNewsId(id);
+		List<NewsLook> newsLookList = newsLookService
+				.getAllNewsLookList(newsForList);
+		Integer count = newsLookList.size();
+		if (count == 0) {
+			NewsLook newsLook = new NewsLook();
+			newsLook.setLoginId(loginId);
+			newsLook.setNewsId(id);
+			newsLookService.addNewsInfo(newsLook);
+		}
+		List<NewsLook> newsLookListForAll = newsLookService
+				.getAllNewsLookListAll(id);
+		resMap.put("newsLookListForAll", newsLookListForAll);
+
+		News news = newsService.getUserDraftNewsDetail(id);
+		resMap.put("news", news);
+		NewsReviewPage page = newsService.getNewsReviewListById(id);
+		// 获取申请的状态 ，如果是草稿箱就直接查看， 如果是申请就进入流程
+		resMap.put("page", page);
+		String re_Code = news==null?"1":"0";
+		String message = news==null?"取得失败":"取得成功";
+		resMap.put("re_Code", re_Code);
+		resMap.put("message", message);
 		return resMap;
 	}
 
