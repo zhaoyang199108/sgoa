@@ -93,8 +93,8 @@ public class AppLoginController {
 		User user = userService.getUserInfoByLoginId(loginId);
 		
 
-		retCode = user==null?"0":"0";
-		message = user==null?"取得成功":"取得成功";
+		retCode = user==null?"1":"0";
+		message = user==null?"取得失败":"取得成功";
 		Map<String,Object>  resMap = new HashMap<String, Object>();
 		resMap.put("message", message);
 		resMap.put("retCode", retCode);
