@@ -38,12 +38,6 @@ public class AppAlertController {
 	public Map<String,Object> selectAlertListByPage(HttpServletRequest request,HttpServletResponse response) {
 		String currentPage = request.getParameter("currentPage");
 		String pageSize = request.getParameter("pageSize");
-		try {
-			request.setCharacterEncoding("gb2312");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		String loginId = request.getParameter("loginId");
 		String title = request.getParameter("title") ;
 		try {
