@@ -1,5 +1,6 @@
 package com.bcqsoft.sgoa.mvc.controller.index;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +38,21 @@ public class AppAlertController {
 	public Map<String,Object> selectAlertListByPage(HttpServletRequest request,HttpServletResponse response) {
 		String currentPage = request.getParameter("currentPage");
 		String pageSize = request.getParameter("pageSize");
+		try {
+			request.setCharacterEncoding("gb2312");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String loginId = request.getParameter("loginId");
-		String title = request.getParameter("title");
+		String title = request.getParameter("title") ;
+		try {
+			title = new String(title.getBytes("iso-8859-1"),"utf-8");
+			System.out.println(title);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String retCode = "";
 		String message = "";
 		if (currentPage == null || "".equals(currentPage)) {
