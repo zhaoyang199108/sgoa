@@ -41,7 +41,9 @@ public class AppMsgInboxController {
 		String pageSize = request.getParameter("pageSize");
 		String title = request.getParameter("title") ;
 		try {
-			title = new String(title.getBytes("iso-8859-1"),"utf-8");
+			if(title!=null){
+				title = new String(title.getBytes("iso-8859-1"),"utf-8");
+				}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,6 +91,14 @@ public class AppMsgInboxController {
 		String currentPage = request.getParameter("currentPage");
 		String pageSize = request.getParameter("pageSize");
 		String title = request.getParameter("title");
+		try {
+			if(title!=null){
+				title = new String(title.getBytes("iso-8859-1"),"utf-8");
+				}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String loginId = request.getParameter("loginId");
 		if (currentPage == null || "".equals(currentPage)) {
 			currentPage = "1";
