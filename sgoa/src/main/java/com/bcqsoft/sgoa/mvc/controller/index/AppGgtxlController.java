@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bcqsoft.sgoa.core.security.SecurityUtils;
+import com.bcqsoft.sgoa.dao.dept.dataobject.Dept;
 import com.bcqsoft.sgoa.dao.ggtxl.dataobject.Ggtxl;
 import com.bcqsoft.sgoa.dao.ggtxl.dataobject.GgtxlPage;
 import com.bcqsoft.sgoa.mvc.controller.index.util.GgtxlRes;
+import com.bcqsoft.sgoa.service.dept.DeptService;
 import com.bcqsoft.sgoa.service.ggtxl.GgtxlService;
 
 /**
@@ -38,6 +40,8 @@ public class AppGgtxlController {
 	 */
 	@Autowired
 	private GgtxlService ggtxlService;
+	@Autowired
+	private DeptService deptService;
 
 	/**
 	 * 查询公共通讯录
@@ -179,4 +183,98 @@ public class AppGgtxlController {
 	            return p1.name.compareTo(p2.name);  
 	        }  
 	    }  
+	  class MySortFor implements Comparator {  
+	        public int compare(Object object1, Object object2) {// 实现接口中的方法  
+	        	Dept p1 = ((Dept) object1); // 强制转换  
+	        	Dept p2 = ((Dept) object2);  
+	            return p2.getUnitId().compareTo(p1.getUnitId());  
+	        }  
+	    }  
+	  /**
+		 * 查询公共通讯录
+		 * 
+		 * @param form
+		 * @param map
+		 * @return
+		 * 
+		 * @Author Bcqsoft.com cql
+		 * @Date 2012-05-02
+		 */
+		@RequestMapping(value = "/home/ggtxl_search_list_ByUnitid.htm", method = RequestMethod.GET)
+		@ResponseBody
+		public Map<String,Object> selectGgtxlSearchListByUnitid(
+				HttpServletRequest request, HttpServletResponse response) {
+			String currentPage = request.getParameter("currentPage");
+			String pageSize = request.getParameter("pageSize");
+			String unitId = request.getParameter("unitId");
+			if (unitId == null || "".equals(unitId)) {
+				unitId = "1";
+			}
+			if (currentPage == null || "".equals(currentPage)) {
+				currentPage = "1";
+			}
+			if (pageSize == null || "".equals(pageSize)) {
+				pageSize = "1000";
+			}
+			GgtxlPage ggtxlPage = new GgtxlPage(); // 分页对象
+			String retCode = "";
+			String message = "";
+			ggtxlPage.setLoginId(SecurityUtils.getLoginId());
+			ggtxlPage.setCurrentPage(Integer.parseInt(currentPage));
+			ggtxlPage.setPageSize(Integer.parseInt(pageSize));
+			GgtxlPage page = ggtxlService.getGgtxlInfoSearchList(ggtxlPage);
+			List<Dept> deptList = deptService.getDeptListByAll();
+			List<Dept> deptReOrder1 = new ArrayList<Dept>();
+			List<Dept> deptReOrder2 = new ArrayList<Dept>();
+			List<Dept> deptReOrder3 = new ArrayList<Dept>();
+			List<Ggtxl> ggtxlList = page.getGgtxlList();
+			Map<String, Object> map = new HashMap<String, Object>();
+			List<GgtxlRes> ggResList = new ArrayList<GgtxlRes>();
+		//	Collections.sort(deptList, new MySortFor());
+			for(Dept i : deptList){
+				if(i.getUnitId()==1){
+					deptReOrder1.add(i);
+				}
+				if(i.getUnitId()==2){
+					deptReOrder2.add(i);
+				}
+				if(i.getUnitId()==3){
+					deptReOrder3.add(i);
+				}
+			}
+			for(Dept i : deptReOrder3){
+				deptReOrder2.add(i);
+			}
+			for(Dept i : deptReOrder1){
+				if(i.getDeptName().equals("离职，调离")){
+					deptReOrder2.add(i);
+				}
+				if(i.getDeptName().equals("退休")){
+					deptReOrder2.add(i);
+				}
+			}
+			int temp=0;
+			for(Dept t : deptReOrder2){
+
+				GgtxlRes ggtxlRes = new GgtxlRes();
+					List<Ggtxl> ggList = new ArrayList<Ggtxl>();
+					for(Ggtxl i:ggtxlList){
+						if(i.getTypeName().equals(t.getDeptName())){
+							ggList.add(i);
+						}
+						ggtxlRes.name=t.getDeptName();
+					}
+				
+				ggtxlRes.ggtxl = ggList;
+				ggResList.add(ggtxlRes);
+			}
+			Map<String,Object> resMap = new HashMap<String, Object>();
+			retCode = ggResList == null?"1":"0";
+			message = ggResList == null?"取得失败":"取得成功";
+			resMap.put("retCode", retCode);
+			resMap.put("message", message);
+			resMap.put("data",ggResList);
+			return resMap;
+			//return ggResList;
+		}
 }
