@@ -1,5 +1,6 @@
 package com.bcqsoft.sgoa.mvc.controller.index;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,13 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bcqsoft.sgoa.common.charactor.CommonChar;
-import com.bcqsoft.sgoa.core.security.SecurityUtils;
 import com.bcqsoft.sgoa.dao.news.dataobject.News;
 import com.bcqsoft.sgoa.dao.news.dataobject.NewsPage;
 import com.bcqsoft.sgoa.dao.newslook.dataobject.NewsLook;
@@ -46,8 +45,13 @@ public class AppNewsController {
 	public Map<String,Object> newsSearchList(HttpServletRequest request, HttpServletResponse response) {
 		String currentPage = request.getParameter("currentPage");
 		String pageSize = request.getParameter("pageSize");
-		String title = request.getParameter("title");
-		String draftsDeptId = request.getParameter("draftsDeptId");
+		String title = request.getParameter("title") ;
+		try {
+			title = new String(title.getBytes("iso-8859-1"),"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(currentPage == null||"".equals(currentPage)){
 			currentPage = "1";
 		}

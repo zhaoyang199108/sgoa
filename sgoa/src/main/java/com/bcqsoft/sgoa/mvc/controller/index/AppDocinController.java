@@ -1,5 +1,6 @@
 package com.bcqsoft.sgoa.mvc.controller.index;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,13 @@ public class AppDocinController {
 	public Map<String,Object> bsReviewMyList(Map<String,String> regParams,HttpServletRequest request,HttpServletResponse response) {
 		String currentPage = request.getParameter("currentPage");
 		String pageSize = request.getParameter("pageSize");
-		String title = request.getParameter("title");
+		String title = request.getParameter("title") ;
+		try {
+			title = new String(title.getBytes("iso-8859-1"),"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(currentPage == null||"".equals(currentPage)){
 			currentPage = "1";
 		}

@@ -1,5 +1,6 @@
 package com.bcqsoft.sgoa.mvc.controller.index;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,12 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bcqsoft.sgoa.core.security.SecurityUtils;
 import com.bcqsoft.sgoa.dao.msginbox.dataobject.MsgInbox;
 import com.bcqsoft.sgoa.dao.msginbox.dataobject.MsgInboxPage;
 import com.bcqsoft.sgoa.dao.msgoutbox.dataobject.MsgOutbox;
 import com.bcqsoft.sgoa.dao.msgoutbox.dataobject.MsgOutboxPage;
-import com.bcqsoft.sgoa.mvc.form.msg.MsgOutboxForm;
 import com.bcqsoft.sgoa.service.msg.MsgInboxService;
 import com.bcqsoft.sgoa.service.msg.MsgOutboxService;
 @Controller
@@ -40,7 +39,13 @@ public class AppMsgInboxController {
 	public Map<String,Object> selectMsgInboxListByPage(HttpServletRequest request,HttpServletResponse response) {
 		String currentPage = request.getParameter("currentPage");
 		String pageSize = request.getParameter("pageSize");
-		String title = request.getParameter("title");
+		String title = request.getParameter("title") ;
+		try {
+			title = new String(title.getBytes("iso-8859-1"),"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String loginId = request.getParameter("loginId");
 		if (currentPage == null || "".equals(currentPage)) {
 			currentPage = "1";

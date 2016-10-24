@@ -1,5 +1,6 @@
 package com.bcqsoft.sgoa.mvc.controller.index;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +43,13 @@ public class AppNoticeController {
 
 		String currentPage = request.getParameter("currentPage");
 		String pageSize = request.getParameter("pageSize");
-		String title = request.getParameter("title");
-		String draftsDeptId = request.getParameter("draftsDeptId");
+		String title = request.getParameter("title") ;
+		try {
+			title = new String(title.getBytes("iso-8859-1"),"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(currentPage == null||"".equals(currentPage)){
 			currentPage = "1";
 		}

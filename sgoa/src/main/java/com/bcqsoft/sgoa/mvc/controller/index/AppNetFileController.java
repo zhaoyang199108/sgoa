@@ -2,6 +2,7 @@ package com.bcqsoft.sgoa.mvc.controller.index;
 /**
  * 
  */
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,13 @@ public class AppNetFileController {
 	public Map<String,Object> netFileList(HttpServletRequest request,HttpServletResponse response) {
 		String currentPage = request.getParameter("currentPage");
 		String pageSize = request.getParameter("pageSize");
-		String title = request.getParameter("title");
+		String title = request.getParameter("title") ;
+		try {
+			title = new String(title.getBytes("iso-8859-1"),"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String loginId = request.getParameter("loginId");
 		if (currentPage == null || "".equals(currentPage)) {
 			currentPage = "1";
@@ -75,7 +82,13 @@ public class AppNetFileController {
 	public Map<String,Object> netShareDownList(HttpServletRequest request,HttpServletResponse response) {
 		String currentPage = request.getParameter("currentPage");
 		String pageSize = request.getParameter("pageSize");
-		String title = request.getParameter("title");
+		String title = request.getParameter("title") ;
+		try {
+			title = new String(title.getBytes("iso-8859-1"),"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String loginId = request.getParameter("loginId");
 		if (currentPage == null || "".equals(currentPage)) {
 			currentPage = "1";

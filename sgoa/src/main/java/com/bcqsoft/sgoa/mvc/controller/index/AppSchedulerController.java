@@ -14,19 +14,12 @@ import net.sourceforge.pinyin4j.PinyinHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bcqsoft.sgoa.core.security.SecurityUtils;
-import com.bcqsoft.sgoa.dao.ggtxl.dataobject.Ggtxl;
-import com.bcqsoft.sgoa.dao.msgoutbox.dataobject.MsgOutbox;
 import com.bcqsoft.sgoa.dao.scheduler.dataobject.Scheduler;
 import com.bcqsoft.sgoa.dao.scheduler.dataobject.SchedulerPage;
-import com.bcqsoft.sgoa.mvc.controller.index.AppGgtxlController.MySort;
-import com.bcqsoft.sgoa.mvc.controller.index.util.GgtxlRes;
 import com.bcqsoft.sgoa.mvc.controller.index.util.SchedulerRes;
-import com.bcqsoft.sgoa.mvc.form.scheduler.SchedulerForm;
 import com.bcqsoft.sgoa.service.scheduler.SchedulerService;
 
 @Controller

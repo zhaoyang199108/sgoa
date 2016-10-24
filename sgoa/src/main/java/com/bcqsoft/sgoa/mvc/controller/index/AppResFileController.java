@@ -9,14 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bcqsoft.sgoa.core.security.SecurityUtils;
 import com.bcqsoft.sgoa.dao.resfile.dataobject.ResFile;
 import com.bcqsoft.sgoa.dao.resfile.dataobject.ResFilePage;
-import com.bcqsoft.sgoa.mvc.form.resfile.ResFileForm;
 import com.bcqsoft.sgoa.service.resfile.ResFileService;
 /*
  * APP知识库接口
@@ -66,13 +63,5 @@ public class AppResFileController {
 		map.put("data",list);
 		return map;
 	}
-	private void setSearchKey(ResFileForm form, ResFilePage resFilePage) {
-		resFilePage.setCurrentPage(form.getCp()); // 当前页数
-		resFilePage.setTitle(form.getTitle());
-		resFilePage.setLoginId(SecurityUtils.getLoginId());
-		resFilePage.setSrcFileName(form.getSrcFileName());
-		resFilePage.setIsShore(form.getIsShore());
-		resFilePage.setUpdateDate(form.getUpdateDate());
 
-	}
 }
