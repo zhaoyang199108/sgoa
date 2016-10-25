@@ -116,13 +116,13 @@ public class AppNewsController {
 		}
 		List<NewsLook> newsLookListForAll = newsLookService
 				.getAllNewsLookListAll(id);
-		resMap.put("newsLookListForAll", newsLookListForAll);
+		resMap.put("look", newsLookListForAll);
 
 		News news = newsService.getUserDraftNewsDetail(id);
-		resMap.put("news", news);
+		resMap.put("data", news);
 		NewsReviewPage page = newsService.getNewsReviewListById(id);
 		// 获取申请的状态 ，如果是草稿箱就直接查看， 如果是申请就进入流程
-		resMap.put("page", page);
+		//resMap.put("page", page);
 		String re_Code = news==null?"1":"0";
 		String message = news==null?"取得失败":"取得成功";
 		resMap.put("re_Code", re_Code);

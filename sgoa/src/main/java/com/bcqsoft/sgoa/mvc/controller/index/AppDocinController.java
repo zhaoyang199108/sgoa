@@ -104,17 +104,28 @@ public class AppDocinController {
 		String loginId = request.getParameter("loginId");
 		Long id =Long.parseLong(request.getParameter("id"));
 		Map<String,Object> resMap = new HashMap<String, Object>();
+		String retCode = "";
+		String message = "";
+		if(id==null||id.equals("")){
+			resMap.put("message", "请求id不能为空");
+			resMap.put("retCode", "1");
+			resMap.put("data", null);
+		}
+
 		List<DocinBox> docinBoxListForAll = docinBoxService
 				.getAllDocinBoxListAll(id);
-		resMap.put("docinBoxListForAll", docinBoxListForAll);
+		resMap.put("look", docinBoxListForAll);
 
 		Docin docin = docinService.getUserDraftDocinDetail(id);
 		docin.setReceiverName(commonService.getUsersNameByLoginIds(docin.getReceiverId()));
 
-		resMap.put("docin", docin);
+		resMap.put("data", docin);
 		DocinReviewPage page = docinService.getDocinReviewListByIdQf(id);
 		// 获取申请的状态 ，如果是草稿箱就直接查看， 如果是申请就进入流程
-		resMap.put("page", page);
+		retCode = docin==null?"0":"0";
+		message = docin==null?"取得成功":"取得成功";
+		resMap.put("message", message);
+		resMap.put("retCode", retCode);
 		
 		return resMap;
 

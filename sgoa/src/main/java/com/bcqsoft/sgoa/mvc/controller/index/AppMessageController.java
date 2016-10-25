@@ -97,6 +97,14 @@ public class AppMessageController {
 		String loginId =request.getParameter("loginId");
 		Long id =Long.parseLong(request.getParameter("id"));
 		Map<String,Object> resMap = new HashMap<String, Object>();
+		String retCode = "";
+		String message = "";
+		if(id==null||id.equals("")){
+			resMap.put("message", "请求id不能为空");
+			resMap.put("retCode", "1");
+			resMap.put("data", null);
+		}
+		
 		if(loginId == null || "".equals(loginId) || "anonymousUser".equals(loginId)){
 		System.out.println("kkkkkk");
 		}
@@ -104,19 +112,19 @@ public class AppMessageController {
 		messageForList.setLoginId(loginId);
 		messageForList.setMessageId(id);
 		List<MessageLook> messageLookList = messageLookService.getAllMessageLookList(messageForList);
-		resMap.put("data", messageLookList);
+		//resMap.put("data", messageLookList);
 		List<MessageLook> messageLookListForAll = messageLookService.getAllMessageLookListAll(id);
-		resMap.put("list", messageLookListForAll);
-		Message message = messageService.getUserDraftMessageDetail(id);
-		if(message.getContent() !=null ){
-			  String content = new String(message.getContent());  
-			  System.out.println(content);
-			  resMap.put("content",content);
-		}
+		resMap.put("look", messageLookListForAll);
+		Message message1 = messageService.getUserDraftMessageDetail(id);
+
+		retCode = message1==null?"0":"0";
+		message = message1==null?"取得成功":"取得成功";
+		resMap.put("data", message1);
 		resMap.put("message", message);
+		resMap.put("retCode", retCode);
 		MessageReviewPage page = messageService.getMessageReviewListById(id);
 //		// 获取申请的状态 ，如果是草稿箱就直接查看， 如果是申请就进入流程
-		resMap.put("page", page);
+	//	resMap.put("page", page);
 		return resMap;
 	}
 
