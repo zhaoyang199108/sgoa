@@ -10,13 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bcqsoft.sgoa.common.charactor.CommonChar;
+import com.bcqsoft.sgoa.core.security.SecurityUtils;
 import com.bcqsoft.sgoa.dao.msginbox.dataobject.MsgInbox;
 import com.bcqsoft.sgoa.dao.msginbox.dataobject.MsgInboxPage;
 import com.bcqsoft.sgoa.dao.msgoutbox.dataobject.MsgOutbox;
 import com.bcqsoft.sgoa.dao.msgoutbox.dataobject.MsgOutboxPage;
+import com.bcqsoft.sgoa.dao.remind.dataobject.Remind;
 import com.bcqsoft.sgoa.service.msg.MsgInboxService;
 import com.bcqsoft.sgoa.service.msg.MsgOutboxService;
 @Controller
@@ -24,6 +29,7 @@ public class AppMsgInboxController {
 
 	private @Autowired MsgInboxService msgInboxService;
 	private @Autowired MsgOutboxService msgOutboxService;
+	private @Autowired MsgOutboxService siteMsgService;
 	/**
 	 * 取得有效的收件箱列表
 	 * 
@@ -123,6 +129,58 @@ public class AppMsgInboxController {
 		resMap.put("retCode", retCode);
 		resMap.put("data", list);
 		return resMap;
+	}
+	/**
+	 * 跳转至收件箱详细页面
+	 * 
+	 * @return 收件箱详细页面
+	 * 
+	 * @Author cql
+	 * @Date 2012-02-21
+	 */
+	@RequestMapping(value = "/home/msg/detail_msgInbox.htm", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> detailMsgInbox(HttpServletRequest request,HttpServletResponse response) {
+		String id = request.getParameter("id");
+		Map<String,Object> map = new HashMap<String,Object>();
+		if(id == null || "".equals(id)){
+			map.put("data", null);
+			map.put("retCode", 1);
+			map.put("message", "取得失败");
+			return map;
+		}
+		MsgInbox msgInbox = msgInboxService.selectMsgInboxById(Long.parseLong(id));
+		
+		map.put("data", msgInbox);
+		map.put("retCode", 0);
+		map.put("message", "取得成功");
+		return map;
+	}
+	/**
+	 * 跳转至发件箱详细页面
+	 * 
+	 * @return 发件箱详细页面
+	 * 
+	 * @Author cql
+	 * @Date 2012-01-12
+	 */
+	@RequestMapping(value = "/home/msg/detail_msgOutbox.htm", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> detailMsgOutbox(HttpServletRequest request,HttpServletResponse response) {
+		String id = request.getParameter("id");
+		Map<String,Object> map = new HashMap<String,Object>();
+		if(id == null || "".equals(id)){
+			map.put("data", null);
+			map.put("retCode", 1);
+			map.put("message", "取得失败");
+			return map;
+		}
+		MsgOutbox msgOutbox = siteMsgService.selectMsgOutboxById(Long.parseLong(id));
+		
+		map.put("data", msgOutbox);
+		map.put("retCode", 0);
+		map.put("message", "取得成功");
+		return map;
 	}
 
 }

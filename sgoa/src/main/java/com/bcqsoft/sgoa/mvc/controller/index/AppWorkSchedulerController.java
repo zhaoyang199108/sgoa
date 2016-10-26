@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bcqsoft.sgoa.dao.scheduler.dataobject.Scheduler;
+import com.bcqsoft.sgoa.dao.scheduler.dataobject.SchedulerPage;
 import com.bcqsoft.sgoa.dao.workscheduler.dataobject.WorkScheduler;
 import com.bcqsoft.sgoa.dao.workscheduler.dataobject.WorkSchedulerPage;
 import com.bcqsoft.sgoa.mvc.controller.index.AppSchedulerController.MySortByDay;
@@ -134,8 +135,8 @@ public class AppWorkSchedulerController {
 	}
 	  class MySortByHour implements Comparator {  
 	        public int compare(Object object1, Object object2) {// 实现接口中的方法  
-	        	Scheduler p1 = ((Scheduler) object1); // 强制转换  
-	        	Scheduler p2 = ((Scheduler) object2);  
+	        	WorkScheduler p1 = ((WorkScheduler) object1); // 强制转换  
+	        	WorkScheduler p2 = ((WorkScheduler) object2);  
 	        	String[] str1 = p1.getStartTime().split(" ");
 	        	String[] str2 = p2.getStartTime().split(" ");
 	        	String[] st1 = str1[1].split("-");
@@ -193,13 +194,19 @@ public class AppWorkSchedulerController {
 			if (pageSize == null || "".equals(pageSize)) {
 				pageSize = "20";
 			}
+			if(loginId == null||"".equals(loginId)){
+				Map<String,Object>  resMap = new HashMap<String, Object>();
+				resMap.put("message", "数据加载失败");
+				resMap.put("retCode", 1);
+				resMap.put("data", null);
+				return resMap;
+			}
 			if (yMon == null || "".equals(yMon)) {
 				Map<String,Object>  resMap = new HashMap<String, Object>();
 				resMap.put("message", "请输入年月");
 				resMap.put("retCode", 1);
 				resMap.put("data", null);
 				return resMap;
-						
 			}
 			String retCode = "";
 			String message = "";
@@ -254,4 +261,68 @@ public class AppWorkSchedulerController {
 			resMap.put("data", workSchedulerRes);
 			return resMap;
 		}
+		  /**
+			 * 查看日程提醒列表
+			 * 
+			 * @param map
+			 * @return 日程提醒页面
+			 * 
+			 * @Author zy
+			 * @Date 20161020
+			 */
+			@RequestMapping("/home/workscheduler/workscheduler_list_byday.htm")
+			@ResponseBody
+			public Map<String,Object> workSchedulerListByDay(HttpServletRequest request,HttpServletResponse response) {
+				String currentPage = request.getParameter("currentPage");
+				String pageSize = request.getParameter("pageSize");
+				String startTime = request.getParameter("startTime");
+				String endTime = request.getParameter("endTime");
+				String loginId = request.getParameter("loginId");
+				String ymday  = request.getParameter("ymday");
+				Map<String,Object>  resMap = new HashMap<String, Object>();
+				if (currentPage == null || "".equals(currentPage)) {
+					currentPage = "1";
+				}
+				if (pageSize == null || "".equals(pageSize)) {
+					pageSize = "20";
+				}
+				String retCode = "";
+				String message = "";
+				// 用户分页对象初始化
+				WorkSchedulerPage schedulerPage = new WorkSchedulerPage();
+				// 设置查询条件
+				schedulerPage.setCurrentPage(Integer.parseInt(currentPage));
+				schedulerPage.setPageSize(Integer.parseInt(pageSize));
+				schedulerPage.setStartTime(startTime);
+				schedulerPage.setEndTime(endTime);
+				schedulerPage.setLoginId(loginId); // 登录人
+				//setSearchKey(form, schedulerPage);
+				// 取得用户列表,分页显示
+				WorkSchedulerPage page = workSchedulerService
+						.getWorkSchedulerInfoList(schedulerPage);
+				List<WorkScheduler> list = page.getWorkSchedulerList();
+				//Map<String, Object> map = new HashMap<String, Object>();
+				WorkSchedulerRes sr  = new WorkSchedulerRes();
+				List<WorkScheduler> listScheduler = new ArrayList<WorkScheduler>();
+				for(WorkScheduler i : list){
+					String str = i.getStartTime();
+					String[] date = str.split(" ");
+					if(ymday.equals(date[0])){
+						listScheduler.add(i);
+						
+					}
+					
+				}
+				sr.date=ymday;
+				Collections.sort(listScheduler, new MySortByHour());
+				sr.workScheduler = listScheduler;
+				
+				retCode = listScheduler==null?"0":"0";
+				message = listScheduler==null?"取得成功":"取得成功";
+			
+				resMap.put("message", message);
+				resMap.put("retCode", retCode);
+				resMap.put("data", sr);
+				return resMap;
+			}
 }

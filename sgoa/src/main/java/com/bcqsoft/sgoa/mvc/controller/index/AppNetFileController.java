@@ -86,7 +86,9 @@ public class AppNetFileController {
 		String pageSize = request.getParameter("pageSize");
 		String title = request.getParameter("title") ;
 		try {
-			title = new String(title.getBytes("iso-8859-1"),"utf-8");
+			if(title!=null){
+				title = new String(title.getBytes("iso-8859-1"),"utf-8");
+				}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,9 +107,11 @@ public class AppNetFileController {
 		netFilePage.setPageSize(Integer.parseInt(pageSize));
 		netFilePage.setTitle(title);
 		netFilePage.setLoginId(loginId);
-		// 取得列表,分页显示
 		NetFilePage page = netFileService
-				.getNetFileDownShareListByPage(netFilePage);
+				.getNetFileShareListByPage(netFilePage);
+		// 取得列表,分页显示
+//		NetFilePage page = netFileService
+//				.getNetFileDownShareListByPage(netFilePage);
 		List<NetFile> list = page.getNetFileList();
 		retCode = list==null?"0":"0";
 		message = list==null?"取得成功":"取得成功";
