@@ -18,8 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bcqsoft.sgoa.dao.scheduler.dataobject.Scheduler;
 import com.bcqsoft.sgoa.dao.workscheduler.dataobject.WorkScheduler;
 import com.bcqsoft.sgoa.dao.workscheduler.dataobject.WorkSchedulerPage;
+import com.bcqsoft.sgoa.mvc.controller.index.AppSchedulerController.MySortByDay;
+import com.bcqsoft.sgoa.mvc.controller.index.AppSchedulerController.MySortByHour;
 import com.bcqsoft.sgoa.mvc.controller.index.AppSchedulerController.MySortForDate;
+import com.bcqsoft.sgoa.mvc.controller.index.util.SchedulerRes;
 import com.bcqsoft.sgoa.mvc.controller.index.util.WorkSchedulerRes;
+import com.bcqsoft.sgoa.mvc.controller.index.util.WorkSchedulerResNew;
 import com.bcqsoft.sgoa.service.workscheduler.WorkSchedulerService;
 /*
  * App工作日程控制器
@@ -50,14 +54,7 @@ public class AppWorkSchedulerController {
 		if (pageSize == null || "".equals(pageSize)) {
 			pageSize = "20";
 		}
-//		if (yMon == null || "".equals(yMon)) {
-//			Map<String,Object>  resMap = new HashMap<String, Object>();
-//			resMap.put("message", "请输入年月");
-//			resMap.put("retCode", 1);
-//			resMap.put("data", null);
-//			return resMap;
-//					
-//		}
+
 		String retCode = "";
 		String message = "";
 		// 用户分页对象初始化
@@ -86,24 +83,74 @@ public class AppWorkSchedulerController {
 		Collections.sort(listStr, new MySortForMon());
 		List<WorkScheduler> lisWorkScheduler = new ArrayList<WorkScheduler>();
 		WorkSchedulerRes workSchedulerRes = new WorkSchedulerRes();
+		WorkSchedulerResNew wrn = new WorkSchedulerResNew();
 		for(WorkScheduler i :list){
 			String [] str = i.getStartTime().split(" ");
 			String [] str1 = str[0].split("-");
 			if((str1[0]+"-"+str1[1]).equals(listStr.get(0))){
 				workSchedulerRes.date=listStr.get(0);
+				wrn.date = listStr.get(0);
 				lisWorkScheduler.add(i);
 			}
 		}
-		workSchedulerRes.workScheduler = lisWorkScheduler;
+		
 		Collections.sort(lisWorkScheduler, new MySortForDay());
+		workSchedulerRes.workScheduler = lisWorkScheduler;
+		Map<String,Object> dayMap = new HashMap<String, Object>();
+		List<String> listSort = new ArrayList<String>();
+		for(WorkScheduler i  : workSchedulerRes.workScheduler){
+			String [] tmpStr =i.getStartTime().split(" ");
+			String [] tmpStrDay = tmpStr[0].split("-");
+			dayMap.put(tmpStrDay[2],null);
+		}
+		for(String i : dayMap.keySet()){
+			listSort.add(i);
+		}
+		Collections.sort(listSort, new MySortByDay());
+		List<WorkSchedulerRes> listscheR = new ArrayList<WorkSchedulerRes>();
+		for(String i : listSort){
+			List<WorkScheduler> listsche = new ArrayList<WorkScheduler>();
+			WorkSchedulerRes workchedulerRes = new WorkSchedulerRes();
+			for(WorkScheduler j : workSchedulerRes.workScheduler){
+				String [] tmpStr =j.getStartTime().split(" ");
+				String [] tmpStrDay = tmpStr[0].split("-");
+				if(i.equals(tmpStrDay[2])){
+					workchedulerRes.date = i;
+					listsche.add(j);
+				}
+			}
+			Collections.sort(listsche, new MySortByHour());
+			workchedulerRes.workScheduler = listsche;
+			listscheR.add(workchedulerRes);
+		}
+		wrn.workSchedulerRes = listscheR;
 		retCode = list==null?"0":"0";
 		message = list==null?"取得成功":"取得成功";
 		Map<String,Object>  resMap = new HashMap<String, Object>();
 		resMap.put("message", message);
 		resMap.put("retCode", retCode);
-		resMap.put("data", workSchedulerRes);
+		resMap.put("data", wrn);
 		return resMap;
 	}
+	  class MySortByHour implements Comparator {  
+	        public int compare(Object object1, Object object2) {// 实现接口中的方法  
+	        	Scheduler p1 = ((Scheduler) object1); // 强制转换  
+	        	Scheduler p2 = ((Scheduler) object2);  
+	        	String[] str1 = p1.getStartTime().split(" ");
+	        	String[] str2 = p2.getStartTime().split(" ");
+	        	String[] st1 = str1[1].split("-");
+	        	String[] st2 = str2[1].split("-");
+	            return st2[0].compareTo(st1[0]);  
+	        }  
+	    } 
+	  class MySortByDay implements Comparator {  
+	        public int compare(Object object1, Object object2) {// 实现接口中的方法  
+	        	String p1 = ((String) object1); // 强制转换  
+	        	String p2 = ((String) object2);  
+
+	            return p2.compareTo(p1);  
+	        }  
+	    } 
 	  class MySortForMon implements Comparator {  
 	        public int compare(Object object1, Object object2) {// 实现接口中的方法  
 	        	String p1 = ((String) object1); // 强制转换  
