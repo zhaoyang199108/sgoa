@@ -21,6 +21,7 @@ import com.bcqsoft.sgoa.dao.scheduler.dataobject.Scheduler;
 import com.bcqsoft.sgoa.dao.scheduler.dataobject.SchedulerPage;
 import com.bcqsoft.sgoa.mvc.controller.index.util.SchedulerMapRes;
 import com.bcqsoft.sgoa.mvc.controller.index.util.SchedulerRes;
+import com.bcqsoft.sgoa.mvc.controller.index.util.SchedulerResNew;
 import com.bcqsoft.sgoa.service.scheduler.SchedulerService;
 
 @Controller
@@ -43,6 +44,7 @@ public class AppSchedulerController {
 		String startTime = request.getParameter("startTime");
 		String endTime = request.getParameter("endTime");
 		String loginId = request.getParameter("loginId");
+		Map<String,Object>  resMap = new HashMap<String, Object>();
 		if (currentPage == null || "".equals(currentPage)) {
 			currentPage = "1";
 		}
@@ -64,63 +66,73 @@ public class AppSchedulerController {
 		List<Scheduler> list = page.getSchedulerList();
 		Map<String, Object> map = new HashMap<String, Object>();
 		for(Scheduler i : list){
-			String str = i.getStartTime();
-			String[] date = str.split(" ");
-			String[] mon = date[0].split("-");
-			map.put(mon[0]+"-"+mon[1],null);
+			String[] str1 = i.getStartTime().split(" ");
+			String[] str2 = str1[0].split("-");
+			map.put(str2[0]+"-"+str2[1], null);
 		}
-		List<String> sortMap = new ArrayList<String>();
-		for(String t : map.keySet()){
-			sortMap.add(t);
+		List<String> listStr = new ArrayList<String>();
+		for(String i : map.keySet()){
+			listStr.add(i);
+		}
+		Collections.sort(listStr,new SortByMon());
+		List<Scheduler> listsche = new ArrayList<Scheduler>();
+		SchedulerResNew  srn = new SchedulerResNew();
+		SchedulerRes schedulerRes = new SchedulerRes();
+		for(Scheduler i : list){
+			String[] str1 = i.getStartTime().split(" ");
+			String[] str2 = str1[0].split("-");
+			if((str2[0]+"-"+str2[1]).equals(listStr.get(0))){
+				schedulerRes.date = listStr.get(0);
+				srn.date = listStr.get(0);
+				listsche.add(i);
+			}
+		}
+		schedulerRes.scheduler = listsche;
+		Map<String,Object> dayMap = new HashMap<String, Object>();
+		List<String> listSort = new ArrayList<String>();
+		for(Scheduler i  : schedulerRes.scheduler){
+			String [] tmpStr =i.getStartTime().split(" ");
+			String [] tmpStrDay = tmpStr[0].split("-");
+			dayMap.put(tmpStrDay[2],null);
 		}
 		
-		Collections.sort(sortMap, new MySort());
-		Map<String,Object> mapMon = new HashMap<String, Object>();
-		for(String i:sortMap){
-			System.out.println(i);
-			mapMon.put(i, null);
+		for(String i : dayMap.keySet()){
+			listSort.add(i);
 		}
-		List<SchedulerRes> schedulerResList = new ArrayList<SchedulerRes>();
-		for(String t : sortMap){
-			List<Scheduler> ggList = new ArrayList<Scheduler>();
-			SchedulerRes scheduler = new SchedulerRes();
-			for(Scheduler i:list){
-				String str = i.getStartTime();
-				String[] date = str.split(" ");
-				String[] mon = date[0].split("-");
-				String monNew = mon[0]+"-"+mon[1];
-				if(monNew.equals(t)){
-					ggList.add(i);
-					scheduler.date=t;
+		Collections.sort(listSort, new MySortByDay());
+		//List<SchedulerRes> listscheRes = new ArrayList<SchedulerRes>();
+		List<SchedulerRes> listscheR = new ArrayList<SchedulerRes>();
+		for(String i : listSort){
+			List<Scheduler> listsch = new ArrayList<Scheduler>();
+			SchedulerRes schedulerRe = new SchedulerRes();
+			for(Scheduler j : schedulerRes.scheduler){
+				String [] tmpStr =j.getStartTime().split(" ");
+				String [] tmpStrDay = tmpStr[0].split("-");
+				if(i.equals(tmpStrDay[2])){
+					schedulerRe.date = i;
+					listsch.add(j);
 				}
 			}
-			Collections.sort(ggList, new MySortForDate());
-			scheduler.scheduler = ggList;
-			schedulerResList.add(scheduler);
+			Collections.sort(listsche, new MySortByHour());
+			schedulerRe.scheduler = listsch;
+			listscheR.add(schedulerRe);
 		}
+		srn.schedulerRes = listscheR;
 		retCode = list==null?"0":"0";
 		message = list==null?"取得成功":"取得成功";
-		Map<String,Object>  resMap = new HashMap<String, Object>();
+		
 		resMap.put("message", message);
 		resMap.put("retCode", retCode);
-		resMap.put("data", schedulerResList);
+		resMap.put("data", srn);
 		return resMap;
-	}
-	 public static String getPinYinHeadChar(String str) {
-	        String convert = "";
-	        for (int j = 0; j < str.length(); j++) {
-	            char word = str.charAt(j);
-	            // 提取汉字的首字母
-	            String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
-	            if (pinyinArray != null) {
-	                convert += pinyinArray[0].charAt(0);
-	            } else {
-	                convert += word;
-	            }
-	        }
-	        return convert;
-	    }
-		
+	}	
+	  class SortByMon implements Comparator {  
+	        public int compare(Object object1, Object object2) {// 实现接口中的方法  
+	        	String p1 = ((String) object1); // 强制转换  
+	        	String p2 = ((String) object2);  
+	            return p2.compareTo(p1);  
+	        }  
+	    } 
 	  class MySort implements Comparator {  
 	        public int compare(Object object1, Object object2) {// 实现接口中的方法  
 	        	String p1 = ((String) object1); // 强制转换  
@@ -195,7 +207,6 @@ public class AppSchedulerController {
 			Collections.sort(sortMap, new MySort());
 			Map<String,Object> mapMon = new HashMap<String, Object>();
 			for(String i:sortMap){
-				System.out.println(i);
 				mapMon.put(i, null);
 			}
 			List<SchedulerRes> schedulerResList = new ArrayList<SchedulerRes>();
