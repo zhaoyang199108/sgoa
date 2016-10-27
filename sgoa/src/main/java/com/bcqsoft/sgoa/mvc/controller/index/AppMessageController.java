@@ -121,7 +121,7 @@ public class AppMessageController {
 		message = message1==null?"取得成功":"取得成功";
 		resMap.put("data", message1);
 		resMap.put("message", message);
-		resMap.put("retCode", retCode);
+		resMap.put("re_Code", retCode);
 		MessageReviewPage page = messageService.getMessageReviewListById(id);
 //		// 获取申请的状态 ，如果是草稿箱就直接查看， 如果是申请就进入流程
 	//	resMap.put("page", page);

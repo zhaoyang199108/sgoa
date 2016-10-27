@@ -1,6 +1,9 @@
 package com.bcqsoft.sgoa.mvc.controller.index;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +23,11 @@ import com.bcqsoft.sgoa.common.util.DateUtil;
 import com.bcqsoft.sgoa.dao.docin.dataobject.Docin;
 import com.bcqsoft.sgoa.dao.docin.dataobject.DocinPage;
 import com.bcqsoft.sgoa.dao.docinbox.dataobject.DocinBox;
+import com.bcqsoft.sgoa.dao.docinfj.dataobject.DocinFj;
 import com.bcqsoft.sgoa.dao.docinreview.dataobject.DocinReview;
 import com.bcqsoft.sgoa.dao.docinreview.dataobject.DocinReviewPage;
+import com.bcqsoft.sgoa.mvc.controller.index.AppSchedulerController.SortByMon;
+import com.bcqsoft.sgoa.mvc.controller.index.util.DocinRes;
 import com.bcqsoft.sgoa.service.common.CommonService;
 import com.bcqsoft.sgoa.service.docin.DocinService;
 import com.bcqsoft.sgoa.service.docinbox.DocinBoxService;
@@ -114,21 +120,74 @@ public class AppDocinController {
 
 		List<DocinBox> docinBoxListForAll = docinBoxService
 				.getAllDocinBoxListAll(id);
-		resMap.put("look", docinBoxListForAll);
+		//resMap.put("look", docinBoxListForAll);
 
 		Docin docin = docinService.getUserDraftDocinDetail(id);
 		docin.setReceiverName(commonService.getUsersNameByLoginIds(docin.getReceiverId()));
 
+		
+		DocinReviewPage  page= docinService.getDocinReviewListByIdQf(id);
+		List<DocinReview> drList = page.getDocinReviewList();
+		List<DocinReview> list1 = new ArrayList<DocinReview>();
+		List<DocinReview> list2 = new ArrayList<DocinReview>();
+		List<DocinReview> list3 = new ArrayList<DocinReview>();
+		List<DocinReview> list4 = new ArrayList<DocinReview>();
+		DocinRes dr1 = new DocinRes();
+		DocinRes dr2 = new DocinRes();
+		DocinRes dr3 = new DocinRes();
+		DocinRes dr4 = new DocinRes();
+		List<DocinRes> listRes = new ArrayList<DocinRes>();
+		for(DocinReview i : drList){
+			if("1".equals(i.getSeat())){
+				dr1.seat = i.getSeat();
+				list1.add(i);
+			}
+		}
+		dr1.opinions = list1;
+		listRes.add(dr1);
+		for(DocinReview i : drList){
+			if("2".equals(i.getSeat())){
+				dr2.seat = i.getSeat();
+				list2.add(i);
+			}
+		}
+		dr2.opinions = list2;
+		listRes.add(dr2);
+		for(DocinReview i : drList){
+			if("3".equals(i.getSeat())){
+				dr3.seat = i.getSeat();
+				list3.add(i);
+			}
+		}
+		dr3.opinions = list3;
+		listRes.add(dr3);
+		for(DocinReview i : drList){
+			if("4".equals(i.getSeat())){
+				dr4.seat = i.getSeat();
+				list4.add(i);
+			}
+		}
+		dr4.opinions = list4;
+		listRes.add(dr4);
+		Collections.sort(listRes,new SortBySeat());
+		resMap.put("opinons", listRes);
 		resMap.put("data", docin);
-		DocinReviewPage page = docinService.getDocinReviewListByIdQf(id);
 		// 获取申请的状态 ，如果是草稿箱就直接查看， 如果是申请就进入流程
 		retCode = docin==null?"0":"0";
 		message = docin==null?"取得成功":"取得成功";
 		resMap.put("message", message);
 		resMap.put("retCode", retCode);
-		
+		List<DocinFj>  l = docinService.findDocinFjInfoByDocinId(docin.getId());
+		resMap.put("docinFjPage", docinService.findDocinFjInfoByDocinId(docin.getId()));
 		return resMap;
 
 	}
+	  class SortBySeat implements Comparator {  
+	        public int compare(Object object1, Object object2) {// 实现接口中的方法  
+	        	DocinRes p1 = ((DocinRes) object1); // 强制转换  
+	        	DocinRes p2 = ((DocinRes) object2);  
+	            return p1.seat.compareTo(p2.seat);  
+	        }  
+	    } 
 
 }
