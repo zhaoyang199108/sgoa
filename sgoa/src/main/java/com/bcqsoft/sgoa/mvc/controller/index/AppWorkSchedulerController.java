@@ -15,14 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bcqsoft.sgoa.dao.scheduler.dataobject.Scheduler;
-import com.bcqsoft.sgoa.dao.scheduler.dataobject.SchedulerPage;
 import com.bcqsoft.sgoa.dao.workscheduler.dataobject.WorkScheduler;
 import com.bcqsoft.sgoa.dao.workscheduler.dataobject.WorkSchedulerPage;
-import com.bcqsoft.sgoa.mvc.controller.index.AppSchedulerController.MySortByDay;
-import com.bcqsoft.sgoa.mvc.controller.index.AppSchedulerController.MySortByHour;
-import com.bcqsoft.sgoa.mvc.controller.index.AppSchedulerController.MySortForDate;
-import com.bcqsoft.sgoa.mvc.controller.index.util.SchedulerRes;
 import com.bcqsoft.sgoa.mvc.controller.index.util.WorkSchedulerRes;
 import com.bcqsoft.sgoa.mvc.controller.index.util.WorkSchedulerResNew;
 import com.bcqsoft.sgoa.service.workscheduler.WorkSchedulerService;
@@ -55,7 +49,13 @@ public class AppWorkSchedulerController {
 		if (pageSize == null || "".equals(pageSize)) {
 			pageSize = "20";
 		}
-
+		if(loginId == null||"".equals(loginId)){
+			Map<String,Object>  resMap = new HashMap<String, Object>();
+			resMap.put("message", "数据加载失败");
+			resMap.put("retCode", 1);
+			resMap.put("data", null);
+			return resMap;
+		}
 		String retCode = "";
 		String message = "";
 		// 用户分页对象初始化
@@ -116,7 +116,7 @@ public class AppWorkSchedulerController {
 				String [] tmpStr =j.getStartTime().split(" ");
 				String [] tmpStrDay = tmpStr[0].split("-");
 				if(i.equals(tmpStrDay[2])){
-					workchedulerRes.date = i;
+					workchedulerRes.date = tmpStrDay[1]+"/"+i;
 					listsche.add(j);
 				}
 			}
@@ -236,11 +236,13 @@ public class AppWorkSchedulerController {
 			Collections.sort(listStr, new MySortForMon());
 			List<WorkScheduler> lisWorkScheduler = new ArrayList<WorkScheduler>();
 			WorkSchedulerRes workSchedulerRes = new WorkSchedulerRes();
+			WorkSchedulerResNew wrn = new WorkSchedulerResNew();
 			for(WorkScheduler i :list){
 				String [] str = i.getStartTime().split(" ");
 				String [] str1 = str[0].split("-");
 				if((str1[0]+"-"+str1[1]).equals(yMon)){
 					workSchedulerRes.date=yMon;
+					wrn.date = yMon;
 					lisWorkScheduler.add(i);
 				}
 			}
@@ -251,14 +253,42 @@ public class AppWorkSchedulerController {
 				resMap.put("data", null);
 				return resMap;
 			}
-			workSchedulerRes.workScheduler = lisWorkScheduler;
 			Collections.sort(lisWorkScheduler, new MySortForDay());
+			workSchedulerRes.workScheduler = lisWorkScheduler;
+			Map<String,Object> dayMap = new HashMap<String, Object>();
+			List<String> listSort = new ArrayList<String>();
+			for(WorkScheduler i  : workSchedulerRes.workScheduler){
+				String [] tmpStr =i.getStartTime().split(" ");
+				String [] tmpStrDay = tmpStr[0].split("-");
+				dayMap.put(tmpStrDay[2],null);
+			}
+			for(String i : dayMap.keySet()){
+				listSort.add(i);
+			}
+			Collections.sort(listSort, new MySortByDay());
+			List<WorkSchedulerRes> listscheR = new ArrayList<WorkSchedulerRes>();
+			for(String i : listSort){
+				List<WorkScheduler> listsche = new ArrayList<WorkScheduler>();
+				WorkSchedulerRes workchedulerRes = new WorkSchedulerRes();
+				for(WorkScheduler j : workSchedulerRes.workScheduler){
+					String [] tmpStr =j.getStartTime().split(" ");
+					String [] tmpStrDay = tmpStr[0].split("-");
+					if(i.equals(tmpStrDay[2])){
+						workchedulerRes.date = tmpStrDay[1]+"/"+i;
+						listsche.add(j);
+					}
+				}
+				Collections.sort(listsche, new MySortByHour());
+				workchedulerRes.workScheduler = listsche;
+				listscheR.add(workchedulerRes);
+			}
+			wrn.workSchedulerRes = listscheR;
 			retCode = list==null?"0":"0";
 			message = list==null?"取得成功":"取得成功";
 			Map<String,Object>  resMap = new HashMap<String, Object>();
 			resMap.put("message", message);
 			resMap.put("retCode", retCode);
-			resMap.put("data", workSchedulerRes);
+			resMap.put("data", wrn);
 			return resMap;
 		}
 		  /**
@@ -286,6 +316,18 @@ public class AppWorkSchedulerController {
 				if (pageSize == null || "".equals(pageSize)) {
 					pageSize = "20";
 				}
+				if(loginId == null||"".equals(loginId)){
+					resMap.put("message", "数据加载失败");
+					resMap.put("retCode", 1);
+					resMap.put("data", null);
+					return resMap;
+				}
+				if (ymday == null || "".equals(ymday)) {
+					resMap.put("message", "请输入年月");
+					resMap.put("retCode", 1);
+					resMap.put("data", null);
+					return resMap;
+				}
 				String retCode = "";
 				String message = "";
 				// 用户分页对象初始化
@@ -309,17 +351,13 @@ public class AppWorkSchedulerController {
 					String[] date = str.split(" ");
 					if(ymday.equals(date[0])){
 						listScheduler.add(i);
-						
 					}
-					
 				}
 				sr.date=ymday;
 				Collections.sort(listScheduler, new MySortByHour());
 				sr.workScheduler = listScheduler;
-				
 				retCode = listScheduler==null?"0":"0";
 				message = listScheduler==null?"取得成功":"取得成功";
-			
 				resMap.put("message", message);
 				resMap.put("retCode", retCode);
 				resMap.put("data", sr);

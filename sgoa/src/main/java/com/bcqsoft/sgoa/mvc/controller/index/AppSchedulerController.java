@@ -10,8 +10,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sourceforge.pinyin4j.PinyinHelper;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bcqsoft.sgoa.dao.scheduler.dataobject.Scheduler;
 import com.bcqsoft.sgoa.dao.scheduler.dataobject.SchedulerPage;
-import com.bcqsoft.sgoa.mvc.controller.index.util.SchedulerMapRes;
 import com.bcqsoft.sgoa.mvc.controller.index.util.SchedulerRes;
 import com.bcqsoft.sgoa.mvc.controller.index.util.SchedulerResNew;
 import com.bcqsoft.sgoa.service.scheduler.SchedulerService;
@@ -116,7 +113,7 @@ public class AppSchedulerController {
 				String [] tmpStr =j.getStartTime().split(" ");
 				String [] tmpStrDay = tmpStr[0].split("-");
 				if(i.equals(tmpStrDay[2])){
-					schedulerRe.date = i;
+					schedulerRe.date = tmpStrDay[1]+"/"+i;
 					listsch.add(j);
 				}
 			}
@@ -182,6 +179,18 @@ public class AppSchedulerController {
 			}
 			if (pageSize == null || "".equals(pageSize)) {
 				pageSize = "20";
+			}
+			if(loginId == null||"".equals(loginId)){
+				resMap.put("message", "数据加载失败");
+				resMap.put("retCode", 1);
+				resMap.put("data", null);
+				return resMap;
+			}
+			if (yMon == null || "".equals(yMon)) {
+				resMap.put("message", "请输入年月");
+				resMap.put("retCode", 1);
+				resMap.put("data", null);
+				return resMap;
 			}
 			String retCode = "";
 			String message = "";
@@ -268,7 +277,7 @@ public class AppSchedulerController {
 					String [] tmpStr =j.getStartTime().split(" ");
 					String [] tmpStrDay = tmpStr[0].split("-");
 					if(i.equals(tmpStrDay[2])){
-						schedulerRes.date = i;
+						schedulerRes.date = tmpStrDay[1]+"/"+i;
 						listsche.add(j);
 					}
 				}
