@@ -20,17 +20,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bcqsoft.sgoa.common.charactor.CommonChar;
 import com.bcqsoft.sgoa.common.util.DateUtil;
+import com.bcqsoft.sgoa.common.util.WorkFlowColorUtil;
 import com.bcqsoft.sgoa.dao.docin.dataobject.Docin;
 import com.bcqsoft.sgoa.dao.docin.dataobject.DocinPage;
 import com.bcqsoft.sgoa.dao.docinbox.dataobject.DocinBox;
 import com.bcqsoft.sgoa.dao.docinfj.dataobject.DocinFj;
 import com.bcqsoft.sgoa.dao.docinreview.dataobject.DocinReview;
 import com.bcqsoft.sgoa.dao.docinreview.dataobject.DocinReviewPage;
+import com.bcqsoft.sgoa.dao.docinstep.dataobject.DocinStep;
+import com.bcqsoft.sgoa.dao.user.dataobject.User;
 import com.bcqsoft.sgoa.mvc.controller.index.AppSchedulerController.SortByMon;
 import com.bcqsoft.sgoa.mvc.controller.index.util.DocinRes;
+import com.bcqsoft.sgoa.mvc.result.WorkFlow;
 import com.bcqsoft.sgoa.service.common.CommonService;
 import com.bcqsoft.sgoa.service.docin.DocinService;
 import com.bcqsoft.sgoa.service.docinbox.DocinBoxService;
+import com.bcqsoft.sgoa.service.user.UserService;
 
 /**
  * App收文控制器
@@ -41,7 +46,7 @@ public class AppDocinController {
 	
 	@Autowired private DocinService docinService;
 	
-	
+	@Autowired private UserService  userService;
 	@Autowired private DocinBoxService docinBoxService;
 	
 	@Autowired private CommonService commonService;
@@ -170,6 +175,11 @@ public class AppDocinController {
 		dr4.opinions = list4;
 		listRes.add(dr4);
 		Collections.sort(listRes,new SortBySeat());
+		Docin docin1 = docinService.getUserDraftDocinDetail(id);
+		Integer steps = docin1.getStep();
+		List<WorkFlow> workFlows = new ArrayList<WorkFlow>();
+		workFlows = getDocinWorkFlow(id, Long.parseLong(docin1.getApprovalId()), steps);
+		resMap.put("workFlows", workFlows);
 		resMap.put("opinons", listRes);
 		resMap.put("data", docin);
 		// 获取申请的状态 ，如果是草稿箱就直接查看， 如果是申请就进入流程
@@ -189,5 +199,101 @@ public class AppDocinController {
 	            return p1.seat.compareTo(p2.seat);  
 	        }  
 	    } 
-
+	  /**
+		 * 收文流程图显示数据
+		 * 
+		 * @param map
+		 * @return 报告审批流程
+		 * 
+		 * @Author Bcqsoft.com cql
+		 * @Date 2012-5-29
+		 */
+		private List<WorkFlow> getDocinWorkFlow(Long busId, Long approvalId,
+				Integer steps) {
+			// 根据部门列表查找部门下所有人员
+			List<WorkFlow> workFlows = new ArrayList<WorkFlow>();
+			Docin docin = docinService.getUserDraftDocinDetail(busId);
+			List<DocinStep> docinStepList = docinService.getDocinStepList(busId);
+			String nextNameOne = "";
+			for (int i = 0; i < docinStepList.size(); i++) {
+				DocinStep docinStep = docinStepList.get(i);
+				WorkFlow workFlow = new WorkFlow();
+				DocinReview docinReview = new DocinReview();
+				docinReview.setStepId(Long.valueOf(docinStep.getStep()));
+				docinReview.setDocinId(docin.getId());
+				List<DocinReview> reviewList = docinService.findDocinReviewListByStep(docinReview);
+				StringBuffer sb = new StringBuffer();
+				if (reviewList != null && reviewList.size() > 0) {
+					for (DocinReview dr : reviewList) {
+						sb.append(dr.getCurrentOptName()+DateUtil.getDateString(dr.getCreateDate())+","); 
+					}
+					sb.delete(sb.lastIndexOf(","),sb.length());
+					workFlow.setDraftsName(sb.toString());
+				} else {
+					workFlow.setDraftsName(docinStep.getCurrentOptName()+DateUtil.getDateString(docinStep.getCreateDate()));
+				}
+				// 判断是否有下一步
+				if (i != docinStepList.size()-1){
+					// 如果有下一步的场合，设置动作为已处理
+					workFlow.setDoAction(2);
+					workFlow.setColor(WorkFlowColorUtil.color_default);
+				} else {
+					workFlow.setDoAction(docin.getStatus());
+					// 状态为否决
+					if (docin.getStatus() == 3) {
+						workFlow.setColor(WorkFlowColorUtil.color_cancle);
+					} else if (docin.getStatus() == 4) {
+						// 状态为批准
+						workFlow.setColor(WorkFlowColorUtil.color_passed);
+					} else if (docin.getStatus() == 5) {
+						// 状态为批准
+						workFlow.setColor(WorkFlowColorUtil.color_passed);
+					} else if (docin.getStatus() == 6) {
+						// 状态为批准
+						workFlow.setColor(WorkFlowColorUtil.color_passed);
+					}  else {
+						// 判断是否有下一步审批人
+						if (docin.getNextOptId() != null && !"".equals(docin.getNextOptId())) {
+							String[] optIdStr = docin.getNextOptId().split(",");
+							StringBuffer sBuffer = new StringBuffer();
+							for (int j = 0; j < optIdStr.length; j++) {
+								User user = userService.getUserInfoByLoginId(optIdStr[j]);
+								DocinReview docinReviewNext = new DocinReview();
+								docinReviewNext.setStepId(Long.valueOf(docinStep.getStep()+1));
+								docinReviewNext.setDocinId(docin.getId());
+								docinReviewNext.setCurrentOptId(optIdStr[j]);
+								List<DocinReview> reviewNextList = docinService.findDocinReviewListByStep(docinReviewNext);
+								if (reviewNextList != null && reviewNextList.size() > 0) {
+									sBuffer.append(user.getUserName()+DateUtil.getDateString(reviewNextList.get(0).getCreateDate())); 
+								} else {
+									sBuffer.append(user.getUserName()); 
+								}
+								if (j != optIdStr.length -1) {
+									sBuffer.append(","); 
+								}
+							}
+							nextNameOne = sBuffer.toString();
+							workFlow.setColor(WorkFlowColorUtil.color_default);
+						} else {
+							workFlow.setColor(WorkFlowColorUtil.color_default);
+						}
+					}
+				}
+				workFlows.add(workFlow);
+			}
+			// 如果有下一步审批人的时候，记录当前操作状态
+			if(!"".equals(nextNameOne)){
+				WorkFlow workFlowNext = new WorkFlow();
+				workFlowNext.setDraftsName(nextNameOne);
+				workFlowNext.setDoAction(docin.getStatus());
+				if (docin.getStatus() == 2) {
+					workFlowNext.setColor(WorkFlowColorUtil.color_waitting);
+				} else {
+					workFlowNext.setColor(WorkFlowColorUtil.color_untreated);
+				}
+				workFlows.add(workFlowNext);
+			}
+			
+			return workFlows;
+		}
 }
