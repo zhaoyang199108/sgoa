@@ -1,5 +1,9 @@
 package com.bcqsoft.sgoa.mvc.controller.index;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,6 +93,7 @@ public class AppMessageController {
 	 * @Author zy
 	 * @Date 20161022
 	 */
+	InputStream input;
 	@RequestMapping(value = "/home/message/look_detail.htm", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String,Object> messageLookDetail(HttpServletRequest request,
@@ -116,7 +122,22 @@ public class AppMessageController {
 		List<MessageLook> messageLookListForAll = messageLookService.getAllMessageLookListAll(id);
 		resMap.put("look", messageLookListForAll);
 		Message message1 = messageService.getUserDraftMessageDetail(id);
-
+		byte[] bt = message1.getContent();
+		String text = null;
+		try{
+			if(bt!=null || bt.equals("")){
+				FileOutputStream fos = new FileOutputStream("E:\\aaa.doc");
+		        fos.write(bt);
+		        fos.close();
+		        FileInputStream is = new FileInputStream(new File("E:\\aaa.doc"));
+		        WordExtractor extrator = new WordExtractor(is); 
+		       text = extrator.getText(); 
+				
+				}
+			
+		}catch(Exception e){
+		}
+		resMap.put("content",text);
 		retCode = message1==null?"0":"0";
 		message = message1==null?"取得成功":"取得成功";
 		resMap.put("data", message1);
