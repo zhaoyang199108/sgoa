@@ -137,7 +137,6 @@ public class AppGgtxlController {
 		}
 		List<GgtxlRes> ggResList = new ArrayList<GgtxlRes>();
 		for(String t : map.keySet()){
-			System.out.println(t);
 			GgtxlRes ggtxlRes = new GgtxlRes();
 				List<Ggtxl> ggList = new ArrayList<Ggtxl>();
 				for(Ggtxl i:ggtxlList){

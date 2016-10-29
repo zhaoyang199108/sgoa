@@ -112,7 +112,6 @@ public class AppMessageController {
 		}
 		
 		if(loginId == null || "".equals(loginId) || "anonymousUser".equals(loginId)){
-		System.out.println("kkkkkk");
 		}
 		MessageLook messageForList = new MessageLook();
 		messageForList.setLoginId(loginId);
