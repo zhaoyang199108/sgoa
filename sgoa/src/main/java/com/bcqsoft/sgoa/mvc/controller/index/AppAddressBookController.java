@@ -6,18 +6,22 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import net.sourceforge.pinyin4j.PinyinHelper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.bcqsoft.sgoa.dao.addressbook.dataobject.AddressBook;
 import com.bcqsoft.sgoa.dao.addressbooktype.dataobject.AddressBookType;
 import com.bcqsoft.sgoa.dao.addressbooktype.dataobject.AddressBookTypePage;
-import com.bcqsoft.sgoa.mvc.controller.index.util.AddressBookRes;
+import com.bcqsoft.sgoa.mvc.result.AddressBookRes;
 import com.bcqsoft.sgoa.service.addressbook.AddressBookService;
 
 /**

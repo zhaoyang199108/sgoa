@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,8 +28,7 @@ import com.bcqsoft.sgoa.dao.docinreview.dataobject.DocinReview;
 import com.bcqsoft.sgoa.dao.docinreview.dataobject.DocinReviewPage;
 import com.bcqsoft.sgoa.dao.docinstep.dataobject.DocinStep;
 import com.bcqsoft.sgoa.dao.user.dataobject.User;
-import com.bcqsoft.sgoa.mvc.controller.index.AppSchedulerController.SortByMon;
-import com.bcqsoft.sgoa.mvc.controller.index.util.DocinRes;
+import com.bcqsoft.sgoa.mvc.result.DocinRes;
 import com.bcqsoft.sgoa.mvc.result.WorkFlow;
 import com.bcqsoft.sgoa.service.common.CommonService;
 import com.bcqsoft.sgoa.service.docin.DocinService;

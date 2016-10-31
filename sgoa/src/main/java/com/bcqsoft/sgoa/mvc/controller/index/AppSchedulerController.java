@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bcqsoft.sgoa.dao.scheduler.dataobject.Scheduler;
 import com.bcqsoft.sgoa.dao.scheduler.dataobject.SchedulerPage;
-import com.bcqsoft.sgoa.mvc.controller.index.util.SchedulerRes;
-import com.bcqsoft.sgoa.mvc.controller.index.util.SchedulerResNew;
+import com.bcqsoft.sgoa.mvc.result.SchedulerRes;
+import com.bcqsoft.sgoa.mvc.result.SchedulerResNew;
 import com.bcqsoft.sgoa.service.scheduler.SchedulerService;
 
 @Controller

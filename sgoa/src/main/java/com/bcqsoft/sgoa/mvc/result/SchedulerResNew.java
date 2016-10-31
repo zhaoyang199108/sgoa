@@ -1,4 +1,4 @@
-package com.bcqsoft.sgoa.mvc.controller.index.util;
+package com.bcqsoft.sgoa.mvc.result;
 
 import java.util.List;
 

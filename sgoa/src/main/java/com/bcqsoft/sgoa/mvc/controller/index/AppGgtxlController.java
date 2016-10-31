@@ -22,7 +22,7 @@ import com.bcqsoft.sgoa.core.security.SecurityUtils;
 import com.bcqsoft.sgoa.dao.dept.dataobject.Dept;
 import com.bcqsoft.sgoa.dao.ggtxl.dataobject.Ggtxl;
 import com.bcqsoft.sgoa.dao.ggtxl.dataobject.GgtxlPage;
-import com.bcqsoft.sgoa.mvc.controller.index.util.GgtxlRes;
+import com.bcqsoft.sgoa.mvc.result.GgtxlRes;
 import com.bcqsoft.sgoa.service.dept.DeptService;
 import com.bcqsoft.sgoa.service.ggtxl.GgtxlService;
 

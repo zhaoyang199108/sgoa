@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bcqsoft.sgoa.dao.workscheduler.dataobject.WorkScheduler;
 import com.bcqsoft.sgoa.dao.workscheduler.dataobject.WorkSchedulerPage;
-import com.bcqsoft.sgoa.mvc.controller.index.util.WorkSchedulerRes;
-import com.bcqsoft.sgoa.mvc.controller.index.util.WorkSchedulerResNew;
+import com.bcqsoft.sgoa.mvc.result.WorkSchedulerRes;
+import com.bcqsoft.sgoa.mvc.result.WorkSchedulerResNew;
 import com.bcqsoft.sgoa.service.workscheduler.WorkSchedulerService;
 /*
  * App工作日程控制器
