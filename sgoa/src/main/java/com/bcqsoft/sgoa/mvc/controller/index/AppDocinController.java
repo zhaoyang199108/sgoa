@@ -103,7 +103,7 @@ public class AppDocinController {
 	 * @return 通知表详细页面
 	 * @throws Exception
 	 * 
-	 * @Author Bcqsoft.com cql
+	 * @Author zy
 	 * @Date 2013-05-14
 	 */
 	@RequestMapping(value = "/home/docin/look_detail.htm", method = RequestMethod.GET)
@@ -126,6 +126,12 @@ public class AppDocinController {
 		//resMap.put("look", docinBoxListForAll);
 
 		Docin docin = docinService.getUserDraftDocinDetail(id);
+		if(docin == null){
+			resMap.put("message", "没有数据");
+			resMap.put("retCode", "0");
+			resMap.put("data", null);
+			return resMap;
+		}
 		docin.setReceiverName(commonService.getUsersNameByLoginIds(docin.getReceiverId()));
 
 		

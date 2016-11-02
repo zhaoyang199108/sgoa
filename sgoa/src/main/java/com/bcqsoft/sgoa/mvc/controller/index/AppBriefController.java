@@ -69,8 +69,8 @@ public class AppBriefController {
 		//outPage.setDraftsDeptId(draftsDeptId);
 		NewsPage newPage = briefService.getBriefSearchList(outPage);
 		List<News> list = newPage.getNewsList();
-		retCode = list==null?"1":"0";
-		message = list==null?"取得失败":"取得成功";
+		retCode = list==null?"0":"0";
+		message = list==null?"取得成功":"取得成功";
 		Map<String,Object>  resMap = new HashMap<String, Object>();
 		resMap.put("message", message);
 		resMap.put("retCode", retCode);

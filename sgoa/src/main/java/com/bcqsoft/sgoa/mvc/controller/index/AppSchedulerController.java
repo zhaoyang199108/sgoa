@@ -68,6 +68,12 @@ public class AppSchedulerController {
 		SchedulerPage page = schedulerService
 				.getSchedulerInfoList(schedulerPage);
 		List<Scheduler> list = page.getSchedulerList();
+		if(list == null){
+			resMap.put("message", "请求数据为空");
+			resMap.put("retCode", 0);
+			resMap.put("data", null);
+			return resMap;
+		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		for(Scheduler i : list){
 			String[] str1 = i.getStartTime().split(" ");

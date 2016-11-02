@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bcqsoft.sgoa.common.charactor.CommonChar;
+import com.bcqsoft.sgoa.common.util.PropertiesUtil;
 import com.bcqsoft.sgoa.dao.news.dataobject.News;
 import com.bcqsoft.sgoa.dao.news.dataobject.NewsPage;
 import com.bcqsoft.sgoa.dao.newslook.dataobject.NewsLook;
@@ -123,14 +124,15 @@ public class AppNewsController {
 		resMap.put("look", newsLookListForAll);
 
 		News news = newsService.getUserDraftNewsDetail(id);
-		byte[] bt = news.getContent();
 		String text = null;
 		try{
+			byte[] bt = news.getContent();
+			
 			if(bt!=null || bt.equals("")){
-				FileOutputStream fos = new FileOutputStream("E:\\aaa.doc");
+				FileOutputStream fos = new FileOutputStream(PropertiesUtil.getFileUploadDir()+"\\aaa.doc");
 		        fos.write(bt);
 		        fos.close();
-		        FileInputStream is = new FileInputStream(new File("E:\\aaa.doc"));
+		        FileInputStream is = new FileInputStream(new File(PropertiesUtil.getFileUploadDir()+"\\aaa.doc"));
 		        WordExtractor extrator = new WordExtractor(is); 
 		       text = extrator.getText(); 
 				
