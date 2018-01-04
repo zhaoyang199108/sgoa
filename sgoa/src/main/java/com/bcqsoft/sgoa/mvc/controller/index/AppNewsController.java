@@ -1,12 +1,14 @@
 package com.bcqsoft.sgoa.mvc.controller.index;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -96,7 +98,7 @@ public class AppNewsController {
 	 */
 	@RequestMapping(value = "/home/news/look_detail.htm", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String,Object> newsLookDetail(HttpServletRequest request,
+	public  Map<String,Object> newsLookDetail(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
 		// 获取当前登录ID
@@ -125,21 +127,46 @@ public class AppNewsController {
 
 		News news = newsService.getUserDraftNewsDetail(id);
 		String text = null;
-		try{
-			byte[] bt = news.getContent();
-			
-			if(bt!=null || bt.equals("")){
-				FileOutputStream fos = new FileOutputStream(PropertiesUtil.getFileUploadDir()+"\\aaa.doc");
-		        fos.write(bt);
-		        fos.close();
-		        FileInputStream is = new FileInputStream(new File(PropertiesUtil.getFileUploadDir()+"\\aaa.doc"));
-		        WordExtractor extrator = new WordExtractor(is); 
-		       text = extrator.getText(); 
+
+		
+
+		if(news!=null){
+			try{
+				byte[] bt = news.getContent();
+				byte[] by = null;
+				if( bt !=null && bt.length!=0){
+						Date date = new Date();
+				        long now = date.getTime();
+						FileOutputStream fos = new FileOutputStream(PropertiesUtil.getFileUploadDir() + "/"+now+".doc");
+				        fos.write(bt);
+				        fos.flush();
+				        fos.close();
+//				        FileInputStream is = new FileInputStream(new File("D:\\aaa.doc"));
+//				        WordExtractor extrator = new WordExtractor(is); 
+//				        text = extrator.getText(); 
+				       
+//				        System.out.println(PropertiesUtil.getFileUploadDomain() + "/"+now+".doc?i="+ Math.random());
+				        java.net.URL url = new java.net.URL(
+								PropertiesUtil.getFileUploadDomain() + "/"+now+".doc?i="+ Math.random());
+						java.net.HttpURLConnection connection = (java.net.HttpURLConnection) url
+								.openConnection();
+						connection.connect();
+						InputStream is =  connection.getInputStream();
+//				        Fis.getChannel();
+						WordExtractor extrator = new WordExtractor(is);
+						text = extrator.getText();
+						extrator.close();
+						is.close();
+						connection.disconnect();
+						deleteFile(PropertiesUtil.getFileUploadDir() + "/"+now+".doc");
+					}
 				
-				}
-			
-		}catch(Exception e){
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
+		
+
 		resMap.put("content",text);
 		resMap.put("data", news);
 		NewsReviewPage page = newsService.getNewsReviewListById(id);
@@ -151,5 +178,14 @@ public class AppNewsController {
 		resMap.put("message", message);
 		return resMap;
 	}
-
+	public boolean deleteFile(String sPath) {  
+		boolean flag = false;  
+		File file = new File(sPath);  
+	    // 路径为文件且不为空则进行删除  
+	    if (file.isFile() && file.exists()) {  
+	        file.delete();  
+	        flag = true;  
+	    }  
+	    return flag;  
+	} 
 }

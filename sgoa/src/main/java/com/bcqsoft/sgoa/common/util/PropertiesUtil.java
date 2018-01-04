@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
  */
 public class PropertiesUtil {
 	
-	public static final ResourceBundle bundle = ResourceBundle.getBundle("sgoa");
+	public static final ResourceBundle bundle = ResourceBundle.getBundle("jdbc");
 
 	/**
 	 * FTP服务器IP地址
@@ -62,5 +62,16 @@ public class PropertiesUtil {
 	 */
 	public static final String getFileUploadDir() {
 		return bundle.getString("file.upload.dir");
+	}
+	
+	/**
+	 * FTP服务器编码
+	 * 
+	 * @author ly
+	 * @date 2012-8-22
+	 * @return String
+	 */
+	public static final String getFileUploadDomain() {
+		return bundle.getString("file.upload.domain");
 	}
 }

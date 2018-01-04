@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,20 +123,36 @@ public class AppMessageController {
 		List<MessageLook> messageLookListForAll = messageLookService.getAllMessageLookListAll(id);
 		resMap.put("look", messageLookListForAll);
 		Message message1 = messageService.getUserDraftMessageDetail(id);
-		byte[] bt = message1.getContent();
 		String text = null;
+		if(message1!=null){
+		byte[] bt = message1.getContent();
+		
 		try{
-			if(bt!=null || bt.equals("")){
-				FileOutputStream fos = new FileOutputStream(PropertiesUtil.getFileUploadDir()+"\\aaa.doc");
+			if( bt !=null && bt.length!=0){
+				Date date = new Date();
+		        long now = date.getTime();
+//				FileOutputStream fos = new FileOutputStream("D:\\Dev\\Workspace\\sgoa\\src\\main\\webapp\\upload\\aaa.doc");
+				FileOutputStream fos = new FileOutputStream(PropertiesUtil.getFileUploadDir() + "/"+now+".doc");
 		        fos.write(bt);
+		        fos.flush();
 		        fos.close();
-		        FileInputStream is = new FileInputStream(new File(PropertiesUtil.getFileUploadDir()+"\\aaa.doc"));
-		        WordExtractor extrator = new WordExtractor(is); 
-		       text = extrator.getText(); 
-				
+//		        FileInputStream is = new FileInputStream(new File("D:\\Dev\\Workspace\\sgoa\\src\\main\\webapp\\upload\\aaa.doc"));
+		        java.net.URL url = new java.net.URL(
+						PropertiesUtil.getFileUploadDomain() + "/"+now+".doc?i="+ Math.random());
+				java.net.HttpURLConnection connection = (java.net.HttpURLConnection) url
+						.openConnection();
+				connection.connect();
+				InputStream is = connection.getInputStream();
+				WordExtractor extrator = new WordExtractor(is);
+			    text = extrator.getText();
+			    extrator.close();
+			    is.close();
+			    connection.disconnect();
+			    deleteFile(PropertiesUtil.getFileUploadDir() + "/"+now+".doc");
 				}
 			
 		}catch(Exception e){
+		}
 		}
 		resMap.put("content",text);
 		retCode = message1==null?"0":"0";
@@ -148,5 +165,14 @@ public class AppMessageController {
 	//	resMap.put("page", page);
 		return resMap;
 	}
-
+	public boolean deleteFile(String sPath) {  
+		boolean flag = false;  
+		File file = new File(sPath);  
+	    // 路径为文件且不为空则进行删除  
+	    if (file.isFile() && file.exists()) {  
+	        file.delete();  
+	        flag = true;  
+	    }  
+	    return flag;  
+	} 
 }

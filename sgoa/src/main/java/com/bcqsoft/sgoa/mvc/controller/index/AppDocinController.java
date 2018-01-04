@@ -153,7 +153,9 @@ public class AppDocinController {
 			}
 		}
 		dr1.opinions = list1;
+		if(list1.size()!=0){
 		listRes.add(dr1);
+		}
 		for(DocinReview i : drList){
 			if("2".equals(i.getSeat())){
 				dr2.seat = i.getSeat();
@@ -161,7 +163,10 @@ public class AppDocinController {
 			}
 		}
 		dr2.opinions = list2;
-		listRes.add(dr2);
+		if(list2.size()!=0){
+			listRes.add(dr2);
+		}
+		
 		for(DocinReview i : drList){
 			if("3".equals(i.getSeat())){
 				dr3.seat = i.getSeat();
@@ -169,7 +174,10 @@ public class AppDocinController {
 			}
 		}
 		dr3.opinions = list3;
-		listRes.add(dr3);
+		if(list3.size()!=0){
+			listRes.add(dr3);
+		}
+		
 		for(DocinReview i : drList){
 			if("4".equals(i.getSeat())){
 				dr4.seat = i.getSeat();
@@ -177,7 +185,13 @@ public class AppDocinController {
 			}
 		}
 		dr4.opinions = list4;
-		listRes.add(dr4);
+		if(list4.size()!=0){
+			listRes.add(dr4);
+		}
+		
+		for(DocinRes i:listRes){
+			System.out.println(i.seat);
+		}
 		Collections.sort(listRes,new SortBySeat());
 		Docin docin1 = docinService.getUserDraftDocinDetail(id);
 		Integer steps = docin1.getStep();
